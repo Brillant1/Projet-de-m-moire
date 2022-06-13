@@ -39,3 +39,4 @@ class CandidatRequest extends FormRequest
         ];
     }
 }
+

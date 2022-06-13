@@ -35,7 +35,7 @@ class CandidatController extends Controller
         $centres = Centre::all();
         $communes = Commune::all();
         $departements = Departement::all();
-        $series = explode(';',env('SERIE'));
+        $series = explode(';',env('TYPE_EXAMEN'));
         $sexes = explode(';',env('SEXE'));
         return view('admin.candidat.addCandidat', compact('centres', 'communes', 'departements','series', 'sexes'));
     }
@@ -66,7 +66,6 @@ class CandidatController extends Controller
                 'contact' => $request->contact,
                 'sexe' => $request->sexe,
                 'serie' => $request->serie,
-                'mention' => $request->mention,
                 'mention' =>$request->mention,
                 'numero_table' => $request->numero_table,
                 'numero_reference' => $request->numero_reference,

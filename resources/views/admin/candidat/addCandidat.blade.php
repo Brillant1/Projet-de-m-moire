@@ -87,7 +87,7 @@
                                         <div class="form-group col-md-6 p-2">
                                             <label for="contact" class="control-label ">Contact du candidat</label>
                                             <input class="form-control border-2 " type="text"
-                                                placeholder="Tapez le contact du centre" name="contact" id="contact">
+                                                placeholder="Tapez le contact du candidat" name="contact" id="contact">
                                         </div>
 
                                         <div class="form-group col-md-6 p-2" style="padding:10px 0 10px 0;">
@@ -155,7 +155,7 @@
                                         <div class="form-group col-md-6 p-2" style="padding:10px 0 10px 0;">
                                             <label class="control-label" for="centre">Série du candidat</label>
                                             <select class="form-control border-2 form-select" style="height: 50px;"
-                                                name="serie" id="centre" id="serie">
+                                                name="serie" id="serie">
                                                 @foreach ($series as $serie)
                                                     <option value="{{ $serie }}">{{ $serie }}</option>
                                                 @endforeach

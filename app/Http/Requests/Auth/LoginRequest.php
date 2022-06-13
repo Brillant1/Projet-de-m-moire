@@ -33,6 +33,7 @@ class LoginRequest extends FormRequest
             'password' => ['required', 'string'],
         ];
     }
+     
 
     /**
      * Attempt to authenticate the request's credentials.

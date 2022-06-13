@@ -19,9 +19,7 @@
     }
 </style>
 <div id="carouselExampleIndicators" class="carousel slide container-fluid p-0 m-0 position-relative" data-bs-ride="carousel" >
-
     <div>
-
         <div class="carousel-indicators">
 
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
@@ -42,7 +40,7 @@
                 Bienvenu sur la plateforme officielle de <br> demande et de suivie de vos attestions du <br> CEP et du BEPC au Benin
 
             </p>
-            <a href="#" class="rounded rounded-pill px-4 py-1 fs-4 border border-2 border-white mt-3 text-white" style="font-family: 'Inter';
+            <a href="{{ route('demandes.create') }}" class="rounded rounded-pill px-4 py-1 fs-4 border border-2 border-white mt-3 text-white" style="font-family: 'Inter';
             font-style: normal;
             font-weight: 700;
             "> Demander mon attestation</a>
@@ -75,7 +73,7 @@
 
 <div class="accueil-section2 d-flex justify-content-center align-items-center flex-column">
     <p class="h2 fw-bold mt-5 mb-5 pt-5 pb-2">Taux d'admission aux derniers examens</p>
-    <div class="d-flex justify-content-between w-75">
+    <div class="d-flex justify-content-between" style="width: 60%;">
 
         <div class="d-flex flex-column justify-content-center align-items-center">
             <div class=" taux bg-favorite-color d-flex justify-content-center align-items-center flex-column ">

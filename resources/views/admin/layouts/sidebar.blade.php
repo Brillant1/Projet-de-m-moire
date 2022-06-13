@@ -9,6 +9,27 @@
         </a>
       </li>
 
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#demandes-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Demandes</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="demandes-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{ route('demandes.index') }}">
+              <i class="bi bi-circle"></i><span>Toutes les demandes</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('demandes.create') }}">
+              <i class="bi bi-circle"></i><span> Ajouter candidat</span>
+            </a>
+          </li>
+
+        </ul>
+      </li>
+
+
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#candidats-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Candidats</span><i class="bi bi-chevron-down ms-auto"></i>

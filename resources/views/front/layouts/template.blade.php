@@ -12,7 +12,7 @@
 </head>
 <body>
 
-    @include('front.layouts.header')
+    @include('front.layouts.header1')
 
     <main>
 

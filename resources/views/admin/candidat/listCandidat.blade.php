@@ -131,26 +131,7 @@
                                          {{--  end delete modal --}}
 
                                         {{-- show modal --}}
-                                        <style>
-                                            .info-perso-item{
-                                                display: flex;
-                                                justify-content: space-between
-                                            }
-                                            .first-color{
-                                                background: #032497F5;
-                                            }
-                                            .section-title{
-                                                color: white;
-                                                background: rgba(3, 36, 151, 0.96);
-                                                border-radius: 10px;
-                                            }
-                                            .row-info>p:last-child{
-                                                width: 40%;
-                                                color: #CD101B;
-                                            }.row-info>p:first-child{
-                                                width: 60%;
-                                            }
-                                        </style>
+                                       
                                         <div class="modal fade container-fluid" id="{{ 'showModal' . $candidat->id }}"
                                             tabindex="-1" >
                                             <div class="modal-dialog" style="max-width: 60%">

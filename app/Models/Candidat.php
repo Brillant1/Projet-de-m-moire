@@ -30,4 +30,8 @@ class Candidat extends Model
     public function centre(){
         return $this->belongsTo(Centre::class);
     }
+
+    public function demandes(){
+        return $this->hasMany(Demande::class);
+    }
 }

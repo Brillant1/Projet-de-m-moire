@@ -1,5 +1,5 @@
 
-<footer class=" border border-2 " style="margin-top: 100px;">
+<footer class="  m-0 mt-5" style="margin-top: 100px;">
     <section class="py-3 section-footer d-flex justify-content-center" style="background-color: #1117AB;">
         <div class="container-fluid  text-md-start mt-2" style="padding-left: 50px;">
           <div class="row mt-3" id="footer-mobile">

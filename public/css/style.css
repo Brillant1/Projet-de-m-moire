@@ -98,6 +98,9 @@ body {
 .breadcrumb-nav {
     --bs-breadcrumb-divider: '-';
 }
+.label-color{
+    color: #CA8B11;
+}
 
 .fs-48 {
     font-size: 48px;
@@ -146,6 +149,27 @@ body {
 }
 
 
+/* show modal code css*/
+
+.info-perso-item{
+    display: flex;
+    justify-content: space-between
+}
+.first-color{
+    background: #032497F5;
+}
+.section-title{
+    color: white;
+    background: rgba(3, 36, 151, 0.96);
+    border-radius: 10px;
+}
+.row-info>p:last-child{
+    width: 40%;
+    color: #CD101B;
+}.row-info>p:first-child{
+    width: 60%;
+}
+
 /* Header style code */
 
  .dropdown-link-main:hover .dropdown-menu1{
@@ -158,7 +182,7 @@ body {
 
 
 ul li a {
-    color: #fff;
+    color: #032497;
     font-weight: bold;
     text-decoration: none;
   }
@@ -178,11 +202,14 @@ ul li a {
     align-items: center;
 }
 .loginButton{
-    background-color: white;
+    background-color:#032497 ;
     display: flex;
+    color: white ;
     justify-content: center;
     align-items: center;
-
+}
+.registerButton{
+    border: 2px solid #032497;
 }
 .mobile-nav-toggle{
     position: absolute;
