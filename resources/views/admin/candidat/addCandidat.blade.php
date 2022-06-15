@@ -56,7 +56,7 @@
 
                         @if (session('updatedMessage'))
                             <div class="alert alert-success">
-                                <h6> {{ session('addedMessage') }} </h6>
+                                <h6> {{ session('updatedMessage') }} </h6>
                             </div>
                         @endif
                         <div class="card top-selling overflow-auto">

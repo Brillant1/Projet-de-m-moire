@@ -16,13 +16,13 @@
         </a>
         <ul id="demandes-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="{{ route('demandes.index') }}">
+            <a href="{{ route('listeDemande') }}">
               <i class="bi bi-circle"></i><span>Toutes les demandes</span>
             </a>
           </li>
           <li>
             <a href="{{ route('demandes.create') }}">
-              <i class="bi bi-circle"></i><span> Ajouter candidat</span>
+              <i class="bi bi-circle"></i><span> Ajouter demande</span>
             </a>
           </li>
 

@@ -28,6 +28,7 @@
     <script src="{{asset('js/jquery.easing.min.js')}}"></script>
     <script src="{{asset('js/jquery.magnific-popup.js')}}"></script>
     <script src="{{asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
 
 
 </body>

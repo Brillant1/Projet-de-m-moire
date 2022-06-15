@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Centre;
 use App\Models\Commune;
 use App\Models\Demande;
@@ -19,11 +20,30 @@ class DemandeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user)
     {
-        $demandes = Demande::all();
         
-        return view('front.demande.suivie', compact('demandes'));
+    }
+
+    public function demandeUser(){
+        
+
+         $demandes = Demande::where('user_id', Auth::user()->id )->get();
+         $demandeNonValides = Demande::where(
+            [
+                'user_id'=> Auth::user()->id,
+                'statut_demande' => "non_valider"
+            ]
+        )->get();  
+        $demandeValides = Demande::where(
+            [
+                'user_id'=> Auth::user()->id,
+                'statut_demande' => "valider"
+            ]
+        )->get();      
+
+        return view('front.demande.suivie', compact('demandes','demandeNonValides','demandeValides'));
+
     }
 
     /**
@@ -50,10 +70,9 @@ class DemandeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(DemandeRequest $request)
+    public function store(Request $request)
     {
         $filename = Storage::disk('public')->put('photo_candidat_demande', $request->photo);
-        
         $demandes = [
             'nom' => $request->nom,
             'prenom' => $request->prenom,
@@ -77,6 +96,8 @@ class DemandeController extends Controller
             'type_examen' =>$request->type_examen,
             'user_id' => Auth()->user()->id
         ];
+        
+        
         Demande::create($demandes);
         return back()->with('addedMessage', 'Votre demande est soumise avec succès'); 
 
@@ -101,7 +122,14 @@ class DemandeController extends Controller
      */
     public function edit(Demande $demande)
     {
-        return view('front.demande.editDemande', compact('demande'));
+        $centres = Centre::all();
+        $communes = Commune::all();
+        $departements = Departement::all();
+        $series = explode(';',env('SERIE'));
+        $type_examens = explode(';',env('TYPE_EXAMEN'));
+        $sexes = explode(';',env('SEXE'));
+        $mentions = explode(';', ENV('MENTION'));
+        return view('front.demande.editDemande', compact('demande','centres','communes','departements','series','type_examens','sexes','mentions'));
     }
 
     /**
@@ -111,9 +139,78 @@ class DemandeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Demande $demande)
     {
-        //
+        if( $request->hasFile('photo') ){
+            Storage::disk('public')->delete($demande->photo);
+            $filename = Storage::disk('public')->put('avatars/img', $request->photo);
+            $demande->update([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'date_naissance' => $request->date_naissance,
+            'email' => $request->email,
+            'contact' => $request->contact,
+            'sexe' => $request->sexe,
+            'ville_naissance' => $request->ville_naissance,
+            'photo' => $filename,
+            'numero_table' => $request->numero_table,
+            'serie' => $request->serie,
+            'mention' =>$request->mention,
+            'departement' => $request->departement,
+            'commune' => $request->commune,
+            'centre' => $request->centre,
+            'numero_reference' => $request->numero_reference,
+            'annee_obtention' => $request->annee_obtention,
+            'nom_pere'  => $request->nom_pere,
+            'nom_mere' => $request->nom_mere,
+            'contact_parent' => $request->contact_parent,
+            'type_examen' =>$request->type_examen,
+            'user_id' => Auth()->user()->id
+        ]);
+        }
+        else{
+            $filename = $demande->photo;
+            $demande->update(
+                [
+                    'nom' => $request->nom,
+                    'prenom' => $request->prenom,
+                    'contact' => $request->contact,
+                    'sexe' => $request->sexe,
+                    'serie' => $request->serie,
+                    'mention' => $request->mention,
+                    'numero_table' => $request->numero_table,
+                    'numero_reference' => $request->numero_reference,
+                    'annee_obtention' => $request->annee_obtention,
+                    'date_naissance' =>$request->date_naissance,
+                    'nom_pere'  => $request->pere,
+                    'nom_mere' => $request->mere,
+                    'photo' => $filename
+                ]
+            );
+        }
+
+        $demande->update(
+            [
+                'nom' => $request->nom,
+                'prenom' => $request->prenom,
+                'contact' => $request->contact,
+                'sexe' => $request->sexe,
+                'serie' => $request->serie,
+                'mention' => $request->mention,
+                'numero_table' => $request->numero_table,
+                'numero_reference' => $request->numero_reference,
+                'annee_obtention' => $request->annee_obtention,
+                'date_naissance' =>$request->date_naissance,
+                'nom_pere'  => $request->nom_pere,
+                'nom_mere' => $request->nom_mere,
+                'photo' => $filename
+            ]
+        );
+
+
+        $demandes = Demande::where('user_id', Auth::user()->id )->get();
+        return back()->with('updatedMessage', 'Demande modifiée avec succès');
+
     }
 
     /**
@@ -122,8 +219,10 @@ class DemandeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Demande $demande)
     {
-        //
+        $demande->delete();
+        return back()->with('deletedMessage', 'Demande supprimée avec succès');
+        
     }
 }

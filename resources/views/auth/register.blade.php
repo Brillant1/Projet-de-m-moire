@@ -1,19 +1,28 @@
 @extends('front.layouts.template')
 @section('content')
-    <div class="container d-flex justify-content-center" style="margin-top: 30px;">
-        <div class="row shadow ps-3 mt-5 " style="width: 80%;">
+<style>
+    .bg-image-register {
+        background-image: url('img/Mobile login-pana.png');
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+    .login-main-div{
+        margin-top: 100px; 
+        background-image : url('{{asset('img/LoginBG.jpg')}}');
+        background-repeat : no-repeat;
+        background-size : 100%;
+        width: 100%;  
+    }
+    
+</style>
+    <div class="container-fluid d-flex justify-content-center mt-0 login-main-div " >
+        <div class="row shadow ps-3  bg-white" style="width: 60%;margin-bottom : 75px; margin-top :50px;">
 
 
             <!-- Validation Errors -->
             <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-            <style>
-                .bg-image-register {
-                    background-image: url('img/Mobile login-pana.png');
-                    background-size: 100%;
-                    background-repeat: no-repeat;
-                }
-            </style>
+            
             <div class="col-6 " style="margin-right:0">
                 <div class="">
                     <div class=" d-flex align-items-center  ">
@@ -51,7 +60,7 @@
                         <div class="mt-4 form-group ">
                             {{-- <x-label for="name" :value="__('Name')" /> --}}
 
-                            <x-input id="name" class="form-control border-2 w-100 " style="padding: 14px;" type="text"
+                            <x-input id="name" class="form-control  w-100 " style="padding: 14px;" type="text"
                                 placeholder="Nom & Prénom(s)" name="name" :value="old('name')" required autofocus />
                         </div>
 
@@ -59,7 +68,7 @@
                         <div class="mt-4 form-group">
                             {{-- <x-label for="email" :value="__('Email')" /> --}}
 
-                            <x-input id="email" class="form-control border-2 w-100 " style="padding: 14px;" type="email"
+                            <x-input id="email" class="form-control  w-100 " style="padding: 14px;" type="email"
                                 placeholder="Adresse Email" name="email" :value="old('email')" required />
                         </div>
 
@@ -67,7 +76,7 @@
                         <div class="mt-4 form-group">
                             {{-- <x-label for="password" :value="__('Password')" /> --}}
 
-                            <x-input id="password" class="form-control border-2 w-100 " style="padding: 14px;"
+                            <x-input id="password" class="form-control  w-100 " style="padding: 14px;"
                                 placeholder="Mot de passe" type="password" name="password" required
                                 autocomplete="new-password" />
                         </div>
@@ -76,7 +85,7 @@
                         <div class="mt-4 form-group">
                             {{-- <x-label for="password_confirmation" :value="__('Confirm Password')" /> --}}
 
-                            <x-input id="password_confirmation" class="form-control border-2 w-100 "
+                            <x-input id="password_confirmation" class="form-control  w-100 "
                                 placeholder="Confirmer mot de passe" style="padding: 14px;" type="password"
                                 name="password_confirmation" required />
                         </div>

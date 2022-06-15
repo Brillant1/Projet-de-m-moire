@@ -6,7 +6,7 @@
     }
      
 </style>
-<header class="shadow " style="background-color: #fff;">
+<header class="shadow py-2" style="background-color: #fff;">
     <nav class="navbar1 d-flex " id="navbar1">
         <a href="index.html" class="logo" >
             <img src="{{ asset('admin/img/logoDec.png') }}" alt="" >
@@ -20,7 +20,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu1 ms-2 py-2 bg-white" id="">
                           <a class="dropdown-item py-2  text-dark" href="{{ route('demandes.create') }}">Demander mon attestation</a>
-                          <a class="dropdown-item py-2  text-dark" href="{{ route('demandes.index') }}">Suivre mes demandes</a>
+                          <a class="dropdown-item py-2  text-dark" href="{{ route('demandeUser') }}">Suivre mes demandes</a>
                         </div>
                       </li>
                       <li class="nav-item dropdown" style="l">
@@ -37,8 +37,8 @@
             </ul>
             <ul class="d-flex justify-content-between align-items-center authButton mt-3" id="ul2">
                 @guest 
-                    <li class="nav-link loginButton fw-bold rounded-pill d-flex justify-content-between align-items-center"><a href="{{ route('connexion') }}" style="color: #1117AB" class="mt-1 ms-1 w-100 h-100 d-flex justify-content-between align-items-center text-white">CONNEXION</a></li>
-                    <li class="nav-link rounded-pill registerButton d-flex justify-content-between align-items-center"><a href="{{ route('inscription') }}" class="pt-1">INSCRIPTION</a></li>
+                    <li class="nav-link loginButton fw-bold rounded-pill d-flex justify-content-between align-items-center"><a href="{{ route('login') }}" style="color: #1117AB" class="mt-1 ms-1 w-100 h-100 d-flex justify-content-between align-items-center text-white">CONNEXION</a></li>
+                    <li class="nav-link rounded-pill registerButton d-flex justify-content-between align-items-center"><a href="{{ route('register') }}" class="pt-1">INSCRIPTION</a></li>
                 @endguest
                 @auth
                 <li class="nav-item dropdown">

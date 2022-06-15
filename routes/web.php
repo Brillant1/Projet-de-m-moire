@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\AlerteController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AlerteController;
 use App\Http\Controllers\CentreController;
 use App\Http\Controllers\CommuneController;
-use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\CandidatController;
 use App\Http\Controllers\DepartementController;
-use App\Http\Controllers\GererDemandeController;
+use App\Http\Controllers\Admin\DemandeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -37,9 +37,14 @@ Route::resource('centres', CentreController::class);
 Route::resource('communes', CommuneController::class);
 Route::resource('departements', DepartementController::class);
 Route::resource('candidats', CandidatController::class);
-Route::resource('demandes', DemandeController::class)->middleware(['auth']);
+Route::resource('demandes', App\Http\Controllers\DemandeController::class)->middleware(['auth']);
+// Route::post('storeDemande', [App\Http\Controllers\DemandeController::class,'storeDemande'])->name('storeDemande');
+Route::get('listeDemande', [App\Http\Controllers\Admin\GererDemandeController::class,'listeDemande'])->name('listeDemande');
+Route::get('singleDemande/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'singleDemande'])->name('singleDemande');
+Route::post('changeState/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'changeState'])->name('changeState');
+Route::get('demandeUser', [App\Http\Controllers\DemandeController::class, 'demandeUser'])->name('demandeUser')->middleware(['auth']);
 
-Route::get('demandes.showDemande/{demande}', [GererDemandeController::class,'showDemande'])->name('demandes.showDemande');
+
 Route::post('alertInvalidDemande',[AlerteController::class, 'alertInvalidDemande'])->name('alertInvalidDemande');
 
 Route::get('accueil', function(){

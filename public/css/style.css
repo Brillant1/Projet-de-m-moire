@@ -102,7 +102,7 @@ body {
     color: #CA8B11;
 }
 
-.fs-48 {
+.fs-48 { 
     font-size: 48px;
 }
 
@@ -177,7 +177,7 @@ body {
 }
 .logo>img{
     width: 100%;
-    height:100px;
+    height:80px;
 }
 
 

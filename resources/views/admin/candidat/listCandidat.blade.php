@@ -69,7 +69,6 @@
                                 {{-- <td class=" ">{{ $candidat->centre->commune->departement->nom }}</td> --}}
                                 <td class=" ">{{ $candidat->annee_obtention }}</td>
                                 <td class="">{{ $candidat->serie }}</td>
-
                                 <td class="">
                                     <div class="d-flex justify-content-evenly w-100">
                                         <a href="{{ route('candidats.show', ['candidat' => $candidat->id]) }}" title="Consulter"

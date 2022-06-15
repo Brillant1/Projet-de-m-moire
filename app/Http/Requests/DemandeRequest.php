@@ -31,7 +31,7 @@ class DemandeRequest extends FormRequest
             'sexe'=>'required|numeric',
             'serie'=>'required|integer',
             'email' => 'required|email',
-            'contact' => 'required|number',
+            'contact' => 'required|numeric',
             'ville_naissance' =>'required|string',
             'mention'=>'required|numeric',
             'numero_table'=>'required|string',

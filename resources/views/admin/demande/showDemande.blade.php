@@ -4,8 +4,8 @@
         <h1>Dashboard</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">demandes</a></li>
-                <li class="breadcrumb-item active">Liste demande</li>
+                <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Demandes</a></li>
+                <li class="breadcrumb-item active">details de la demande</li>
                 </li>
             </ol>
         </nav>
@@ -24,12 +24,17 @@
                 </div>
             @endif
             <div class="text-center my-3 alert bg-warning">
-                <h4 class="text-white font-italic fw-bold">Liste des demandes</h4>
+                <h4 class="text-white font-italic fw-bold">Détails de la demande</h4>
             </div>
             <div class="text-center mb-4 d-flex justify-content-end">
                 <a class="btn btn-success p-2 fw-bold text-white" href=" {{ route('demandes.create') }} ">Ajouter un
                     nouveau</a>
             </div>
+            @if (session('changeStateMessage'))
+                <div class="alert alert-success text-center container-fluid  my-3">
+                    <h5> {{ session('changeStateMessage') }} </h5>
+                </div>
+            @endif
 
 
         </div>
@@ -65,7 +70,6 @@
             }
 
             label {}
-
         </style>
         <div class="">
             <div class="d-flex justify-content-center flex-column align-items-center">
@@ -115,7 +119,7 @@
                         <p>{{ $demande->type_examen }}</p>
 
                     </div>
-                    
+
                 </div>
                 <div class="container">
                     <p class="section-title text-center first-color py-2 mt-5">Informations sur le diplôme</p>
@@ -170,67 +174,104 @@
             </div>
             <p class="mt-4 ms-5 fs-5">
                 @if ($candidatAdmis)
-                    Après vérification des informations à notre porté, le candidat <strong> {{ $candidatAdmis->nom }}
-                        {{ $candidatAdmis->prenom }} </strong> né le <strong>{{ $candidatAdmis->date_naissance }}</strong>
-                    à <strong> {{ $demande->ville_naissance }} </strong> est supposé admis
-                    aux examens du {{ $candidatAdmis->examen }} série {{ $candidatAdmis->serie }}
-                    {{ $candidatAdmis->annee_obtention }} et est identifié par le matricule
-                    <strong>{{ $candidatAdmis->numero_table }}</strong>.
-                    Il a composé au centre du <strong> {{ $candidatAdmis->centre->nom }} </strong>, dans la commune de
-                    <strong>{{ $candidatAdmis->centre->commune->nom }} </strong>dans le département des
-                    <strong>{{ $candidatAdmis->centre->commune->departement->nom }} </strong>. Procéder aux vérifications
-                    manuelles pour toutes décisions.
+                    @foreach ($candidatAdmis as $candidatAdmis)
+                        Après vérification des informations à notre porté, le candidat <strong> {{ $candidatAdmis->nom }}
+                            {{ $candidatAdmis->prenom }} </strong> né le
+                        <strong>{{ $candidatAdmis->date_naissance }}</strong>
+                        à <strong> {{ $demande->ville_naissance }} </strong> est supposé admis
+                        aux examens du {{ $candidatAdmis->examen }} série {{ $candidatAdmis->serie }}
+                        {{ $candidatAdmis->annee_obtention }} et est identifié par le matricule
+                        <strong>{{ $candidatAdmis->numero_table }}</strong>.
+                        Il a composé au centre du <strong> {{ $candidatAdmis->centre->nom }} </strong>, dans la commune
+                        de
+                        <strong>{{ $candidatAdmis->centre->commune->nom }} </strong>dans le département des
+                        <strong>{{ $candidatAdmis->centre->commune->departement->nom }} </strong>. Procéder aux
+                        vérifications
+                        manuelles pour toutes décisions.
+                    @endforeach
                 @else
                     Nous n'avons pas retrouvé ce candidat dans les candidats éligibles.
                     Veillez procéder à une vérification manuelle pour toute décision.
                 @endif
             </p>
             <div class=" d-flex justify-content-start mt-5">
-                <div class=" d-flex justify-content-between align-items-center ms-5">
-                    <button type="button" class="border-0 bg-none btn btn-lg btn-danger px-5" data-bs-toggle="modal"
-                        data-bs-target="{{ '#invalidModal' . $demande->nom }}"> Rejeter
+                <div class=" d-flex justify-content-center w-100 align-items-center ms-5">
+                    <button type="button" class="border-0 bg-none btn btn-lg btn-success px-5 py-1 me-3"
+                        data-bs-toggle="modal" data-bs-target="{{ '#activeModalDemande' . $demande->nom }}"> Approuvée
                     </button>
-                    <a href="#" class="btn btn-primary btn-lg px-5 ms-3">Alerter</a>
-                    <a href="#" class="btn btn-success btn-lg px-5 ms-3">Valider</a>
+                    
+                    <a href="#" class="btn btn-primary btn-lg px-5 me-3 py-1">Alerter</a>
+                    <button type="button" class="border-0 bg-none btn btn-lg btn-danger px-5 py-1" data-bs-toggle="modal"
+                        data-bs-target="{{ '#invalidModal' . $demande->id }}"> Rejeter
+                    </button>
+                </div>
 
-                    {{-- modal to alert user about invalid demand --}}
-                    <div class="modal fade" id="{{ 'invalidModal' . $demande->nom }}" tabindex="-1">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header d-flex flex-column-reverse">
+                {{-- modal to alert user about invalid demand --}}
+                <div class="modal fade" id="{{ 'invalidModal' . $demande->id }}" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header d-flex flex-column-reverse">
 
-                                    <h5 class="modal-title pb-1">Donner aux candidats les raisons du rejet de sa demande.
-                                    </h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+                                <h5 class="modal-title pb-1">Donner aux candidats les raisons du rejet de sa demande.
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form action="{{ route('alertInvalidDemande', ['demande' => $demande->id]) }}" method="POST">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="exampleFormControlTextarea1">Message au demandeur
+                                            {{ $demande->nom . ' ' . $demande->prenom }}</label>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="message"></textarea>
+                                        <input type="hidden" name=" demande_id" value="{{ $demande->id }}">
+                                    </div>
                                 </div>
-                                <form action="{{ route('alertInvalidDemande', ['demande' => $demande->id]) }}"
-                                    method="POST">
-                                    @csrf
-                                    <div class="modal-body">
-                                        <div class="form-group">
-                                            <label for="exampleFormControlTextarea1">Message au demandeur
-                                                {{ $demande->nom . ' ' . $demande->prenom }}</label>
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="message"></textarea>
-                                            <input type="hidden" name=" demande_id" value="{{ $demande->id }}">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
+                                <div class="modal-footer">
 
-                                        @csrf
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Annuler</button>
-                                        <input type="submit" class="btn btn-primary" value="Envoyer">
-                                    </div>
+                                    @csrf
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                    <input type="submit" class="btn btn-primary" value="Envoyer">
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                {{-- end modal --}}
+
+                {{-- Modal to active or desactive resultat --}}
+                <div class="modal fade" id="{{ 'activeModalDemande' . $demande->nom }}" tabindex="-1" role="dialog"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Confirmer
+                                    <strong class="text-danger">l'approbation</strong> de la demande
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Voulez-vous vraiment <strong class="text-danger">approuver</strong> cette demande de:
+                                <span class="text-danger"> {{ $demande->nom }} {{ $demande->prenom }} ?</span>
+                            </div>
+
+                            <div class="modal-footer">
+                                <form method="POST" action="{{ route('changeState', ['demande' => $demande->id]) }}">
+
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                    <input type="submit" class="btn btn-danger" value="Confirmer">
                                 </form>
 
                             </div>
+
                         </div>
                     </div>
-                    {{-- end modal --}}
-
-
                 </div>
+                {{-- end modal active demande --}}
+
             </div>
         </div>
 

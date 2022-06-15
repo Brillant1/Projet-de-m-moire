@@ -1,7 +1,16 @@
 @extends('front.layouts.template')
 @section('content')
-    <div class="container d-flex justify-content-center py-3" style="margin-top: 100px;">
-        <div class="row shadow ps-3 mt-5" style="width: 80%;">
+<style>
+    .login-main-div{
+        margin-top: 100px; 
+        background-image : url('{{asset('img/LoginBG.jpg')}}');
+        background-repeat : no-repeat;
+        background-size : 100%;
+        width: 100%;  
+    }
+</style>
+    <div class="container-fluid d-flex justify-content-center mt-0 login-main-div">
+        <div class="row shadow ps-3 bg-white" style="margin-bottom: 100px; width: 55%; margin-top:120px;">
             <div class="col-6 " style="margin-right:0">
                 <div class="">
                     <!-- Session Status -->
@@ -60,7 +69,7 @@
 
                         <!-- Password -->
                         <div class="mt-4 form-group">
-                            <x-label for="password" :value="__('Password')" />
+                            <x-label for="password" :value="__('Mot de passe')" />
 
                             <x-input id="password" style="padding: 15px;" class="block mt-1 w-full form-control" type="password" name="password" required
                                 autocomplete="current-password" />
@@ -74,12 +83,12 @@
                                 <input id="remember_me" type="checkbox"
                                     class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     name="remember">
-                                <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+                                <span class="ml-2 text-sm text-gray-600">{{ __('Se souvenir de moi') }}</span>
                             </label>
                             @if (Route::has('password.request'))
                                 <a class="underline text-sm text-gray-600 hover:text-gray-900"
                                     href="{{ route('password.request') }}">
-                                    {{ __('Forgot your password?') }}
+                                    {{ __('Mot de passe oublié?') }}
                                 </a>
                             @endif
 
@@ -89,6 +98,19 @@
                             <x-button class="w-100 p-1 rounded text-white fw-bold fs-5 bg-success border-0">
                                 {{ __('Connexion') }}
                             </x-button>
+                        </div>
+                        <div class="d-flex justify-content-between mt-4">
+                            <p>Vous n'avez pas de compte ?</p>
+                            <a href="{{ route('register') }}" class="text-danger">Inscrivez-vous <span>
+                                    <i>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                            fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+                                        </svg>
+                                    </i>
+                                </span>
+                            </a>
                         </div>
                     </form>
                 </div>

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Candidat;
 use App\Models\Demande;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Candidat;
 
 class GererDemandeController extends Controller
 {
@@ -13,10 +14,38 @@ class GererDemandeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+ 
+    public function listeDemande()
     {
         $demandes = Demande::all();
         return view('admin.demande.listDemande', compact('demandes'));
+    }
+
+    public function singleDemande(Demande $demande){
+
+        $candidatAdmis = Candidat::where('numero_table', $demande->numero_table)->get();
+        
+        return view('admin.demande.showDemande', 
+            [
+                'demande'=> $demande,
+                'candidatAdmis' => $candidatAdmis
+            ]
+        );
+
+    }
+
+    public function changeState(Demande $demande){
+
+        if($demande->statut_demande == "non_valider"){
+            $demande->statut_demande = "valider";
+            $demande->save();
+        }
+        else{
+             return back()->withText("Demande déjà approuvée");
+        }
+        return back()->with('changeStateMessage', "La demande a été approuvée avec succès");
+
     }
 
     /**
@@ -26,8 +55,7 @@ class GererDemandeController extends Controller
      */
     public function create()
     {
-        $demandes = Demande::all();
-        return view('admin.demande.listDemande', compact('demandes'));
+        //
     }
 
     /**
@@ -47,7 +75,10 @@ class GererDemandeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-   
+    public function show($id)
+    {
+        //
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -82,12 +113,4 @@ class GererDemandeController extends Controller
     {
         //
     }
-
-    public function showDemande(Demande $demande)
-    {
-        $candidatAdmis = Candidat::where('numero_table',$demande->numero_table)->get()->first();
-        return view('admin.demande.showDemande', compact('demande', 'candidatAdmis'));
-    }
-
-   
 }
