@@ -8,7 +8,7 @@ use App\Http\Controllers\CommuneController;
 use App\Http\Controllers\CandidatController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\Admin\DemandeController;
-
+use App\Http\Controllers\Admin\GererDemandeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,12 +38,16 @@ Route::resource('communes', CommuneController::class);
 Route::resource('departements', DepartementController::class);
 Route::resource('candidats', CandidatController::class);
 Route::resource('demandes', App\Http\Controllers\DemandeController::class)->middleware(['auth']);
+Route::resource('alertes',AlerteController::class);
 // Route::post('storeDemande', [App\Http\Controllers\DemandeController::class,'storeDemande'])->name('storeDemande');
 Route::get('listeDemande', [App\Http\Controllers\Admin\GererDemandeController::class,'listeDemande'])->name('listeDemande');
+
 Route::get('singleDemande/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'singleDemande'])->name('singleDemande');
 Route::post('changeState/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'changeState'])->name('changeState');
 Route::get('demandeUser', [App\Http\Controllers\DemandeController::class, 'demandeUser'])->name('demandeUser')->middleware(['auth']);
-
+Route::post('demandes.tempStore',[App\Http\Controllers\DemandeController::class, 'tempStore'])->name('demandes.tempStore');
+Route::get('demandes.pdf',[App\Http\Controllers\DemandeController::class, 'pdf'])->name('demandes.pdf');
+Route::get('attestation/{demande}', [GererDemandeController::class, 'changeStateTogenerer'])->name('attestation');
 
 Route::post('alertInvalidDemande',[AlerteController::class, 'alertInvalidDemande'])->name('alertInvalidDemande');
 

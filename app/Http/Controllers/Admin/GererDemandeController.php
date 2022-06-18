@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Demande;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Candidat;
+use Barryvdh\DomPDF\PDF;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 
 class GererDemandeController extends Controller
 {
@@ -40,12 +43,43 @@ class GererDemandeController extends Controller
         if($demande->statut_demande == "non_valider"){
             $demande->statut_demande = "valider";
             $demande->save();
+            return back()->with('changeStateMessage', "La demande a été approuvée avec succès");
         }
         else{
-             return back()->withText("Demande déjà approuvée");
+             return back()->with('alreadyChangeStateMessage',"Demande déjà approuvée");
         }
-        return back()->with('changeStateMessage', "La demande a été approuvée avec succès");
+    }
 
+    public function changeStateTogenerer(Demande $demande){
+
+        if($demande->statut_demande == "valider"){
+
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->PDF::loadView('emails.attestation', compact('demande'));
+
+            Mail::send('emails.attestation', $demande, function($message)use($demande, $pdf) {
+
+                $message->to("esaietchagnonsi@gmail.com", $demande->nom)
+    
+                        ->subject($demande->prenom)
+    
+                        ->attachData($pdf->output(), "attestation_BEPC.pdf");
+    
+            });
+
+            $demande->statut_demande = "generer";
+            $demande->save();
+
+
+            return back()->with('changeStateTogenerer', "Vous avez généré l'attestation en l'avez envoyé au mail du demandeur");
+
+        }
+        else if($demande->statut_demande == "generer") {
+            return back()->with('alredyGenerateMessage', "Vous avez déjà généré cette attestation");
+        }
+        else{
+            return back()->with('invalidDemandeMessage', "Cette demande n'a pas encore été validée");
+        }
     }
 
     /**

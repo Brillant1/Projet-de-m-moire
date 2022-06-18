@@ -14,7 +14,8 @@ class AlerteController extends Controller
      */
     public function index()
     {
-        //
+        $alertes = Alerte::all();
+        return view('admin.alertes.listAlerte', compact('alertes'));
     }
 
     /**

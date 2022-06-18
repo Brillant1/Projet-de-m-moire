@@ -31,8 +31,27 @@
                     nouveau</a>
             </div>
             @if (session('changeStateMessage'))
-                <div class="alert alert-success text-center container-fluid  my-3">
+                <div class="alert alert-success text-center container-fluid  my-3 d-flex justify-content-between">
                     <h5> {{ session('changeStateMessage') }} </h5>
+                    <a href="{{ route('attestation',['demande' => $demande->id]) }}" class="btn btn-success rounded px-3 text-white"> Générer l'attestation</a>
+                </div>
+            @endif
+
+            
+            @if (session('alreadyChangeStateMessage'))
+                <div class="alert alert-info text-center container-fluid  my-3 d-flex justify-content-between">
+                    <h5> {{ session('alreadyChangeStateMessage') }} </h5>
+                    <a href="{{ route('attestation', ['demande' => $demande->id]) }}" class="btn btn-success rounded px-3 text-white"> Générer l'attestation</a>
+                </div>
+            @endif
+            @if (session('changeStateTogenerer'))
+                <div class="alert alert-info text-center container-fluid  my-3 d-flex justify-content-between">
+                    <h5> {{ session('changeStateTogenerer') }} </h5>
+                </div>
+            @endif
+            @if (session('invalidDemandeMessage'))
+                <div class="alert alert-info text-center container-fluid  my-3 d-flex justify-content-between">
+                    <h5> {{ session('invalidDemandeMessage') }} </h5>
                 </div>
             @endif
 
@@ -175,7 +194,7 @@
             <p class="mt-4 ms-5 fs-5">
                 @if ($candidatAdmis)
                     @foreach ($candidatAdmis as $candidatAdmis)
-                        Après vérification des informations à notre porté, le candidat <strong> {{ $candidatAdmis->nom }}
+                        Après vérification des informations à notre portée, le candidat <strong> {{ $candidatAdmis->nom }}
                             {{ $candidatAdmis->prenom }} </strong> né le
                         <strong>{{ $candidatAdmis->date_naissance }}</strong>
                         à <strong> {{ $demande->ville_naissance }} </strong> est supposé admis
@@ -200,7 +219,6 @@
                         data-bs-toggle="modal" data-bs-target="{{ '#activeModalDemande' . $demande->nom }}"> Approuvée
                     </button>
                     
-                    <a href="#" class="btn btn-primary btn-lg px-5 me-3 py-1">Alerter</a>
                     <button type="button" class="border-0 bg-none btn btn-lg btn-danger px-5 py-1" data-bs-toggle="modal"
                         data-bs-target="{{ '#invalidModal' . $demande->id }}"> Rejeter
                     </button>
