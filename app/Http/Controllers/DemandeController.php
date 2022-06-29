@@ -327,7 +327,6 @@ class DemandeController extends Controller
             'updatedMessage'=> 'Demande modifiée avec succès',
             'demande'=> $demandes
         ]);
-
     }
 
     /**
