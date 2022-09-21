@@ -1,15 +1,34 @@
 @extends('admin.layouts.template')
 @section('content')
 
-        <div class="pagetitle">
-            <h1>Dashboard</h1>
-            <nav>
-                <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('departements.index') }}">Département</a></li>
-                <li class="breadcrumb-item active">Ajout département</li></li>
+<div class="pagetitle mt-3 rounded">
+    <nav class="rounded">
+        <div class="d-flex justify-content-between align-items-center bg-white px-3 py-4 ">
+            <div class=" ">
+                <h1 style="font-size: 1.2rem">Ajout d'un nouveau département</h1>
+                <ol class="breadcrumb mt-1 mb-0">
+                    <li class="breadcrumb-item"><a href="{{ route('departements.index') }}">Dashboard</a></li> &nbsp; /
+                    <li class="breadcrumb-item"><a href="{{ route('departements.index') }}">Départements</a></li> &nbsp; /
+
+                    <li class="breadcrumb-item active">Ajout d'un nouveau département</li>
+                    </li>
                 </ol>
-            </nav>
+            </div>
+            <div class="text-center d-flex justify-content-between mt-2">
+
+                <a class="btn bg-favorite-color py-2 fw-bold text-white d-flex justify-content-between align-items-center"
+                    href=" {{ route('departements.index') }} ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white"
+                        class="bi bi-list-ul" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                    </svg> &nbsp;
+                    Liste des départements</a>
+
+            </div>
         </div>
+    </nav>
+</div>
         <section class="section dashboard">
             <style>
                 .form-control{
@@ -37,25 +56,22 @@
                         @endif
 
                         @if (session('addedMessage'))
-
                             <div class="alert alert-success">
                                 <h6> {{ session('addedMessage') }} </h6>
                             </div>
-
                         @endif
 
                         @if (session('updatedMessage'))
-
                             <div class="alert alert-success">
                                 <h6> {{ session('addedMessage') }} </h6>
                             </div>
-
                         @endif
+                        
                   <div class="card top-selling overflow-auto">
 
-                    <h3 class="card-title bg-warning fw-bold rounded-sm p-3 text-white full-width ">Ajoutez un nouveau département</h3>
-                    <div class="card-body pb-0">
-
+                   
+                    <div class="card-body pb-0 MT-3">
+                        <p class="mt-5 text-danger fw-bolder fs-10 mb-2"> Tous les champs sont obligatoires*</p>
                       <form method="POST" action="{{route('departements.store')}}" enctype="multipart/form-data" class="pb-4">
                         @csrf
                         @method('POST')
@@ -78,15 +94,14 @@
                     </div>
 
                   </div>
-                </div><!-- End Top Selling -->
+                </div>
 
               </div>
-            </div><!-- End Left side columns -->
+            </div>
 
-            <!-- Right side columns -->
             <div class="col-lg-4">
 
-            </div><!-- End Right side columns -->
+            </div>
 
           </div>
         </section>

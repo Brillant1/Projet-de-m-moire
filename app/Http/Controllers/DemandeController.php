@@ -3,16 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Kkiapay\Kkiapay;
+use App\Models\Alerte;
 use App\Models\Centre;
 use App\Models\Commune;
 use App\Models\Demande;
 use App\Models\Candidat;
 use Barryvdh\DomPDF\PDF;
+use App\Mail\DemandeMail;
 use App\Models\Departement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\DemandeRequest;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,28 +32,29 @@ class DemandeController extends Controller
      */
     public function index(User $user)
     {
-        
     }
 
-    public function demandeUser(){
-        
+    public function demandeUser()
+    {
 
-         $demandes = Demande::where('user_id', Auth::user()->id )->get();
-         $demandeNonValides = Demande::where(
+        $demandes = Demande::where(['user_id' => Auth::user()->id])->orderBy('created_at', 'DESC')->get();
+
+        $demandeNonValides = Demande::where(
             [
-                'user_id'=> Auth::user()->id,
+                'user_id' => Auth::user()->id,
                 'statut_demande' => "non_valider"
             ]
-        )->get();  
+        )->get();
         $demandeValides = Demande::where(
             [
-                'user_id'=> Auth::user()->id,
+                'user_id' => Auth::user()->id,
                 'statut_demande' => "valider"
             ]
-        )->get();      
+        )->get();
 
-        return view('front.demande.suivie', compact('demandes','demandeNonValides','demandeValides'));
 
+
+        return view('front.demande.suivie', compact('demandes', 'demandeNonValides', 'demandeValides'));
     }
 
     /**
@@ -60,9 +67,9 @@ class DemandeController extends Controller
         $centres = Centre::all();
         $communes = Commune::all();
         $departements = Departement::all();
-        $series = explode(';',env('SERIE'));
-        $type_examens = explode(';',env('TYPE_EXAMEN'));
-        $sexes = explode(';',env('SEXE'));
+        $series = explode(';', env('SERIE'));
+        $type_examens = explode(';', env('TYPE_EXAMEN'));
+        $sexes = explode(';', env('SEXE'));
         $mentions = explode(';', ENV('MENTION'));
 
         return view('front.demande.demande', compact('centres', 'communes', 'departements', 'series', 'sexes', 'mentions', 'type_examens'));
@@ -75,145 +82,152 @@ class DemandeController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function tempStore(Request $request){
-
-        //$photo= Storage::disk('public')->put('photo_candidat_demande', $request->photo);
-        $photo = $request->photo;
-        $nom = $request->nom;
-        $prenom = $request->prenom;
-        $date_naissance = $request->date_naissance;
-        $email = $request->email;
-        $contact = $request->contact;
-        $sexe = $request->sexe;
-        $ville_naissance = $request->ville_naissance;
-        $numero_table = $request->numero_table;
-        $serie = $request->serie;
-        $mention = $request->mention;
-        $departement = $request->departement;
-        $commune = $request->commune;
-        $centre = $request->centre;
-        $numero_reference = $request->numero_reference;
-        $annee_obtention = $request->annee_obtention;
-        $nom_pere = $request->nom_pere;
-        $nom_mere = $request->nom_mere;
-        $contact_parent = $request->contact_parent;
-        $type_examen = $request->type_examen;
-        $user_id = Auth::user()->id;
-
-        Session::put('photo', $photo);
-        Session::put('nom', $nom);
-        Session::put('prenom', $prenom);
-        Session::put('date_naissance', $date_naissance);
-        Session::put('email', $email);
-        Session::put('contact', $contact);
-        Session::put('sexe', $sexe);
-        Session::put('ville_naissance', $ville_naissance);
-        Session::put('numero_table', $numero_table);
-        Session::put('serie', $serie);
-        Session::put('mention', $mention);
-        Session::put('departement', $departement);
-        Session::put('commune', $commune);
-        Session::put('centre', $centre);
-        Session::put('numero_reference', $numero_reference);
-        Session::put('nom_pere', $nom_pere);
-        Session::put('nom_mere', $nom_mere);
-        Session::put('type_examen', $type_examen);
-        Session::put('annee_obtention', $annee_obtention);
-        Session::put('contact_parent', $contact_parent);
-        Session::put('user_id', $user_id);
-
-        return response()->json([
-            'data' => '',
-            'message' => "Session crée avec succès",
-            "success" => 'success',
-            'status' => 200
-        ], 200);
-    }
-
-
-
 
     public function store(Request $request)
     {
-        // $filename = Storage::disk('public')->put('photo_candidat_demande', $request->photo);
-        // $demandes = [
-        //     'nom' => $request->nom,
-        //     'prenom' => $request->prenom,
-        //     'date_naissance' => $request->date_naissance,
-        //     'email' => $request->email,
-        //     'contact' => $request->contact,
-        //     'sexe' => $request->sexe,
-        //     'ville_naissance' => $request->ville_naissance,
-        //     'photo' => $filename,
-        //     'numero_table' => $request->numero_table,
-        //     'serie' => $request->serie,
-        //     'mention' =>$request->mention,
-        //     'departement' => $request->departement,
-        //     'commune' => $request->commune,
-        //     'centre' => $request->centre,
-        //     'numero_reference' => $request->numero_reference,
-        //     'annee_obtention' => $request->annee_obtention,
-        //     'nom_pere'  => $request->nom_pere,
-        //     'nom_mere' => $request->nom_mere,
-        //     'contact_parent' => $request->contact_parent,
-        //     'type_examen' =>$request->type_examen,
-        //     'user_id' => Auth()->user()->id
-        // ];
-        // Demande::create($demandes);
-        // return back()->with('addedMessage', 'Votre demande est soumise avec succès');
-        
-        $photo =Session::get('photo');
-        $nom = Session::get('nom');
-        $prenom = Session::get('prenom');
-        $date_naissance = Session::get('date_naissance');
-        $email = Session::get('email');
-        $contact = Session::get('contact');
-        $sexe = Session::get('sexe');
-        $ville_naissance = Session::get('ville_naissance');
-        $numero_table = Session::get('numero_table');
-        $serie = Session::get('serie');
-        $mention = Session::get('mention');
-        $departement = Session::get('departement');
-        $commune = Session::get('commune');
-        $centre = Session::get('centre');
-        $numero_reference = Session::get('numero_reference');
-        $annee_obtention = Session::get('annee_obtention');
-        $nom_pere = Session::get('nom_pere');
-        $nom_mere = Session::get('nom_mere');
-        $contact_parent = Session::get('contact_parent');
-        $type_examen = Session::get('type_examen');
-        $user_id = session::get('user_id');
+        $filename ='';
+        $releve ='';
 
-        if($photo != '' && $prenom != '' && $email !='' && $nom != '' && $annee_obtention != '' &&  $centre !='' && $commune != '' && $mention !='' 
-        && $departement !='' && $ville_naissance !='' && $nom_mere !='' && $nom_pere !='' && $contact != '' && $contact_parent != '' && $date_naissance != '' 
-        && $type_examen !='' && $sexe !='' && $numero_table != '' && $numero_reference !='' && $user_id != '' && $serie != ''){
-
-            Demande::create([
-                'photo' => $photo,
-                'nom' => $nom,
-                'prenom' => $prenom,
-                'date_naissance' => $date_naissance,
-                'email' => $email,
-                'contact' => $contact,
-                'sexe' => $sexe,
-                'ville_naissance' => $ville_naissance,
-                'numero_table' => $numero_table,
-                'serie' => $serie,
-                'mention' => $mention,
-                'numero_reference' => $numero_reference,
-                'annee_obtention' => $annee_obtention,
-                'centre' => $centre,
-                'nom_pere' => $nom_pere,
-                'nom_mere' => $nom_mere,
-                'contact_parent' => $contact_parent,
-                'type_examen' => $type_examen,
-                'user_id' => $user_id,
-
-            ]);
-
-            return back()->with('addedMessage', 'Votre demande est soumise avec succès');
-
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            $filename = $request->numero_table.'_'. time() . '_' . Auth::user()->name . '.' . $extension;
+            $file->storeAs('public/photo_candidat_demande', $filename);
         }
+
+        if ($request->hasFile('releve')) {
+            $file = $request->file('releve');
+            $extension = $file->getClientOriginalExtension();
+            $releve = $request->numero_table.'_'.time() . '-' . Auth::user()->name . '.' . $extension;
+            $file->storeAs('public/releve_candidat_demande', $filename);
+        }
+        
+        $releve = Storage::disk('public')->put('releve_candidat_demande', $request->releve);
+
+        
+
+        $demandes = [
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'date_naissance' => $request->date_naissance,
+            'email' => $request->email,
+            'contact' => $request->contact,
+            'sexe' => $request->sexe,
+            'ville_naissance' => $request->ville_naissance,
+            'photo' => $filename,
+            'numero_table' => $request->numero_table,
+            'serie' => $request->serie,
+            'mention' => $request->mention,
+            'departement' => $request->departement,
+            'commune' => $request->commune,
+            'centre' => $request->centre,
+            'numero_reference' => $request->numero_reference,
+            'annee_obtention' => $request->annee_obtention,
+            'nom_pere'  => $request->nom_pere,
+            'nom_mere' => $request->nom_mere,
+            'contact_parent' => $request->contact_parent,
+            'etablissement' => $request->etablissement,
+            'jury' => $request->jury,
+            'type_examen' => 'BEPC',
+            'releve' => $releve,
+            'user_id' => Auth()->user()->id
+        ];
+
+
+        $id = Demande::create($demandes)->id;
+        $email = $request->email;
+        $nom = $request->nom;
+        $prenom = $request->prenom;
+        $contact = $request->contact;
+
+        if($id){
+
+            $demandeInfos = [
+                'nom' => $request->nom,
+                'prenom' => $request->prenom,
+                'date_naissance' => $request->date_naissance,
+                'email' => $request->email,
+                'contact' => $request->contact,
+                'numero_table' => $request->numero_table,
+                'id' => $id
+            ];
+            Mail::to('esaietchagnonsi@gmail.com')->send(new DemandeMail($demandeInfos));
+        }
+
+      
+        $callbackRoute = route("changeToPayState", ["demande" => $id]);
+        $message = " Jusqu'à ce que vous ne payiez, cette demande reste non valide et ne sera pas traité. Veillez payer pour faire valider votre demande";
+
+        
+        return view('front.paiement', compact('message', 'email', 'nom', 'prenom', 'contact', 'callbackRoute'));
+
+
+        // return redirect()->route('validationDemande')->with([
+        //     'id'=>$id,
+        //     'email'=>$email,
+        //     'nom'=>$nom,
+        //     'prenom'=>$contact,
+        //     'callbackRoute'=>$callbackRoute,
+        //     'contact'=>$contact,
+        //     'message'=>$message
+        // ]);
+
+
+        // $photo =Session::get('photo');
+
+
+        // $nom = Session::get('nom');
+        // $prenom = Session::get('prenom');
+        // $date_naissance = Session::get('date_naissance');
+        // $email = Session::get('email');
+        // $contact = Session::get('contact');
+
+        // $sexe = Session::get('sexe');
+        // $ville_naissance = Session::get('ville_naissance');
+        // $numero_table = Session::get('numero_table');
+        // $serie = Session::get('serie');
+        // $mention = Session::get('mention');
+
+        // $departement = Session::get('departement');
+        // $commune = Session::get('commune');
+        // $centre = Session::get('centre');
+        // $numero_reference = Session::get('numero_reference');
+        // $annee_obtention = Session::get('annee_obtention');
+        // $nom_pere = Session::get('nom_pere');
+        // $nom_mere = Session::get('nom_mere');
+        // $contact_parent = Session::get('contact_parent');
+        // $type_examen = Session::get('type_examen');
+        // $user_id = session::get('user_id');
+
+        // if($photo != '' && $prenom != '' && $email !='' && $nom != '' && $annee_obtention != '' &&  $centre !='' && $commune != '' && $mention !='' 
+        // && $departement !='' && $ville_naissance !='' && $nom_mere !='' && $nom_pere !='' && $contact != '' && $contact_parent != '' && $date_naissance != '' 
+        // && $type_examen !='' && $sexe !='' && $numero_table != '' && $numero_reference !='' && $user_id != '' && $serie != ''){
+
+        // Demande::create([
+        //     'photo' => $photo,
+        //     'nom' => $nom,
+        //     'prenom' => $prenom,
+        //     'date_naissance' => $date_naissance,
+        //     'email' => $email,
+        //     'contact' => $contact,
+        //     'sexe' => $sexe,
+        //     'ville_naissance' => $ville_naissance,
+        //     'numero_table' => $numero_table,
+        //     'serie' => $serie,
+        //     'mention' => $mention,
+        //     'numero_reference' => $numero_reference,
+        //     'annee_obtention' => $annee_obtention,
+        //     'centre' => $centre,
+        //     'nom_pere' => $nom_pere,
+        //     'nom_mere' => $nom_mere,
+        //     'contact_parent' => $contact_parent,
+        //     'type_examen' => $type_examen,
+        //     'user_id' => $user_id,
+
+        // ]);
+
+        //return view('front.demande.suivie', compact('demandes', 'demandeNonValides', 'demandeValides'))->with('addedMessage', 'Votre demande est soumise avec succès');
+
 
     }
 
@@ -239,11 +253,11 @@ class DemandeController extends Controller
         $centres = Centre::all();
         $communes = Commune::all();
         $departements = Departement::all();
-        $series = explode(';',env('SERIE'));
-        $type_examens = explode(';',env('TYPE_EXAMEN'));
-        $sexes = explode(';',env('SEXE'));
+        $series = explode(';', env('SERIE'));
+        $type_examens = explode(';', env('TYPE_EXAMEN'));
+        $sexes = explode(';', env('SEXE'));
         $mentions = explode(';', ENV('MENTION'));
-        return view('front.demande.editDemande', compact('demande','centres','communes','departements','series','type_examens','sexes','mentions'));
+        return view('front.demande.editDemande', compact('demande', 'centres', 'communes', 'departements', 'series', 'type_examens', 'sexes', 'mentions'));
     }
 
     /**
@@ -255,34 +269,35 @@ class DemandeController extends Controller
      */
     public function update(Request $request, Demande $demande)
     {
-        if( $request->hasFile('photo') ){
+        if ($request->hasFile('photo')) {
             Storage::disk('public')->delete($demande->photo);
             $filename = Storage::disk('public')->put('avatars/img', $request->photo);
             $demande->update([
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
-            'date_naissance' => $request->date_naissance,
-            'email' => $request->email,
-            'contact' => $request->contact,
-            'sexe' => $request->sexe,
-            'ville_naissance' => $request->ville_naissance,
-            'photo' => $filename,
-            'numero_table' => $request->numero_table,
-            'serie' => $request->serie,
-            'mention' =>$request->mention,
-            'departement' => $request->departement,
-            'commune' => $request->commune,
-            'centre' => $request->centre,
-            'numero_reference' => $request->numero_reference,
-            'annee_obtention' => $request->annee_obtention,
-            'nom_pere'  => $request->nom_pere,
-            'nom_mere' => $request->nom_mere,
-            'contact_parent' => $request->contact_parent,
-            'type_examen' =>$request->type_examen,
-            'user_id' => Auth()->user()->id
-        ]);
-        }
-        else{
+                'nom' => $request->nom,
+                'prenom' => $request->prenom,
+                'date_naissance' => $request->date_naissance,
+                'email' => $request->email,
+                'contact' => $request->contact,
+                'sexe' => $request->sexe,
+                'ville_naissance' => $request->ville_naissance,
+                'photo' => $filename,
+                'numero_table' => $request->numero_table,
+                'serie' => $request->serie,
+                'mention' => $request->mention,
+                'departement' => $request->departement,
+                'commune' => $request->commune,
+                'centre' => $request->centre,
+                'numero_reference' => $request->numero_reference,
+                'annee_obtention' => $request->annee_obtention,
+                'nom_pere'  => $request->nom_pere,
+                'nom_mere' => $request->nom_mere,
+                'contact_parent' => $request->contact_parent,
+                'etablissement' => $request->etablissement,
+                'jury' => $request->jury,
+                'type_examen' => $request->type_examen,
+                'user_id' => Auth()->user()->id
+            ]);
+        } else {
             $filename = $demande->photo;
             $demande->update(
                 [
@@ -291,11 +306,12 @@ class DemandeController extends Controller
                     'contact' => $request->contact,
                     'sexe' => $request->sexe,
                     'serie' => $request->serie,
+                    'releve' => $request->releve,
                     'mention' => $request->mention,
                     'numero_table' => $request->numero_table,
                     'numero_reference' => $request->numero_reference,
                     'annee_obtention' => $request->annee_obtention,
-                    'date_naissance' =>$request->date_naissance,
+                    'date_naissance' => $request->date_naissance,
                     'nom_pere'  => $request->pere,
                     'nom_mere' => $request->mere,
                     'photo' => $filename
@@ -314,7 +330,7 @@ class DemandeController extends Controller
                 'numero_table' => $request->numero_table,
                 'numero_reference' => $request->numero_reference,
                 'annee_obtention' => $request->annee_obtention,
-                'date_naissance' =>$request->date_naissance,
+                'date_naissance' => $request->date_naissance,
                 'nom_pere'  => $request->nom_pere,
                 'nom_mere' => $request->nom_mere,
                 'photo' => $filename
@@ -322,10 +338,10 @@ class DemandeController extends Controller
         );
 
 
-        $demandes = Demande::where('user_id', Auth::user()->id )->get();
+        $demandes = Demande::where('user_id', Auth::user()->id)->get();
         return back()->with([
-            'updatedMessage'=> 'Demande modifiée avec succès',
-            'demande'=> $demandes
+            'updatedMessage' => 'Demande modifiée avec succès',
+            'demande' => $demandes
         ]);
     }
 
@@ -338,21 +354,87 @@ class DemandeController extends Controller
     public function destroy(Demande $demande)
     {
         $demande->delete();
-        return back()->with('deletedMessage', 'Demande supprimée avec succès'); 
+        return back()->with('deletedMessage', 'Demande supprimée avec succès');
     }
 
-    public function pdf(){
+    public function pdf()
+    {
 
         $recapitulatif = Demande::where(
             [
-                'user_id'=> Auth::user()->id,
+                'user_id' => Auth::user()->id,
                 'statut_demande' => "valider"
             ]
         )->first();
 
         $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('front.recapitulatif', compact('recapitulatif'));
+        return $pdf->stream();
+    }
 
-         $pdf ->loadView('front.recapitulatif', compact('recapitulatif'));
-         return $pdf->stream();
+    public function changeToPayState(Request $request, $id)
+    {
+
+        $transaction_id = $request->query('transaction_id');
+        $kkiapay = new Kkiapay(
+            "0b7354b0ed5a11ec848227abfc492dc7",
+            "tpk_0b7354b2ed5a11ec848227abfc492dc7",
+            "tsk_0b737bc0ed5a11ec848227abfc492dc7",
+            $sandbox = true
+        );
+
+        $demande = Demande::findOrFail($id);
+
+        $demandes = Demande::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->get();
+
+        $demandeNonValides = Demande::where(
+            [
+                'user_id' => Auth::user()->id,
+                'statut_demande' => "non_valider"
+            ]
+        )->get();
+        $demandeValides = Demande::where(
+            [
+                'user_id' => Auth::user()->id,
+                'statut_demande' => "valider"
+            ]
+        )->get();
+
+
+        if ($kkiapay->verifyTransaction($transaction_id)->status == "SUCCESS") {
+            $demande->statut_payement = "payer";
+            $demande->kkiapayPayement_id =  $transaction_id;
+            $demande->save();
+            // Session::flash('paymentSuccessMessage', 'Transaction réussie,
+            //         restez en écoute des nouvelles concernant votre demande');
+            return redirect()->route('demandeUser', ['demandes' => $demandes, 'demandeNonValides' => $demandeNonValides, 'demandeValides' => $demandeValides])->with('paymentSuccessMessage', 'Transaction réussie et demande prise en compte,
+                    restez à écoute des nouvelles concernant votre demande');
+        } else {
+            return back()->with('paymentFailMessage', 'La transaction a échoué');
+        }
+    }
+
+    public function demandeRecente()
+    {
+        $demandes = Demande::where(['statut_payement' => 'payer', 'statut_demande' => 'non_valider'])->get();
+        return view('admin.demande.demandeRecente', compact('demandes'));
+    }
+
+    public function demandeApprouvee()
+    {
+        $demandes = Demande::where('statut_demande', 'valider')->get();
+        return view('admin.demande.demandeApprouvee', compact('demandes'));
+    }
+
+    public function demandeGeneree()
+    {
+        $demandes = Demande::where('statut_demande', 'generer')->get();
+        return view('admin.demande.demandeGenerer', compact('demandes'));
+    }
+
+    public function demandeNonPayee()
+    {
+        $demandes = Demande::where('statut_payement', 'non_payer')->get();
+        return view('admin.demande.demandeNonPayee', compact('demandes'));
     }
 }

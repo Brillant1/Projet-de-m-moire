@@ -8,7 +8,7 @@
 
 .dataTable-top,
 .dataTable-bottom {
-	padding: 8px 10px;
+	padding: 8px 0 10px 0;
 }
 
 .dataTable-top > nav:first-child,
@@ -26,15 +26,25 @@
 }
 
 .dataTable-selector {
-	padding: 6px;
+	padding: 5px 15px 5px 10px;
+	background-color: white;
+	border-radius: 4px;
+	border : 1px solid silver;
 }
 
 .dataTable-input {
 	padding: 6px 12px;
+	border : 1px solid silver;
+	border-radius: 5px;	
 }
+.dataTable-input:focus{
+	border: 1px #032497;
+}
+
 
 .dataTable-info {
 	margin: 7px 0;
+	
 }
 
 /* PAGER */
@@ -93,6 +103,8 @@
 	width: 100%;
 	border-spacing: 0;
 	border-collapse: separate;
+	margin-top: 20px;
+
 }
 
 .dataTable-table > tbody > tr > td,
@@ -108,7 +120,9 @@
 .dataTable-table > thead > tr > th {
 	vertical-align: bottom;
 	text-align: left;
+	color: white;
 	border-bottom: 1px solid #d9d9d9;
+	background: rgba(3, 36, 151, 0.96);
 }
 
 .dataTable-table > tfoot > tr > th {
@@ -144,15 +158,17 @@
 	border-left: 4px solid transparent;
 	border-right: 4px solid transparent;
 	opacity: 0.2;
+
 }
 
 .dataTable-sorter::before {
-	border-top: 4px solid #000;
+	border-top: 4px solid white;
 	bottom: 0px;
+	
 }
 
 .dataTable-sorter::after {
-	border-bottom: 4px solid #000;
+	border-bottom: 4px solid white;
 	border-top: 4px solid transparent;
 	top: 0px;
 }

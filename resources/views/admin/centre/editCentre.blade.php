@@ -1,15 +1,32 @@
 @extends('admin.layouts.template')
 @section('content')
 
-        <div class="pagetitle">
-            <h1>Dashboard</h1>
-            <nav>
-                <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('centres.index') }}">Centres</a></li>
-                <li class="breadcrumb-item active">Editer centre</li></li>
+<div class="pagetitle mt-3 rounded">
+    <nav class="rounded">
+        <div class="d-flex justify-content-between align-items-center bg-white px-3 py-4 ">
+            <div class=" ">
+                <h1 style="font-size: 1.2rem">Editer les infos du centre {{ $centre->nom }}</h1>
+                <ol class="breadcrumb mt-1 mb-0">
+                    <li class="breadcrumb-item"><a href="{{ route('centres.index') }}">Dashboard</a></li> &nbsp; /
+                    <li class="breadcrumb-item"><a href="{{ route('centres.index') }}">Centres</a></li> &nbsp; /
+
+                    <li class="breadcrumb-item active" >Edition des infos du centre</li>
+                    </li>
                 </ol>
-            </nav>
+            </div>
+            <div class="text-center d-flex justify-content-between mt-2">
+
+                <a class="btn btn-secondary py-2 fw-bold text-white d-flex justify-content-between align-items-center"
+                    href=" {{ URL::previous() }} ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                        <path d="M3.86 8.753l5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                      </svg>&nbsp;
+                    Retour</a>
+
+            </div>
         </div>
+    </nav>
+</div>
 
         <section class="section dashboard">
             <style>
@@ -55,9 +72,8 @@
 
                     @endif
                   <div class="card top-selling overflow-auto">
-                    <h3 class="card-title bg-warning fw-bold rounded-sm p-3 text-white full-width ">Edition du centre</h3>
                     <div class="card-body pb-0">
-
+                        <p class="mt-5 text-danger fw-bolder fs-10"> Renseigner les champs à modifier*</p>
                         <form method="POST" action="{{route('centres.update',['centre'=>$centre->id])}}" enctype="multipart/form-data" class="pb-4">
                             @csrf
                             @method('PUT')
@@ -112,7 +128,7 @@
                             </div>
 
                             <div class="d-flex justify-content-center">
-                                <input type="submit" name="send" value="Enrégistrer les modifications" id="send" class="btn btn-success fw-bold px-5 mt-4">
+                                <input type="submit" name="send" value="Enrégistrer les modifications" id="send" class="btn bg-favorite-color text-white fw-bold px-5 mt-4">
                             </div>
                         </form>
                     </div>

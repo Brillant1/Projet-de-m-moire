@@ -10,9 +10,12 @@ class Alerte extends Model
     use HasFactory;
 
     protected $fillable =[
+        'nom',
+        'sujet',
         'message',
         'demande_id'
     ];
+    
     public function demande(){
         return $this->belongsTo(Demande::class);
     }

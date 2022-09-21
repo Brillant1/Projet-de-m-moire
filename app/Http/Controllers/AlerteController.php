@@ -34,9 +34,16 @@ class AlerteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
-        
+        $alerte = new Alerte();
+        $alerte->nom = $request->nom;
+        $alerte->sujet = $request->sujet;
+        $alerte->message = $request->message;
+        $alerte->save();
+        return back()->with('addedAlerteMessage', "L'alerte a bien été envoyée");
+
     }
 
     /**
@@ -86,11 +93,13 @@ class AlerteController extends Controller
 
     public function alertInvalidDemande(Request $request){
         $alertes = [
+            'nom' => $request->nom,
+            'sujet' => $request->sujet,
             'message' => $request->message,
             'demande_id' => $request->demande_id
         ] ;
 
         Alerte::create($alertes);
-        return back()->with('success', 'Alerte bien envoyé au demandeur');
+        return back()->with('addedAlerteMessage', 'L\'alerte bien envoyée au demandeur');
     }
 }

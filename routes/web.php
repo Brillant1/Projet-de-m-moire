@@ -2,13 +2,18 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AlerteController;
 use App\Http\Controllers\CentreController;
 use App\Http\Controllers\CommuneController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CandidatController;
+use App\Http\Controllers\FlashInfoController;
 use App\Http\Controllers\DepartementController;
+use App\Http\Controllers\Admin\ExamenController;
 use App\Http\Controllers\Admin\DemandeController;
 use App\Http\Controllers\Admin\GererDemandeController;
+use App\Http\Controllers\DemandeController as ControllersDemandeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,63 +28,117 @@ use App\Http\Controllers\Admin\GererDemandeController;
 
 
 
-Route::get('/', function () {
-    return view('front.accueil');
-});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth','verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
-Route::resource('centres', CentreController::class);
-Route::resource('communes', CommuneController::class);
-Route::resource('departements', DepartementController::class);
-Route::resource('candidats', CandidatController::class);
-Route::resource('demandes', App\Http\Controllers\DemandeController::class)->middleware(['auth']);
-Route::resource('alertes',AlerteController::class);
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('centres', CentreController::class);
+    Route::resource('communes', CommuneController::class);
+    Route::resource('departements', DepartementController::class);
+    Route::resource('candidats', CandidatController::class);
+    Route::resource('alertes', AlerteController::class);
+    Route::resource('flashInfos', FlashInfoController::class);
+    Route::resource('examens', ExamenController::class);
+});
+
+Route::post('changeStateExamen/{examen}', [ExamenController::class, 'changeStateExamen'])->name('changeStateExamen');
+
+
+Route::resource('demandes', App\Http\Controllers\DemandeController::class)->except('store')->middleware(['auth']);
+Route::post('validationDemande', [App\Http\Controllers\DemandeController::class, 'store'])->name('validationDemande');
+
+Route::get('changeToPayState/{demande}', [App\Http\Controllers\DemandeController::class, 'changeToPayState'])->name('changeToPayState');
+Route::post('changeStateToGenerer/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'pdf2'])->name('changeStateToGenerer');
+
+Route::resource('alertes', AlerteController::class);
 // Route::post('storeDemande', [App\Http\Controllers\DemandeController::class,'storeDemande'])->name('storeDemande');
-Route::get('listeDemande', [App\Http\Controllers\Admin\GererDemandeController::class,'listeDemande'])->name('listeDemande');
+Route::get('listeDemande', [App\Http\Controllers\Admin\GererDemandeController::class, 'listeDemande'])->name('listeDemande');
+Route::post('demandes/liste', [App\Http\Controllers\Admin\GererDemandeController::class,'dynamicSearchAllDemande'])->name('demandes-liste');
+
+Route::get('demandeRecente', [App\Http\Controllers\DemandeController::class, 'demandeRecente'])->name('demande-recente');
+Route::get('demandeApprouvee', [App\Http\Controllers\DemandeController::class, 'demandeApprouvee'])->name('demande-approuvee');
+Route::get('demandeGeneree', [App\Http\Controllers\DemandeController::class, 'demandeGeneree'])->name('demande-generee');
+Route::get('attestationGeneree', [GererDemandeController::class, 'attestationAll'])->name('attestation-all');
+Route::get('demandeNonPayee', [App\Http\Controllers\DemandeController::class, 'demandeNonPayee'])->name('demande-non-payee');
+
 
 Route::get('singleDemande/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'singleDemande'])->name('singleDemande');
 Route::post('changeState/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'changeState'])->name('changeState');
 Route::get('demandeUser', [App\Http\Controllers\DemandeController::class, 'demandeUser'])->name('demandeUser')->middleware(['auth']);
-Route::post('demandes.tempStore',[App\Http\Controllers\DemandeController::class, 'tempStore'])->name('demandes.tempStore');
-Route::get('demandes.pdf',[App\Http\Controllers\DemandeController::class, 'pdf'])->name('demandes.pdf');
-Route::get('attestation/{demande}', [GererDemandeController::class, 'changeStateTogenerer'])->name('attestation');
+Route::post('demandes.tempStore', [App\Http\Controllers\DemandeController::class, 'tempStore'])->name('demandes.tempStore');
+Route::get('demandes.pdf', [App\Http\Controllers\DemandeController::class, 'pdf'])->name('demandes.pdf');
+Route::get('attestation/{demande}', [GererDemandeController::class, 'pdf2'])->name('attestation');
 
-Route::post('alertInvalidDemande',[AlerteController::class, 'alertInvalidDemande'])->name('alertInvalidDemande');
+Route::post('alertInvalidDemande', [AlerteController::class, 'alertInvalidDemande'])->name('alertInvalidDemande');
 
-Route::get('accueil', function(){
-    return view('front/accueil');
-})->name('accueil');
+Route::get('contact',[ContactController::class, 'create'])->name('contact-create');
+Route::post('contacts/store',[ContactController::class ,'store'])->name('contactstore');
 
-Route::get('actualites', function(){
+Route::get('accueil', [HomeController::class,'index'])->name('accueil');
+Route::get('/', [HomeController::class,'redirectIndex']);
+
+Route::get('dowloadUserFile/{lien}', [GererDemandeController::class, 'dowloadUserFile'])->name('dowload');
+
+
+
+Route::get('actualites', function () {
     return view('front/actualites');
 })->name('actualites');
 
-Route::get('connexion' ,function(){
+Route::get('connexion', function () {
     return view('AuthUser.connexion');
 })->name('connexion');
 
-Route::get('inscription' ,function(){
+Route::get('inscription', function () {
     return view('AuthUser.inscription');
 })->name('inscription');
 
-Route::get('changePassword' ,function(){
+Route::get('changePassword', function () {
     return view('AuthUser.changePassword');
 })->name('changePassword');
 
-Route::get('forgotPassword' ,function(){
+Route::get('forgotPassword', function () {
     return view('auth.forgot-password');
 })->name('forgotPassword');
 
-Route::get('emailConfirmation' ,function(){
+Route::get('emailConfirmation', function () {
     return view('AuthUser.emailConfirmation');
 })->name('emailConfirmation');
 
 
+Route::get('attestation', function () {
+    return view('emails.attestation');
+})->name('attestation');
+
+Route::get('attestation1', function () {
+    return view('emails.attestation1');
+})->name('attestation1');
+
+Route::get('demande/page', function(){
+    return view('front.demandeRule');
+})->name('demande/page');
 
 
+Route::get('aide', function () {
+    return view('front.demandeRule');
+})->name('aide');
 
+Route::get('paiement', function () {
+    return view('front.paiement');
+});
+
+Route::get('serviceDec', function () {
+    return view('front.service');
+})->name('service-dec');
+
+Route::get('motDec', function () {
+    return view('front.motDec');
+})->name('mot-dec');
+
+Route::get('header2', function () {
+    return view('front.layouts.header2');
+})->name('header2');

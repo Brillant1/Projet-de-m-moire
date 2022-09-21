@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('sexe');
             $table->string('ville_naissance');
             $table->string('photo');
+            $table->string('releve');
             $table->string('numero_table');
             $table->string('serie');
             $table->string('mention');
@@ -31,11 +32,15 @@ return new class extends Migration
             $table->string('commune');
             $table->string('centre');
             $table->integer('annee_obtention');
-            $table->string('numero_reference');
+            $table->string('releve');
             $table->string('nom_pere');
             $table->string('nom_mere');
+            $table->string('etablissement')->nullable();
+            $table->string('jury')->nullable();
             $table->integer('contact_parent');
-            $table->enum('statut_demande',['valider', 'non_valider'])->default('non_valider');
+            $table->string('kkiapayPayement_id ');
+            $table->enum('statut_demande',['valider', 'non_valider', 'generer'])->default('non_valider');
+            $table->enum('statut_payement',['non_payer', 'payer'])->default('non_payer');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

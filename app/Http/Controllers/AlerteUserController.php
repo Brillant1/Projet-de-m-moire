@@ -11,6 +11,6 @@ class AlerteUserController extends Controller
     public function displayAlereToUser(){
 
         $alerte =  Alerte::where('user_id',Auth::user()->id)->get();
-        return view('front.demande.suivie');
+        return view('front.demande.suivie', compact('alerte'));
     }
 }

@@ -26,13 +26,17 @@ class Demande extends Model
         'commune',
         'centre',
         'annee_obtention',
-        'numero_reference',
         'nom_pere',
         'nom_mere',
+        'releve',
         'contact_parent',
         'statut_demande',
         'type_examen',
-        'user_id'
+        'jury',
+        'etablissement',
+        'user_id',
+        'kkiapayPayement_id '
+        
     ];
 
     public function alertes(){

@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('alertes', function (Blueprint $table) {
+        Schema::create('flash_infos', function (Blueprint $table) {
             $table->id();
-            $table->text('message');
-            $table->foreignId('demande_id')->constrained();
+            $table->date("date_debut");
+            $table->date("date_fin");
+            $table->text("contenu");
+            $table->enum("status",["active","inactive"])->default("inactive");
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('alertes');
+        Schema::dropIfExists('flash_infos');
     }
 };

@@ -78,8 +78,8 @@ class DepartementController extends Controller
     public function update(DepartementRequest $request, Departement $departement)
     {
         $departement->update($request->all());
-        $departements = Departement::all();
-        return view('admin.departement.listDepartement', compact('departements')    )->with('updatedMessage', 'Département modifé !');
+        // $departements = Departement::all();
+        return redirect()->route('departements.index')->with('updatedMessage', 'Département modifé avec succès!');
     }
 
     /**

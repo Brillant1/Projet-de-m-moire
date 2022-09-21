@@ -7,18 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class attestationMail extends Mailable
+class AttestationMail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public $pdf;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($pdf)
     {
-        //
+        $this->pdf= $pdf;
     }
 
     /**
@@ -28,6 +30,6 @@ class attestationMail extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->subject('Votre attestation du BEPC')->view('emails.attestation');
     }
 }

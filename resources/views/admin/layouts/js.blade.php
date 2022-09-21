@@ -9,4 +9,5 @@
   <script src="{{asset("admin/vendor/tinymce/tinymce.min.js")}}"></script>
   <script src="{{asset("admin/vendor/php-email-form/validate.js")}}"></script>
   <script src="{{asset("admin/js/main.js")}}"></script>
+  <script src="{{ asset('js/yearpicker.js') }}"></script>
 

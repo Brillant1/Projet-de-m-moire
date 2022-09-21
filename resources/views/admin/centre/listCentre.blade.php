@@ -1,13 +1,27 @@
 @extends('admin.layouts.template')
 @section('content')
-    <div class="pagetitle">
-        <h1>Dashboard</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('centres.index') }}">Centres</a></li>
-                <li class="breadcrumb-item active">Liste centre</li>
-                </li>
-            </ol>
+    <div class="pagetitle mt-3">
+       
+        <nav class="mb-3">
+            <div class="d-flex justify-content-between align-items-center bg-white px-3 py-4">
+                <div class=" ">
+                    <h1 style="font-size: 1.2rem;">Liste des centres</h1>
+                    <ol class="breadcrumb mt-1 mb-0">
+                        <li class="breadcrumb-item"><a href="{{ route('centres.index') }}">Dashboard</a></li> &nbsp; /
+                        <li class="breadcrumb-item"><a href="{{ route('centres.index') }}">Centres</a></li> &nbsp; /
+    
+                        <li class="breadcrumb-item active">Liste des centre</li>
+                        </li>
+                    </ol>
+                </div>
+                <div class="text-center d-flex justify-content-between mt-2">
+    
+                    <a class="btn bg-favorite-color py-2 fw-bold text-white d-flex justify-content-between align-items-center"
+                        href=" {{ route('centres.create') }} ">Ajouter un
+                        nouveau</a>
+    
+                </div>
+            </div>
         </nav>
     </div>
 
@@ -25,22 +39,23 @@
                     <h6> {{ session('deletedMessage') }} </h3>
                 </div>
             @endif
-            <div class="text-center my-3 alert bg-warning">
+            {{-- <div class="text-center my-3 alert bg-warning">
                 <h4 class="text-white font-italic fw-bold">Liste des centres</h4>
             </div>
             <div class="text-center mb-4 d-flex justify-content-end">
                 <a class="btn btn-success p-2 fw-bold text-white" href=" {{ route('centres.create') }} ">Ajouter un
                     nouveau</a>
-            </div>
+            </div> --}}
 
         </div>
 
-        <div class="shadow p-5" style="border-radius: 10px;">
+
+        <div class="shadow p-5 bg-white" style="border-radius: 10px;">
             <div class="table-responsive container-fluid">
                 <table class="table datatable  table-striped border-collapse table-bordered "
                     id="sampleTable">
                     <thead>
-                        <tr class=" ">
+                        <tr class="">
                             <th class=" ">Centre</th>
                             <th class=" ">Référence</th>
                             <th class="">Commune</th>
@@ -56,27 +71,19 @@
                     <tbody>
 
                         @foreach ($centres as $centre)
-                            <tr class=" ">
+                            <tr class="">
 
-                                <td class=" ">{{ $centre->nom }}</td>
-                                <td class=" ">{{ $centre->reference }}</td>
-                                <td class=" ">{{ $centre->commune->nom }}</td>
-                                <td class=" ">{{ $centre->commune->departement->nom }}</td>
-                                <td class=" ">{{ $centre->directeur}}</td>
-                                <td class=" ">{{ $centre->nombre_candidat}}</td>
-                                <td class=" ">{{ $centre->nombre_candidat_admis}}</td>
+                                <td class=" px-4">{{ $centre->nom }}</td>
+                                <td class=" px-4">{{ $centre->reference }}</td>
+                                <td class=" px-4">{{ $centre->commune->nom }}</td>
+                                <td class=" px-4">{{ $centre->commune->departement->nom }}</td>
+                                <td class=" px-4">{{ $centre->directeur}}</td>
+                                <td class=" px-4">{{ $centre->nombre_candidat}}</td>
+                                <td class=" px-4">{{ $centre->nombre_candidat_admis}}</td>
 
                                 <td class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex justify-content-evenly w-100">
-                                        {{-- <a href="{{ route('centres.show', ['centre' => $centre->id]) }}"
-                                            title="Consulter"
-                                            >
-
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
-                                            </svg>
-                                        </a> --}}
+                 
                                         <a href="{{ route('centres.edit', ['centre' => $centre->id]) }}"
                                             title="Editer" class="ms-2">
 
@@ -87,14 +94,16 @@
                                             </svg>
                                         </a>
 
-                                        <button type="button" class="border-0 bg-none fw-bold" data-bs-toggle="modal"
-                                            data-bs-target="{{ '#deleteModal' . $centre->nom }}" title="Spprimer">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" title="Supprimer"
-                                                fill="red" class="bi bi-x" viewBox="0 0 16 16">
+                                        <a href="#" class="text-danger" data-bs-toggle="modal" title="Supprimer"
+                                        data-bs-target="{{ '#deleteModal' . $centre->nom }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                                fill="currentColor" class="bi bi-x text-danger" viewBox="0 0 16 16">
                                                 <path
                                                     d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                                             </svg>
-                                        </button>
+                                        </a>
+
+                                        
 
                                         <div class="modal fade" id="{{ 'deleteModal' . $centre->nom }}"
                                             tabindex="-1">

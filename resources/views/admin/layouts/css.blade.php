@@ -7,5 +7,7 @@
 <link rel="stylesheet" href="{{ asset("admin/vendor/remixicon/remixicon.css") }}">
 <link rel="stylesheet" href="{{ asset("admin/vendor/simple-datatables/style.css") }}">
 <link rel="stylesheet" href="{{ asset("admin/css/style.css") }}">
+<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+<link rel="stylesheet" href="{{asset('css/yearpicker.css')}}">
 
 

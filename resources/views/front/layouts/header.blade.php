@@ -1,4 +1,4 @@
-<header class="shadow " style="background-color: #032497;">
+<header class="shadow " >
     <nav class="navbar1 d-flex " id="navbar1">
         <a href="index.html" class="logo">
             <img src="{{ asset('admin/img/logoDec.png') }}" alt="">
@@ -12,7 +12,7 @@
                         href="#">
                         ATTESTATION
                     </a>
-                    <div class="dropdown-menu dropdown-menu1 ms-2 py-2" id="">
+                    <div class="dropdown-menu dropdown-menu1 ms-2 py-2 dropdown-menu-dec" id="">
                         <a class="dropdown-item py-2" href="{{ route('demandes.create') }}">Demander mon
                             attestation</a>
                         <a class="dropdown-item py-2" href="{{ route('demandeUser') }}">Suivre mes demandes</a>
@@ -29,7 +29,7 @@
                     </div>
                 </li>
                 <li class="nav-link scrollto"><a href="#">COMMUNIQUES</a></li>
-                <li class="nav-link"><a href="#">F.A.Q</a></li>
+                <li class="nav-link"><a href="#">Contact</a></li>
             </ul>
 
             <ul class="d-flex justify-content-between align-items-center authButton" id="ul2">
@@ -78,7 +78,6 @@
             <li><a href="">Mes demande</a></li>
             <li><a href="">Actualités</a></li>
             <li><a href="">Aide</a></li>
-
             <li><a href="">CONNEXION</a></li>
             <li><a href="">INSCRIPTION</a></li>
 

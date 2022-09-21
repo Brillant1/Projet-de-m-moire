@@ -1,19 +1,32 @@
 @extends('admin.layouts.template')
 @section('content')
-    <div class="pagetitle">
-        <h1>Dashboard</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('candidats.index') }}">candidats</a></li>
-                <li class="breadcrumb-item active">Liste candidat</li>
-                </li>
-            </ol>
+    <div class="pagetitle mt-3" style="border-radius: 10px;">
+        <nav style="border-radius: 10px;">
+            <div class="d-flex justify-content-between align-items-center bg-white p-3 py-4">
+                <div class=" ">
+                    <h1 style="font-size: 1.2rem;" class="fw-bold">Liste des candidats</h1>
+                    <ol class="breadcrumb mt-1 mb-0">
+                        <li class="breadcrumb-item"><a href="{{ route('candidats.index') }}">Dashboard</a></li> &nbsp; /
+                        <li class="breadcrumb-item"><a href="{{ route('candidats.index') }}">Candidats</a></li> &nbsp; /
+
+                        <li class="breadcrumb-item active">Liste des candidats</li>
+                        </li>
+                    </ol>
+                </div>
+                <div class="text-center d-flex justify-content-between mt-2">
+
+                    <a class="btn bg-favorite-color py-2 fw-bold text-white d-flex justify-content-between align-items-center"
+                        href=" {{ route('candidats.create') }} ">Ajouter un
+                        nouveau</a>
+
+                </div>
+            </div>
         </nav>
     </div>
 
 
 
-    <div class="tile">
+    <div class="tile mt-3 bg-white">
         <div class="tile-body">
             @if (session('updatedMessage'))
                 <div class="alert alert-success mb-3">
@@ -25,13 +38,7 @@
                     <h6> {{ session('deletedMessage') }} </h3>
                 </div>
             @endif
-            <div class="text-center my-3 alert bg-warning">
-                <h4 class="text-white font-italic fw-bold">Liste des candidats</h4>
-            </div>
-            <div class="text-center mb-4 d-flex justify-content-end">
-                <a class="btn btn-success p-2 fw-bold text-white" href=" {{ route('candidats.create') }} ">Ajouter un
-                    nouveau</a>
-            </div>
+
 
         </div>
 
@@ -60,8 +67,9 @@
 
                         @foreach ($candidats as $candidat)
                             <tr class="   ">
-                                <td class=" "><img src="{{'storage/'.$candidat->photo}}" width="60" height="60"  alt=""></td>
-                                <td class="">{{ $candidat->nom.' '.$candidat->prenom }}</td>
+                                <td class=" "><img src="{{ 'storage/' . $candidat->photo }}" width="60"
+                                        height="60" alt=""></td>
+                                <td class="">{{ $candidat->nom . ' ' . $candidat->prenom }}</td>
                                 <td class=" ">{{ $candidat->numero_table }}</td>
                                 {{-- <td class=" ">{{ $candidat->numero_reference }}</td> --}}
                                 <td class=" ">{{ $candidat->centre->nom }}</td>
@@ -71,15 +79,19 @@
                                 <td class="">{{ $candidat->serie }}</td>
                                 <td class="">
                                     <div class="d-flex justify-content-evenly w-100">
-                                        <a href="{{ route('candidats.show', ['candidat' => $candidat->id]) }}" title="Consulter"
-                                            data-bs-toggle="modal"
+                                        <a href="{{ route('candidats.show', ['candidat' => $candidat->id]) }}"
+                                            title="Consulter" data-bs-toggle="modal"
                                             data-bs-target="{{ '#showModal' . $candidat->id }}">
 
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                                <path
+                                                    d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                                             </svg>
                                         </a>
+
+
                                         <a href="{{ route('candidats.edit', ['candidat' => $candidat->id]) }}"
                                             title="Editer" class="ms-2">
 
@@ -90,17 +102,19 @@
                                             </svg>
                                         </a>
 
-                                        <button type="button" class="border-0 bg-none fw-bold" data-bs-toggle="modal"
-                                            data-bs-target="{{ '#deleteModal' . $candidat->nom }}" title="Spprimer">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" title="Supprimer"
-                                                fill="red" class="bi bi-x" viewBox="0 0 16 16">
+                                        <a href="#" class="text-danger" data-bs-toggle="modal"
+                                            data-bs-target="{{ '#deleteModal' . $candidat->nom }}" title="Supprimer">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                                fill="currentColor" class="bi bi-x text-danger" viewBox="0 0 16 16">
                                                 <path
                                                     d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                                             </svg>
-                                        </button>
-                                        {{--  delete modal --}}
-                                        <div class="modal fade" id="{{ 'deleteModal' . $candidat->nom }}"
-                                            tabindex="-1">
+                                        </a>
+
+
+
+                                        {{-- delete modal --}}
+                                        <div class="modal fade" id="{{ 'deleteModal' . $candidat->nom }}" tabindex="-1">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -110,130 +124,151 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         Voulez-vous vraiment supprimmer le candidat : <br>
-                                                        {{ $candidat->nom.' '.$candidat->prenom }}
+                                                        {{ $candidat->nom . ' ' . $candidat->prenom }}
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <form method="POST" action="{{ route('candidats.destroy', ['candidat' => $candidat->id]) }}">
+                                                        <form method="POST"
+                                                            action="{{ route('candidats.destroy', ['candidat' => $candidat->id]) }}">
 
                                                             <input type="hidden" name="_method" value="DELETE">
                                                             <input type="hidden" name="_token"
                                                                 value="{{ csrf_token() }}">
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-dismiss="modal">Annuler</button>
-                                                            <input type="submit" class="btn btn-danger" value="Confirmer">
+                                                            <input type="submit" class="btn btn-danger"
+                                                                value="Confirmer">
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                         {{--  end delete modal --}}
+                                        {{-- end delete modal --}}
 
                                         {{-- show modal --}}
-                                       
+
                                         <div class="modal fade container-fluid" id="{{ 'showModal' . $candidat->id }}"
-                                            tabindex="-1" >
+                                            tabindex="-1">
                                             <div class="modal-dialog" style="max-width: 60%">
-                                                <div class="modal-content" >
+                                                <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title"></h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body d-flex justify-content-center flex-column align-items-center">
-                                                         {{-- tab modal body --}}
-                                                         <img src="{{'storage/'.$candidat->photo}}" alt="" width="600" height="400" style="object-fit: cover;">
-                                                        <div class="container mt-2">
-                                                             <p class="section-title text-center first-color py-2 mt-5">Informations personnelles du candidat</p>
+                                                        
+                                                        {{-- tab modal body --}}
 
-                                                             <div class="row-info container-fluid  d-flex justify-content-between pt-3">
+                                                        <div style="width: 600px; height:700px;">
+                                                            <img src="{{ asset('storage/' . $candidat->photo) }}" alt="" style=" width:100%; height:100%; object-fit:cover">                                                        
+                                                        </div>
+                                                        <div class="container mt-2">
+                                                            <p class="section-title text-center first-color py-2 mt-5">
+                                                                Informations personnelles du candidat</p>
+
+                                                            <div
+                                                                class="row-info container-fluid  d-flex justify-content-between pt-3">
 
                                                                 <p>Nom :</p>
                                                                 <p class="">{{ $candidat->nom }}</p>
 
-                                                        </div>
+                                                            </div>
 
-                                                                <div class="row-info container-fluid  d-flex justify-content-between ">
+                                                            <div
+                                                                class="row-info container-fluid  d-flex justify-content-between ">
 
-                                                                        <p>Prénom :</p>
-                                                                        <p class="">{{ $candidat->prenom }}</p>
-
-                                                                </div>
-                                                            <div class="row-info container-fluid  d-flex justify-content-between">
-
-                                                                    <p>Date de naissance :</p>
-                                                                    <p>{{ $candidat->date_naissance }}</p>
+                                                                <p>Prénom :</p>
+                                                                <p class="">{{ $candidat->prenom }}</p>
 
                                                             </div>
-                                                            <div class="row-info container-fluid  d-flex justify-content-between">
+                                                            <div
+                                                                class="row-info container-fluid  d-flex justify-content-between">
 
-                                                                    <p class="">Nom du collège :</p>
-                                                                    <p>{{ $candidat->centre->nom }}</p>
-
-                                                            </div>
-                                                            <div class=" row-info container-fluid  d-flex justify-content-between">
-
-                                                                    <p>Contact du candidat :</p>
-                                                                    <p>{{ $candidat->contact }}</p>
+                                                                <p>Date de naissance :</p>
+                                                                <p>{{ $candidat->date_naissance }}</p>
 
                                                             </div>
-                                                            <div class=" row-info container-fluid  d-flex justify-content-between">
+                                                            <div
+                                                                class="row-info container-fluid  d-flex justify-content-between">
 
-                                                                    <p>Numero de table :</p>
-                                                                    <p>{{ $candidat->numero_table }}</p>
+                                                                <p class="">Nom du collège :</p>
+                                                                <p>{{ $candidat->centre->nom }}</p>
+
+                                                            </div>
+                                                            <div
+                                                                class=" row-info container-fluid  d-flex justify-content-between">
+
+                                                                <p>Contact du candidat :</p>
+                                                                <p>{{ $candidat->contact }}</p>
+
+                                                            </div>
+                                                            <div
+                                                                class=" row-info container-fluid  d-flex justify-content-between">
+
+                                                                <p>Numero de table :</p>
+                                                                <p>{{ $candidat->numero_table }}</p>
 
                                                             </div>
                                                         </div>
                                                         <div class="container">
-                                                            <p class="section-title text-center first-color py-2 mt-5">Informations sur le diplôme</p>
+                                                            <p class="section-title text-center first-color py-2 mt-5">
+                                                                Informations sur le diplôme</p>
 
-                                                           <div class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
+                                                            <div
+                                                                class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
 
-                                                                   <p>Année d'obtention du diplôme :</p>
-                                                                   <p>{{ $candidat->annee_obtention }}</p>
+                                                                <p>Année d'obtention du diplôme :</p>
+                                                                <p>{{ $candidat->annee_obtention }}</p>
 
-                                                           </div>
-                                                           <div class="row-info container-fluid  d-flex justify-content-between">
+                                                            </div>
+                                                            <div
+                                                                class="row-info container-fluid  d-flex justify-content-between">
 
-                                                                   <p>Série d'examen :</p>
-                                                                   <p>{{ $candidat->serie }}</p>
+                                                                <p>Série d'examen :</p>
+                                                                <p>{{ $candidat->serie }}</p>
 
-                                                           </div>
-                                                           <div class="row-info container-fluid  d-flex justify-content-between">
+                                                            </div>
+                                                            <div
+                                                                class="row-info container-fluid  d-flex justify-content-between">
 
-                                                                   <p>Numero de référence :</p>
-                                                                   <p>{{ $candidat->numero_reference }}</p>
+                                                                <p>Numero de référence :</p>
+                                                                <p>{{ $candidat->numero_reference }}</p>
 
-                                                           </div>
+                                                            </div>
 
                                                         </div>
 
                                                         <div class="container">
-                                                            <p class="section-title text-center first-color py-2 mt-5">Autres informations utiles</p>
+                                                            <p class="section-title text-center first-color py-2 mt-5">
+                                                                Autres informations utiles</p>
 
-                                                           <div class="pt-3 row-info container-fluid  d-flex justify-content-between">
+                                                            <div
+                                                                class="pt-3 row-info container-fluid  d-flex justify-content-between">
 
-                                                                    <p>Centre de composition :</p>
-                                                                    <p>{{ $candidat->centre->nom }}</p>
+                                                                <p>Centre de composition :</p>
+                                                                <p>{{ $candidat->centre->nom }}</p>
 
-                                                           </div>
-                                                           <div class=" row-info container-fluid  d-flex justify-content-between">
+                                                            </div>
+                                                            <div
+                                                                class=" row-info container-fluid  d-flex justify-content-between">
 
-                                                                   <p>Commune du centre :</p>
-                                                                   <p>{{ $candidat->centre->commune->nom }}</p>
+                                                                <p>Commune du centre :</p>
+                                                                <p>{{ $candidat->centre->commune->nom }}</p>
 
-                                                           </div>
-                                                           <div class="row-info container-fluid  d-flex justify-content-between">
+                                                            </div>
+                                                            <div
+                                                                class="row-info container-fluid  d-flex justify-content-between">
 
-                                                                   <p>Département :</p>
-                                                                   <p>{{ $candidat->centre->commune->departement->nom }}</p>
+                                                                <p>Département :</p>
+                                                                <p>{{ $candidat->centre->commune->departement->nom }}</p>
 
-                                                           </div>
+                                                            </div>
 
                                                         </div>
 
-                                                    <div class="modal-footer">
-                                                        {{-- <form method="POST" action="{{ route('candidats.destroy', ['candidat' => $candidat->id]) }}">
+                                                        <div class="modal-footer">
+                                                            {{-- <form method="POST" action="{{ route('candidats.destroy', ['candidat' => $candidat->id]) }}">
 
                                                             <input type="hidden" name="_method" value="DELETE">
                                                             <input type="hidden" name="_token"
@@ -242,13 +277,13 @@
                                                                 data-dismiss="modal">Annuler</button>
                                                             <input type="submit" class="btn btn-danger" value="Confirmer">
                                                         </form> --}}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        {{-- end show modal --}}
+                                            {{-- end show modal --}}
 
-                                    </div>
+                                        </div>
                                 </td>
 
                             </tr>

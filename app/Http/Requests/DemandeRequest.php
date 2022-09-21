@@ -40,7 +40,7 @@ class DemandeRequest extends FormRequest
             'date_naissance' =>'required|date',
             'nom_pere'=>'required|string',
             'nom_mere'=>'required|string',
-            'valide' => 'required'
+            'contact_parent' => 'required|numeric'
         ];
     }
 
@@ -63,7 +63,8 @@ class DemandeRequest extends FormRequest
         'date_naissance.required'  => "Ce champs est obligatoire *",
         'nom_pere.required'  => "Ce champs est obligatoire *",
         'nom_mere.required'  => "Ce champs est obligatoire *",
-        'nom_pere.string' => "Format de nom non valide", 
+        'nom_pere.string' => "Format de nom non valide",
+        'contact_parent.required' => "le contact est obligatoire" ,
         'prenom_pere.string' => "Format de prénom non valide",
         'valide.required' => "Vous devez cocher ce champs pour continuer"
 

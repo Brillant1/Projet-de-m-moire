@@ -1,8 +1,9 @@
 @extends('front.layouts.template')
 @section('content')
     <style>
-        .form-control {
-            height: 50px;
+        .form-control,
+        select {
+            height: 45px;
         }
 
         .control-label {
@@ -58,138 +59,232 @@
                     </div>
                 @endif
 
-                <form action="#" enctype="multipart/form-data" method="POST" id="myForm">
-
+                <form action="{{ route('validationDemande') }}" enctype="multipart/form-data" method="POST" id="myForm">
                     @csrf
-
                     <style>
-                        .progressbar-item{
-                            width: 100px;
-                            height: 100px;
+                        .progressbar-item {
+                            width: 70px;
+                            height: 70px;
+                            background-color: #cdcdcd;
                         }
-                        .progressbar::before{
+
+                        .progressbar-item-active {
+                            background-color: #198754;
+                            color: white;
+                            animation: section-animate 0.5s ease-in;
+                        }
+
+                        .progressbar {
+                            counter-reset: step;
+                        }
+
+                        .progressbar::before,
+                        .progress {
                             content: "";
                             position: absolute;
-                            top: 73%;
+                            margin-top: 47px;
                             width: 70.6%;
                             height: 4px;
                             background-color: #cdcdcd;
                             transform: translateY(-50%);
                             z-index: -100;
                         }
+
+                        .progress {
+                            background-color: green;
+                            width: 0%;
+                        }
+
+                        .form-section {
+                            display: none;
+                            transform-origin: top;
+                            animation: ease animate 0.5s;
+
+                        }
+
+                        .form-section-active {
+                            display: block;
+                            animation: animate ease 0.5s;
+                        }
+
+                        @keyframes animate {
+                            0% {
+                                transform: scale(1, 0);
+                                /* margin-top: -100px; */
+                                opacity: 0;
+                            }
+
+                            100% {
+                                transform: scale(1, 1);
+                                /* margin-left: 0; */
+                                opacity: 1;
+                            }
+                        }
+
+                        .progressbar-item::before {
+                            counter-increment: step;
+                            content: counter(step);
+                        }
                     </style>
                     <div class="progressbar d-flex justify-content-between mb-5 mt-5">
-                        <div class="progressbar-item rounded-pill bg-favorite-color mt-2 d-flex justify-content-center align-items-center text-white fw-bold">1</div>
-                        <div class="progressbar-item rounded-pill bg-favorite-color mt-2 d-flex justify-content-center align-items-center text-white fw-bold">2</div>
-                        <div class="progressbar-item rounded-pill bg-favorite-color mt-2 d-flex justify-content-center align-items-center text-white fw-bold">3</div>
-                        <div class="progressbar-item rounded-pill bg-favorite-color mt-2 d-flex justify-content-center align-items-center text-white fw-bold">4</div>
+                        <div class="progress" id="progress">
+                        </div>
+                        <div class="progressbar-item progressbar-item-active rounded-pill bg-favorite-color mt-2 d-flex justify-content-center align-items-center text-white fw-bold"
+                            id="progresse">
+                        </div>
+                        <div class="progressbar-item rounded-pill mt-2 d-flex justify-content-center align-items-center fw-bold"
+                            id="progresse2">
+                        </div>
+                        <div class="progressbar-item rounded-pill mt-2 d-flex justify-content-center align-items-center fw-bold"
+                            id="progresse3">
+                        </div>
                     </div>
                     {{-- form section 1 --}}
-                    <div class="form-section form-section2">
-                            <p class="favorite-color fw-bold fs-5">Vos informations personnelles</p>
-                            <div class="row mb-3 mt-4">
-                                <div class="form-group col-md-4 p-2">
-        
-        
-                                    <label for="nom" class="control-label label-color">Mettez vos noms en ordre et en
-                                        intégralité</label>
-                                    <input class="form-control border-2 " type="text" name="nom" id="nom">
-        
-                                    @if ($errors->has('nom'))
-                                        <span class="text-danger">{{ $errors->first('nom') }}</span>
-                                    @endif
-                                </div>
-        
-                                <div class="form-group col-md-4 p-2">
-        
-                                    <label for="prenom" class="control-label label-color">Mettez tous les prénoms inscrits sur
-                                        l'acte de naissance</label>
-                                    <input class="form-control border-2 " type="text" name="prenom" id="prenom">
-                                    @if ($errors->has('prenom'))
-                                        <span class="text-danger">{{ $errors->first('prenom') }}</span>
-                                    @endif
-                                </div>
-        
-                                <div class="form-group col-md-4 p-2">
-                                    <label for="date_naissance" class="control-label label-color">Votre date de naissance (celle
-                                        inscrite sur l'acte de naissance)</label>
-                                    <input class="form-control border-2 " type="date" name="date_naissance" id="date_naissance">
-        
-                                    @if ($errors->has('date_naissance'))
-                                        <span class="text-danger">{{ $errors->first('date_naissance') }}</span>
-                                    @endif
-                                </div>
-        
+                    <div class="form-section form-section1 form-section-active mb-5" id="form-section1">
+                        <p class="favorite-color fw-bold fs-4">Vos informations personnelles</p>
+
+                        <div class="row mb-3 mt-4">
+                            <div class="form-group col-md-4 p-2">
+
+                                <label for="nom" class="control-label label-color">Mettez vos noms en ordre et en
+                                    intégralité &nbsp; <span class="text-danger">*</span></label>
+                                <input class="form-control border-1 py-1" type="text" name="nom" id="nom"
+                                    value="{{ old('nom') }}">
+                                <span class="text-danger" id="nomError"> </span>
+                                @if ($errors->has('nom'))
+                                    <span class="text-danger">{{ $errors->first('nom') }}</span>
+                                @endif
                             </div>
-                            <div class="row mb-3">
-        
-                                <div class="form-group col-md-4 p-2">
-                                    <label for="email" class="control-label label-color">Renseignez une adresse mail valide et
-                                        joignable</label>
-                                    <input class="form-control border-2 " type="mail" name="email" id="email">
-                                    @if ($errors->has('email'))
-                                        <span class="text-danger">{{ $errors->first('email') }}</span>
-                                    @endif
-                                </div>
-        
-                                <div class="form-group col-md-4 p-2">
-                                    <label for="contact" class="control-label label-color">Votre numéro (renseignez un numéro
-                                        joignable)</label>
-                                    <input class="form-control border-2 " type="number" maxlenght="8" minlenght="8" name="contact"
-                                        id="contact">
-                                    @if ($errors->has('contact'))
-                                        <span class="text-danger">{{ $errors->first('contact') }}</span>
-                                    @endif
-                                </div>
-        
-                                <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
-                                    <label class="control-label label-color" for="sexe">Sexe</label>
-                                    <select class="form-control border-2 form-select" style="height: 50px;" name="sexe">
-        
-                                        @foreach ($sexes as $sexe)
-                                            <option value="{{ $sexe }}">{{ $sexe }}</option>
-                                        @endforeach
-        
-                                    </select>
-        
-                                </div>
-        
+
+                            <div class="form-group col-md-4 p-2">
+
+                                <label for="prenom" class="control-label label-color">Prénoms inscrits sur
+                                    l'acte de naissance (en ordre) &nbsp; <span class="text-danger">*</span></label>
+                                <input class="form-control border-1 " type="text" name="prenom"
+                                    value="{{ old('prenom') }}" id="prenom">
+                                <span class="text-danger" id="prenomError"> </span>
+                                @if ($errors->has('prenom'))
+                                    <span class="text-danger">{{ $errors->first('prenom') }}</span>
+                                @endif
                             </div>
-        
-                            <div class="row mb-3">
-        
-                                <div class="form-group col-md-4 p-2">
-                                    <label for="ville_naissance" class="control-label label-color">Votre ville de naissance</label>
-                                    <input class="form-control border-2 " type="text" name="ville_naissance" id="ville_naissance">
-        
-                                    @if ($errors->has('vile_naissance'))
-                                        <span class="text-danger">{{ $errors->first('vile_naissance') }}</span>
-                                    @endif
-                                </div>
-                                <div class="form-group col-md-8 p-2">
-                                    <label for="#" class="control-label label-color">Photo claire jusqu'au ventre munie de votre
-                                        carte d'identité en main</label>
-                                    <input type="file" class="form-control border-2" name="#" id="#" >
-                                    @if ($errors->has('photo'))
-                                        <span class="text-danger">{{ $errors->first('photo') }}</span>
-                                    @endif
-                                </div>
-        
+
+                            <div class="form-group col-md-4 p-2">
+                                <label for="date_naissance" class="control-label label-color">Date de naissance (celle
+                                    inscrite sur l'acte de naissance) &nbsp; <span class="text-danger">*</span></label>
+                                <input class="form-control border-1 input-mask" type="date" name="date_naissance"
+                                    value="{{ old('date_naissance') }}" id="date_naissance"
+                                    data-inputmask=" 'mask':'99/9999' " im-insert="true">
+                                <span class="text-danger" id="date_naissanceError"> </span>
+
+                                @if ($errors->has('date_naissance'))
+                                    <span class="text-danger">{{ $errors->first('date_naissance') }}</span>
+                                @endif
                             </div>
+
+                        </div>
+                        <div class="row mb-3">
+
+                            <div class="form-group col-md-4 p-2">
+                                <label for="email" class="control-label label-color">Renseignez une adresse mail valide
+                                    et
+                                    joignable &nbsp; <span class="text-danger">*</span></label>
+                                <input class="form-control border-1 " type="mail" name="email" id="email"
+                                    value="{{ old('email') }}" placeholder="exemple@gmail.com">
+                                <span class="text-danger" id="emailError"> </span>
+                                @if ($errors->has('email'))
+                                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                                @endif
+                            </div>
+
+                            <div class="form-group col-md-4 p-2">
+                                <label for="contact" class="control-label label-color">Votre numéro (renseignez un numéro
+                                    joignable) &nbsp; <span class="text-danger">*</span></label>
+                                <input class="form-control border-1 contact" type="number" name="contact" id="contact"
+                                    value="{{ old('contact') }}" maxlength="8" >
+                                <span class="text-danger" id="contactError"> </span>
+                                @if ($errors->has('contact'))
+                                    <span class="text-danger">{{ $errors->first('contact') }}</span>
+                                @endif
+                            </div>
+
+                            <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
+                                <label class="control-label label-color" for="sexe">Sexe &nbsp; <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-control border-1 form-select" name="sexe">
+
+                                    @foreach ($sexes as $sexe)
+                                        <option value="{{ $sexe }}"> {{ $sexe }}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+
+                            <div class="form-group col-md-4 p-2">
+                                <label for="ville_naissance" class="control-label label-color">Votre ville de
+                                    naissance &nbsp; <span class="text-danger">*</span></label>
+
+                                <input class="form-control border-1 " type="text" name="ville_naissance"
+                                    value="{{ old('ville_naissance') }}" id="ville_naissance">
+                                <span class="text-danger" id="ville_naissanceError"> </span>
+
+                                @if ($errors->has('vile_naissance'))
+                                    <span class="text-danger">{{ $errors->first('vile_naissance') }}</span>
+                                @endif
+                            </div>
+                            <div class="form-group col-md-8 p-2">
+                                <label for="photo" class="control-label label-color">Photo claire jusqu'au ventre munie
+                                    de votre
+                                    carte d'identité en main (png, jpg ou jpeg) &nbsp; <span
+                                        class="text-danger">*</span></label>
+                                <input type="file" class="form-control border-1" name="photo" id="photo"
+                                    value="{{ old('photo') }}">
+                                <span class="text-danger" id="photoError"> </span>
+                                @if ($errors->has('photo'))
+                                    <span class="text-danger">{{ $errors->first('photo') }}</span>
+                                @endif
+
+                            </div>
+
+                        </div>
+                        <div class="d-flex justify-content-end ">
+
+                            <button
+                                class="btn btn-next next1 text-white fw-bold p-2 text-center col-2 mt-5 mb-5 rounded bg-success"
+                                id="next1">
+                                Suivant
+                                &nbsp; &nbsp;
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                    fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
+
+
                     {{-- end form section 1 --}}
 
 
                     {{-- form section 2 --}}
 
-                    <div class="form-section form-section2">
-                        <p class="favorite-color fw-bold fs-5 pt-5">Les informations relatives au diplôme à demander</p>
-                        
+                    <div class="form-section form-section2" id="form-section2">
+                        <p class="favorite-color fw-bold fs-4 pt-5">Les informations relatives au diplôme à demander</p>
+
                         <div class="row mb-3 mt-4">
                             <div class="form-group col-md-4 p-2">
-                                <label for="numero_table" class="control-label label-color">Veillez renseigner exactement votre
-                                    numero de table</label>
-                                <input class="form-control border-2 " type="text" name="numero_table" id="numero_table">
+                                <label for="numero_table" class="control-label label-color">Veillez renseigner exactement
+                                    votre
+                                    numero de table &nbsp; <span class="text-danger">*</span></label>
+                                <input class="form-control border-1 " type="text" name="numero_table"
+                                    id="numero_table" value="{{ old('numero_table') }}"
+                                    placeholder="Exemple : 528-AB7-88" >
+                                <span class="text-danger" id="numero_tableError"> </span>
 
                                 @if ($errors->has('numero_table'))
                                     <span class="text-danger">{{ $errors->first('numero_table') }}</span>
@@ -197,34 +292,43 @@
                             </div>
 
                             <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
-                                <label class="control-label label-color" for="serie">Type de l'examen</label>
-                                <select class="form-control border-2 form-select" style="height: 50px;" name="type_examen">
-                                    @foreach ($type_examens as $type_examen)
-                                        <option value="{{ $type_examen }}">{{ $type_examen }}</option>
+                                <label class="control-label label-color" for="centre">Série de l'examen &nbsp; <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-control border-1 form-select" name="serie" id="serie">
+
+                                    @foreach ($series as $serie)
+                                        <option value="{{ $serie }}">{{ $serie }}</option>
                                     @endforeach
 
                                 </select>
+                                <span class="text-danger" id="serieError"> </span>
+
                             </div>
 
+                            {{-- <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
+                                <label class="control-label label-color" for="serie">Type de l'examen &nbsp; <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" value="BEPC" class="form-control border-1 ">
+                            </div> --}}
+
                             <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
-                                <label class="control-label label-color" for="mention">Mention obtenu pour l'examen</label>
-                                <select class="form-control border-2 form-select" style="height: 50px;" name="mention">
+                                <label class="control-label label-color" for="mention">Mention obtenu pour
+                                    l'examen &nbsp; <span class="text-danger">*</span></label>
+                                <select class="form-control border-1 form-select" name="mention">
 
                                     @foreach ($mentions as $mention)
                                         <option value="{{ $mention }}">{{ $mention }}</option>
                                     @endforeach
                                 </select>
-
                             </div>
-
-
                         </div>
 
                         <div class="row mb-3">
                             <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
-                                <label class="control-label label-color" for="departement">Commune dans laquelle vous avez
-                                    composé</label>
-                                <select class="form-control border-2 form-select" style="height: 50px;" name="departement">
+                                <label class="control-label label-color" for="departement">Département dans laquelle vous
+                                    avez
+                                    composé &nbsp; <span class="text-danger">*</span></label>
+                                <select class="form-control border-1 form-select" name="departement">
                                     @foreach ($departements as $departement)
                                         <option value="{{ $departement->nom }}">{{ $departement->nom }}</option>
                                     @endforeach
@@ -233,8 +337,9 @@
 
                             </div>
                             <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
-                                <label class="control-label label-color" for="commune">Commune où vous avez composé</label>
-                                <select class="form-control border-2 form-select" style="height: 50px;" name="commune">
+                                <label class="control-label label-color" for="commune">Commune où vous avez
+                                    composé &nbsp; <span class="text-danger">*</span></label>
+                                <select class="form-control border-1 form-select" name="commune">
                                     @foreach ($communes as $commune)
                                         <option value="{{ $commune->nom }}">{{ $commune->nom }}</option>
                                     @endforeach
@@ -244,8 +349,8 @@
                             </div>
                             <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="centre">Centre dans lequel vous avez
-                                    composé</label>
-                                <select class="form-control border-2 form-select" style="height: 50px;" name="centre">
+                                    composé &nbsp; <span class="text-danger">*</span></label>
+                                <select class="form-control border-1 form-select" name="centre">
                                     @foreach ($centres as $centre)
                                         <option value="{{ $centre->nom }}">{{ $centre->nom }}</option>
                                     @endforeach
@@ -257,11 +362,18 @@
                         </div>
 
                         <div class="row mb-3">
+
                             <div class="form-group col-md-4 p-2">
-                                <label for="annee_obtention" class="control-label label-color">Veillez renseigner l'année où
-                                    vous avez eu le diplôme</label>
-                                <input class="form-control border-2 " type="number" maxlenght="4" max="{{ date('Y') }}"
-                                    name="annee_obtention" id="annee_obtention">
+                                <label class="control-label label-color" for="etablissement">Établissement fréquenté &nbsp; <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control border-1 etablissement" id="etablissement" name="etablissement">
+                            </div>
+
+                            <div class="form-group col-md-4 p-2">
+                                <label for="annee_obtention" class="control-label label-color">Année
+                                    d'obtention du diplôme  &nbsp; <span class="text-danger">*</span></label>
+                                <input class="form-control  border-1 annee" type="number" name="annee_obtention" length="4"
+                                    id="annee_obtention" value="{{ old('annee_obtention') }}">
+                                <span class="text-danger" id="annee_obtentionError"> </span>
 
                                 @if ($errors->has('annee_obtention'))
                                     <span class="text-danger">{{ $errors->first('annee_obtention') }}</span>
@@ -269,39 +381,65 @@
                             </div>
 
                             <div class="form-group col-md-4 p-2">
-                                <label for="numero_reference" class="control-label label-color">Veillez renseigner exactement
-                                    votre numero de référence</label>
-                                <input class="form-control border-2 " type="text" name="numero_reference" id="numero_reference">
+                                <label class="control-label label-color" for="jury">Jury de l'examen &nbsp; <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control border-1 jury" id="jury" name="jury" minlength="3" maxlength="4">
+                            </div>
+                           
+                            
+                        </div>
 
-                                @if ($errors->has('numero_reference'))
-                                    <span class="text-danger">{{ $errors->first('numero_reference') }}</span>
+                       
+                        <div class="row mb-3">
+                            <div class="form-group col p-2">
+                                <label for="photo" class="control-label label-color">Relevé de note + Acte de naissance + Carte d'identité<b class="text-uppercase"> (UN SEUL FICHIER PDF)</b> &nbsp; <span
+                                        class="text-danger">*</span></label>
+                                <input type="file" class="form-control border-1" name="releve" id="releve"
+                                    value="{{ old('releve') }}">
+                                <span class="text-danger" id="releveError"> </span>
+                                @if ($errors->has('releve'))
+                                    <span class="text-danger">{{ $errors->first('releve') }}</span>
                                 @endif
                             </div>
-                            <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
-                                <label class="control-label label-color" for="centre">Série de l'examen</label>
-                                <select class="form-control border-2 form-select" style="height: 50px;" name="serie">
+                        </div>
 
-                                    @foreach ($series as $serie)
-                                        <option value="{{ $serie }}">{{ $serie }}</option>
-                                    @endforeach
-
-                                </select>
-
-                            </div>
+                        <div class="d-flex dis justify-content-end mb-5">
+                            <button id="prev1"
+                                class="text-white btn btn-prev fw-bold p-2 me-3 text-center col-2 mt-5 mb-5 rounded bg-danger">
+                                <i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                        fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                                    </svg>
+                                </i>
+                                &nbsp; &nbsp;
+                                Précédent
+                            </button>
+                            <button
+                                class="text-white fw-bold btn btn-next p-2 ms-3 text-center col-2 mt-5 mb-5 rounded btn btn-success"
+                                id="next2">
+                                Suivant
+                                &nbsp; &nbsp;
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                    fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
-                    
-                    
 
-
-                     {{-- form section 3 --}}
-                     <div class="form-section form-section3">
-                        <p class="favorite-color fw-bold fs-5 pt-5">Autres informations utiles et obligatoires</p>
+                    {{-- form section 3 --}}
+                    <div class="form-section form-section3" id="form-section3">
+                        <p class="favorite-color fw-bold fs-4 pt-5">Autres informations utiles et obligatoires</p>
 
                         <div class="row mt-4 mb-3">
                             <div class="form-group col-md-4 p-2">
-                                <label for="nom_pere" class="control-label label-color">Noms et prénoms exactes du père</label>
-                                <input class="form-control border-2 " type="text" name="nom_pere" id="nom_pere">
+                                <label for="nom_pere" class="control-label label-color">Noms et prénoms exactes du
+                                    père &nbsp; <span class="text-danger">*</span></label>
+                                <input class="form-control border-1 " value="{{ old('nom_pere') }}" type="text"
+                                    name="nom_pere" id="nom_pere" required>
+                                <span class="text-danger" id="nom_pereError"> </span>
 
                                 @if ($errors->has('nom_pere'))
                                     <span class="text-danger">{{ $errors->first('nom_pere') }}</span>
@@ -309,17 +447,22 @@
                             </div>
                             <div class="form-group col-md-4 p-2">
                                 <label for="nom_mere" class="control-label label-color">Noms et prénoms exactes de la
-                                    mère</label>
-                                <input class="form-control border-2 " type="text" name="nom_mere" id="nom_mere">
+                                    mère &nbsp; <span class="text-danger">*</span></label>
+                                <input class="form-control border-1 " type="text" name="nom_mere" id="nom_mere"
+                                    value="{{ old('nom_mere') }}" required>
+                                <span class="text-danger" id="nom_mereError"> </span>
 
                                 @if ($errors->has('nom_mere'))
                                     <span class="text-danger">{{ $errors->first('nom_mere') }}</span>
                                 @endif
                             </div>
                             <div class="form-group col-md-4 p-2">
-                                <label for="contact_parent" class="control-label label-color">Renseignez un numéro joignable
-                                    d'un de vos parents</label>
-                                <input class="form-control border-2 " type="number" name="contact_parent" id="contact_parent">
+                                <label for="contact_parent" class="control-label label-color">Renseignez un numéro
+                                    joignable
+                                    d'un de vos parents &nbsp; <span class="text-danger">*</span></label>
+                                <input class="form-control border-1 contact_parent" type="number" name="contact_parent"
+                                    id="contact_parent" value="{{ old('contact_parent') }}" required length="8" >
+                                <span class="text-danger" id="numero_contact_parentError"> </span>
 
                                 @if ($errors->has('contact_parent'))
                                     <span class="text-danger">{{ $errors->first('contact_parent') }}</span>
@@ -327,157 +470,186 @@
 
                             </div>
                         </div>
+
+                        <button
+                            class="text-white btn btn-prev fw-bold p-2 me-3 text-center col-2 mt-5 mb-5 rounded bg-danger"
+                            id="prev2">
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                    fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                                </svg>
+                            </i>
+                            &nbsp; &nbsp;
+                            Précédent
+                        </button>
                         <div class="mb-5">
-                            <input type="checkbox" name="valide" id="valide">
+                            <input type="checkbox" name="valide" id="valide" required>
                             <span class="text-danger ps-2"> Je certifie exactes et justes toutes les informations
                                 renseignées</span> <br>
-                            <input type="reset" value="Annuler" class="mt-5 btn btn-md btn-danger px-5 me-4">
-                            <button class="mt-5 btn btn-md btn-success px-5" id="sendDemande">Payez pour soumettre
+                            <input type="reset" value="Annuler tout"
+                                class="mt-5 btn btn-md bg-favorite-color text-white px-5 me-4">
+                            <button class="mt-5 btn btn-md btn-success px-5" id="sendDemande" type="submit">Payez pour
+                                soumettre
                                 votre demande</button>
                         </div>
                     </div>
                     {{-- end form section 3 --}}
                 </form>
+
+
+
+
+
             </div>
         </div>
     </div>
 
     <script src="https://cdn.kkiapay.me/k.js"></script>
+
     <script>
+        $('document').ready(function() {
 
-      
+            $('#next1').click(function(e) {
+                e.preventDefault();
 
-        $('document').ready(function(){
+                let photo = $("#photo").val();
+                let nbre = photo.length;
 
-            $('#sendDemande').click(function(){
+                // var sizePhoto = document.getElementById('photo').files[0].size;
                
                 
-                e.preventDefault();
-                var formData = {
-                    'photo' : $('#photo').val();
-                    'nom' : $('#nom').val();
-                    'prenom' : $('#prenom').val();
-                    'date_naissance' : $('#date_naissance').val();
-                    'email' : $('#email').val();
-                    'contact' : $('#contact').val();
-                    'sexe' : $('#sexe').val();
-                    'ville_naissance' : $('#ville_naissance').val();
-                    'numero_table' : $('#numero_table').val();
-                    'serie' : $('#serie').val();
-                    'mention' : $('#mention').val();
-                    'departement' : $('#departement').val();
-                    'commune' : $('#commune').val();
-                    'centre' : $('#centre').val();
-                    'numero_reference' : $('#numero_reference').val();
-                    'nom_pere' : $('#nom_pere').val();
-                    'nom_mere' : $('#nom_mere').val();
-                    'type_examen' : $('#type_examen').val();
-                    'annee_obtention' : $('#annee_obtention').val();
-                    'contact_parent' : $('#contact_parent').val();
-                };
-                console.log(formData);
+                var fileInput = document.getElementById('photo');
+                var filePath = fileInput.value;
 
-                var type = "POST";
-                var url = {{ route('demandes.tempStore') }};
-                var email = $('email').val();
-                var nom = $('nom').val();
-                var prenom = $('prenom').val();
-                var route = {{ route('demandes.store') }};
+                var fileInputPdf = document.getElementById('releve');
+                var filePathPdf = fileInputPdf.value;
+           
+                var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+                var allowedExtensionPdf = /(\.pdf)$/i;
+                
 
-              
 
-                // $.ajax({
-                //     type: type,
-                //     url: url,
-                //     data: formData,
-                //     dataType: 'json',
-                //     success: function(value) {
-                //         openKkiapayWidget({
-                //             amount: 10,
-                //             email: email,
-                //             phone: "97000000",
-                //             firstname: nom,
-                //             lastname: prenom,
-                //             callback: route,
-                //             data: "",
-                //             theme: "green",
-                //             sandbox: "true",
-                //             position: "center",
-                //             key: "0b7354b0ed5a11ec848227abfc492dc7"
-                //         });
-                //     },
-                //     error: function(data) {
-                //         alert('Error');
-                //         console.log(data);
-                //     }
-                // });
+
+                if ($("#nom").val() == '') {
+                    $('#nomError').text('le nom est obligatoire');
+
+                } else if ($("#prenom").val() == '') {
+                    $('#prenomError').text('le prénom est obligatoire');
+                } else if ($("#date_naissance").val() == '') {
+                    $('#date_naissanceError').text('le date de naissance est obligatoire');
+                } else if ($("#email").val() == '') {
+                    $('#emailError').text('Adresse mail est obligatoire');
+                } else if ($("#contact").val() == '') {
+                    $('#contactError').text('le conatct est obligatoire');
+                } else if ($("#contact").val() < 50000000 || $("#contact").val() > 99999999) {
+                    $('#contactError').text('le format du contact n\'est pas correct');
+                } else if ($("#ville_naissance").val() == '') {
+                    $('#ville_naissanceError').text('la ville de naissance est obligatoire');
+                } else if (photo == '') {
+                    $('#photoError').text('la photo est obligatoire');
+                } 
+                // else if(sizePhoto > 15000000){
+                //     $('#photoError').text('Taille de fichier trop grande');
+                // }
+                
+                else if (!allowedExtensions.exec(filePath)) {
+                    $('#photoError').text('Extension de fichier non correcte');
+                }
+                // else if ( (photo.slice(photo.length -4, photo.length)) != ".png" || (photo.slice(photo.length -4, photo.length) != ".jpg") || (photo.slice(photo.length -5, photo.length)) != ".jpeg") {
+                //     $('#photoError').text('Extension de fichier non correcte');
+                // }
+                else {
+                    $('#form-section1').removeClass('form-section-active');
+                    $('#form-section2').addClass('form-section-active');
+                    $('#progresse2').addClass('progressbar-item-active');
+                    $('.progress').width('34%');
+                }
             });
+
+            $('#prev1').click(function(e) {
+                e.preventDefault();
+                $('#form-section2').removeClass('form-section-active');
+                $('#form-section1').addClass('form-section-active');
+                $('#progresse2').removeClass('progressbar-item-active');
+                $('.progress').width('0%');
+            });
+
+            $('#next2').click(function(e) {
+
+                var inputNumeroTableRule = /^[0-9]{3}\-[A-Za-z0-9]{3}\-[0-9]{2}$/;
+                var releveFileSize = document.getElementById('releve').files[0].size;
+                var releveFileType = document.getElementById('releve').files[0].type;
+                
+
+                e.preventDefault();
+                if ($("#numero_table").val() == '') {
+                    $('#numero_tableError').text('le numero de table est obligatoire');
+                }
+
+                else if(!inputNumeroTableRule.test($("#numero_table").val())) {
+                    $('#numero_tableError').text('le numero de table est obligatoire');
+                }
+                
+                else if ($('#serie').val() == '') {
+                    $('#serieError').text('Choisissez une série');
+                } else if ($("#annee_obtention").val() == '') {
+                    $('#annee_obtentionError').text('Année obligatoire');
+                } else if ($("#annee_obtention").val() < 2010 || $("#annee_obtention").val() > 2022) {
+                    $('#annee_obtentionError').text('Format de l\'année non correct');
+                } else if ($('#releve').val() == '') {
+                    $('#releveError').text('Le releve de note est obligatoire');
+                } 
+                else if ( releveFileSize >15000000 ) {
+                    $('#releveError').text('Taille de fichier trop grande');
+                } 
+
+                else if ( releveFileType !="application/pdf") {
+                    $('#releveError').text('Vous devez uploader un fichier pdf');
+                }
+                // else if (!allowedExtensionPdf.exec(filePathPdf)){
+                //     $('#releveError').text('Le relevé doit être au format pdf');
+                // }
+                else {
+                    $('#form-section2').removeClass('form-section-active');
+                    $('#form-section3').addClass('form-section-active');
+                    $('#progresse3').addClass('progressbar-item-active');
+                    $('.progress').width('67%');
+                }
+            });
+
+            $('#prev2').click(function(e) {
+                e.preventDefault();
+                $('#form-section3').removeClass('form-section-active');
+                $('#form-section2').addClass('form-section-active');
+                $('#progresse3').removeClass('progressbar-item-active');
+                $('.progress').width('34%');
+            });
+
+            $('#sendDemande').click(function(e) {
+
+                if ($("#nom_pere").val() == '') {
+                    $('#nom_pereError').text('le nom du père est obligatoire');
+                } else if ($("#nom_mere").val() == '') {
+                    $('#nom_mereError').text('le nom de la mère est obligatoire');
+
+                } else if ($("#contact_parent").val() == '') {
+                    $('#contact_parentError').text('le contact du parent est obligatoire');
+                }
+            });
+
+            $(".contact_parent").inputmask("(999) 999-9999");
+
+
+            $("#annee_obtention").yearpicker({
+
+            });
+
+            // var setting = #^[0-9]{3}\-[A-Za-z0-9]{3}\-[0-9]{2}$#;
+
+            
+
         });
-        // $('document').ready(function() {
-
-        //     $('#sendDemande').on('click', function(e) {
-
-
-        //         e.preventDefault();
-                // var formData {
-                //     'photo' = $('#photo').val();
-                //     'nom' = $('#nom').val();
-                //     'prenom' = $('#prenom').val();
-                //     'date_naissance' = $('#date_naissance').val();
-                //     'email' = $('#email').val();
-                //     'contact' = $('#contact').val();
-                //     'sexe' = $('#sexe').val();
-                //     'ville_naissance' = $('#ville_naissance').val();
-                //     'numero_table' = $('#numero_table').val();
-                //     'serie' = $('#serie').val();
-                //     'mention' = $('#mention').val();
-                //     'departement' = $('#departement').val();
-                //     'commune' = $('#commune').val();
-                //     'centre' = $('#centre').val();
-                //     'numero_reference' = $('#numero_reference').val();
-                //     'nom_pere' = $('#nom_pere').val();
-                //     'nom_mere' = $('#nom_mere').val();
-                //     'type_examen' = $('#type_examen').val();
-                //     'annee_obtention' = $('#annee_obtention').val();
-                //     'contact_parent' = $('#contact_parent').val();
-                // };
-
-                // var type = "POST";
-                // var url = {{ route('demandes.tempStore') }};
-                // var email = $('email').val();
-                // var nom = $('nom').val();
-                // var prenom = $('prenom').val();
-                // var route = {{ route('demandes.store') }};
-
-
-                // $.ajax({
-                //     type: type,
-                //     url: url,
-                //     data: formData,
-                //     dataType: 'json',
-                //     success: function(value) {
-                //         openKkiapayWidget({
-                //             amount: 10,
-                //             email: email,
-                //             phone: "97000000",
-                //             firstname: nom,
-                //             lastname: prenom,
-                //             callback: route,
-                //             data: "",
-                //             theme: "green",
-                //             sandbox: "true",
-                //             position: "center",
-                //             key: "0b7354b0ed5a11ec848227abfc492dc7"
-                //         });
-                //     },
-                    // error: function(data) {
-                    //     alert('Error');
-                    //     console.log(data);
-                    // }
-        //         });
-        //     })
-
-
-        // })
     </script>
 @endsection

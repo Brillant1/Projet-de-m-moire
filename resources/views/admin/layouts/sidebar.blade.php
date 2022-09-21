@@ -15,14 +15,32 @@
           <i class="bi bi-menu-button-wide"></i><span>Demandes</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="demandes-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          
           <li>
-            <a href="{{ route('listeDemande') }}">
-              <i class="bi bi-circle"></i><span>Toutes les demandes</span>
+            <a href="{{ route('demande-recente') }}">
+              <i class="bi bi-circle"></i><span>Demandes récentes payées</span>
             </a>
           </li>
           <li>
-            <a href="{{ route('demandes.create') }}">
-              <i class="bi bi-circle"></i><span> Ajouter demande</span>
+            <a href="{{ route('demande-non-payee') }}">
+              <i class="bi bi-circle"></i><span>Demandes non payées</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('demande-approuvee') }}">
+              <i class="bi bi-circle"></i><span>Demandes approuvées</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('demande-generee') }}">
+              <i class="bi bi-circle"></i><span>Demandes générées</span>
+            </a>
+          </li>
+
+          
+          <li>
+            <a href="{{ route('listeDemande') }}">
+              <i class="bi bi-circle"></i><span>Toutes les demandes</span>
             </a>
           </li>
 
@@ -30,6 +48,20 @@
       </li>
 
 
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#attestations-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Attestations</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="attestations-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{ route('attestation-all') }}">
+              <i class="bi bi-circle"></i><span>Attestations générées</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#candidats-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Candidats</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -48,6 +80,7 @@
 
         </ul>
       </li>
+
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#centres-nav" data-bs-toggle="collapse" href="#">
@@ -104,13 +137,32 @@
         </ul>
       </li>
 
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-bar-chart"></i><span>Flash Infos</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{ route('flashInfos.index') }}">
+              <i class="bi bi-circle"></i><span>Tous les flash infos</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('flashInfos.create') }}">
+              <i class="bi bi-circle"></i><span>Ajouter un flash info</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Charts Nav -->
+
        <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-layout-text-window-reverse"></i><span>Alertes</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="  ">
+            <a href=" {{ route('alertes.index') }} ">
               <i class="bi bi-circle"></i><span>Toutes les alertes</span>
             </a>
           </li>
@@ -122,47 +174,20 @@
         </ul>
       </li><!-- End Tables Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Charts</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="charts-chartjs.html">
-              <i class="bi bi-circle"></i><span>Chart.js</span>
-            </a>
-          </li>
-          <li>
-            <a href="charts-apexcharts.html">
-              <i class="bi bi-circle"></i><span>ApexCharts</span>
-            </a>
-          </li>
-          <li>
-            <a href="charts-echarts.html">
-              <i class="bi bi-circle"></i><span>ECharts</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Charts Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-gem"></i><span>Icons</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-gem"></i><span>Examens</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="icons-bootstrap.html">
-              <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
+            <a href="{{ route('examens.index') }}">
+              <i class="bi bi-circle"></i><span>Tous les examens</span>
             </a>
           </li>
           <li>
-            <a href="icons-remix.html">
-              <i class="bi bi-circle"></i><span>Remix Icons</span>
-            </a>
-          </li>
-          <li>
-            <a href="icons-boxicons.html">
-              <i class="bi bi-circle"></i><span>Boxicons</span>
+            <a href="{{ route('examens.create') }}">
+              <i class="bi bi-circle"></i><span>Ajouter un nouveau</span>
             </a>
           </li>
         </ul>

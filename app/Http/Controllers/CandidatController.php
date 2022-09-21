@@ -48,16 +48,18 @@ class CandidatController extends Controller
      */
     public function store(Request $request)
     {
+
+       
         // if($request->hasFile('photo')){
             // $file = $request->file('photo');
             // $extension = $file->getClientOriginalExtension();
             // $filename  = time().'.'.$extension;
             // $file->storeAs('public/admin/img', $filename);
 
-            //$filename = time().'.'.$request->photo->extension();
+            // $filename = time().'.'.$request->photo->extension();
             // $request->photo->storeAs('admin/images', $filename);
             $filename = Storage::disk('public')->put('avatars/img', $request->photo);
-
+            
 
 
             $candidats = [

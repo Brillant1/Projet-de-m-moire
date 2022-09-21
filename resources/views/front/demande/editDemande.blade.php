@@ -291,7 +291,7 @@
 
                         </div>
                     </div>
-                    <div class="">
+                    <div class=" mt-5 mb-5">
                         <input type="checkbox" name="valide" id="valide">
                         <span class="text-danger ps-2"> Je certifie exacte et juste toutes les informations
                             renseignées</span> <br>

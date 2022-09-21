@@ -1,23 +1,49 @@
 @extends('front.layouts.template')
 @section('content')
-<style>
-    .login-main-div{
-        margin-top: 100px; 
-        background-image : url('{{asset('img/LoginBG.jpg')}}');
-        background-repeat : no-repeat;
-        background-size : 100%;
-        width: 100%;  
-    }
-</style>
-    <div class="container-fluid d-flex justify-content-center mt-0 login-main-div">
-        <div class="row shadow ps-3 bg-white" style="margin-bottom: 100px; width: 55%; margin-top:120px;">
-            <div class="col-6 " style="margin-right:0">
+    <style>
+        .login-main-div {
+            margin-top: 100px;
+            background-image: url('{{ asset('img/LoginBG.jpg') }}');
+            background-repeat: no-repeat;
+            background-size: 100%;
+            width: 100%;
+        }
+
+        .login-main-div-next {
+            margin-bottom: 100px;
+            width: 55%;
+            margin-top: 120px;
+        }
+
+        .p-DEC-login {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 24px;
+            display: flex;
+            color: #1117AB;
+        }
+
+        .login-main-div-first-column {
+            margin-right: 0
+        }
+    </style>
+
+    <div class="container-fluid d-flex justify-content-center align-items-center mt-0 login-main-div flex-column">
+
+        <div class="row shadow ps-3 bg-white login-main-div-next">
+
+            <div class="col-6 login-main-div-first-column">
                 <div class="">
                     <!-- Session Status -->
                     <x-auth-session-status class="mb-4" :status="session('status')" />
 
                     <!-- Validation Errors -->
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
+
+                    @if (app('router')->getRoutes()->match(app('request')->create(URL::previous()))->getName() == '')
+                        <p class="pt-2 m-0 text-danger">Désolé ! Vous devez d'abord vous connecter.</p>
+                    @endif
 
 
                     <div class=" d-flex align-items-center  ">
@@ -30,13 +56,7 @@
                                     d="M2.125 8.567l-1.86.992a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882l-1.86-.992-5.17 2.756a1.5 1.5 0 0 1-1.41 0l-5.17-2.756z" />
                             </svg>
                         </i>
-                        <p style="font-family: 'Inter';
-                font-style: normal;
-                font-weight: 700;
-                font-size: 24px;
-                display: flex;
-                
-                color: #1117AB;" class="ms-4 mt-3">DEC - BENIN</p>
+                        <p class="p-DEC-login ms-4 mt-3">DEC - BENIN</p>
                     </div>
                     <style>
                         .bg-image-login {
@@ -46,37 +66,41 @@
                         }
                     </style>
 
-                    <form method="POST" action="{{ route('login')}}" style="width: 95%;">
+                    <form method="POST" action="{{ route('login') }}" style="width: 95%;">
                         @csrf
-                        <h1 style="font-family: 'Inter';
+                        <h1
+                            style="font-family: 'Inter';
                             font-style: normal;
                             font-weight: 700;
                             font-size: 28px;
-                            line-height: 50px;margin-top: 15px; ">Bon retour parmi nous !</h1>
-                        <p style="font-family: 'Inter';
+                            line-height: 50px;margin-top: 15px; ">
+                            Bon retour parmi nous !</h1>
+                        <p
+                            style="font-family: 'Inter';
                             font-style: normal;
                             font-weight: 400;
                             font-size: 20px;
-                            line-height: 24px;">Connectez-vous avec votre email et votre mot de passe</p>
+                            line-height: 24px;">
+                            Connectez-vous avec votre email et votre mot de passe</p>
 
                         <!-- Email Address -->
                         <div>
                             <x-label for="email" :value="__('Email')" />
 
-                            <x-input id="email" style="padding: 15px;" class="block mt-1 w-full form-control" type="email" name="email" :value="old('email')"
-                                required autofocus />
+                            <x-input id="email" style="padding: 15px;" class="block mt-1 w-full form-control"
+                                type="email" name="email" :value="old('email')" required autofocus />
                         </div>
 
                         <!-- Password -->
                         <div class="mt-4 form-group">
                             <x-label for="password" :value="__('Mot de passe')" />
 
-                            <x-input id="password" style="padding: 15px;" class="block mt-1 w-full form-control" type="password" name="password" required
-                                autocomplete="current-password" />
+                            <x-input id="password" style="padding: 15px;" class="block mt-1 w-full form-control"
+                                type="password" name="password" required autocomplete="current-password" />
                         </div>
 
                         <!-- Remember Me -->
-                       
+
 
                         <div class="d-flex justify-content-between mt-4">
                             <label for="remember_me" class="inline-flex items-center">
@@ -92,7 +116,7 @@
                                 </a>
                             @endif
 
-                           
+
                         </div>
                         <div class="form-group mt-4">
                             <x-button class="w-100 p-1 rounded text-white fw-bold fs-5 bg-success border-0">
