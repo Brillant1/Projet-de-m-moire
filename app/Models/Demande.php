@@ -35,7 +35,9 @@ class Demande extends Model
         'jury',
         'etablissement',
         'user_id',
-        'kkiapayPayement_id '
+        'kkiapayPayement_id ',
+        'acte_naissance',
+        'cni'
         
     ];
 

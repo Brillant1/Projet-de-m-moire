@@ -7,13 +7,13 @@
             <ul class="d-flex justify-content-between align-items-center h-100 list-unstyled" id="ul1"
                 style="white:70%; margin-left: 100px;">
                 <li class="nav-link scrollto"><a class="" href="{{ route('accueil') }}">ACCUEIL</a></li>
-                <li class="nav-item dropdown" style="l">
+                <li class="nav-item dropdown" style="">
                     <a class="nav-link dropdown-toggle text-white dropdown-link-main d-flex justify-content-center align-items-center favorite-color"
-                        href="#">
+                        href="#" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         ATTESTATION
                     </a>
-                    <div class="dropdown-menu dropdown-menu1 ms-2 py-2 dropdown-menu-dec" id="">
-                        <a class="dropdown-item py-2" href="{{ route('demandes.create') }}">Demander mon
+                    <div class="dropdown-menu dropdown-menu1 ms-2 py-2 dropdown-menu-dec" aria-labelledby="navbarDropdownMenuLink" id="">
+                        <a class="dropdown-item py-2" href="{{ route('before-demande') }}">Demander mon
                             attestation</a>
                         <a class="dropdown-item py-2" href="{{ route('demandeUser') }}">Suivre mes demandes</a>
                     </div>

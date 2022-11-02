@@ -16,7 +16,7 @@
                         PLAN DU SITE
                     </h6>
 
-                    <a href="{{ route('demandes.create') }} " class="text-spacifique-color ">
+                    <a href="{{ route('before-demande') }} " class="text-spacifique-color ">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-chevron-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"

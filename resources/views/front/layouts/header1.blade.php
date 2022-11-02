@@ -41,11 +41,11 @@
         }
     }
 </style>
-<header class="shadow  " style="background-color: #fff;">
+<header class="shadow" style="background-color: #fff;">
     <div class="fw-bold text-white row mx-0" id="flash">
         <div class="bg-favorite-color col-1 py-2 d-flex justify-content-center align-items-center text-uppercase fs-5">
             Flash Info</div>
-        <div class="bg-dark col-11 py-2  fs-5 d-flex justify-content-center align-items-center text-uppercase">
+        <div class="bg-dark col-11 py-2  fs-6 d-flex justify-content-center align-items-center text-uppercase">
             <marquee behavior="" direction="">
                 @php
                     $flash = flash_info();
@@ -70,7 +70,7 @@
                         ATTESTATION
                     </a>
                     <div class="dropdown-menu dropdown-menu1 ms-2 py-2 bg-white" id="">
-                        <a class="dropdown-item py-2  text-dark" href="{{ route('demandes.create') }}">Demander mon
+                        <a class="dropdown-item py-2  text-dark" href="{{ route('before-demande') }}">Demander mon
                             attestation</a>
                         <a class="dropdown-item py-2  text-dark" href="{{ route('demandeUser') }}">Suivre mes
                             demandes</a>

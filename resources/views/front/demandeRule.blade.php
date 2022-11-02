@@ -71,15 +71,17 @@
     </div>
 </section>
 <section >
-    <div class="container-fluid mt-5 mb-5">
+    {{-- <div class="container-fluid mt-5 mb-5">
         <div class="container rosette-bg-green py-5 rounded text-white d-flex justify-content-center align-items-center flex-column">
             <h2 class="text-center h1-inscription fw-bold">Demande d'attestation de diplôme</h2>
             <p class="px-2  mt-3 mb-2 inscrire-reinscrire-content text-inscription ">Vous souhaitez faire la demande de votre attestation. Merci de passer par le lien ci-dessous pour soumettre le formulaire.
                 situation de votre enfant. Nous l'examinerons et vous ferons un retour sous très peu </p>
-                <div class="d-flex justify-content-center w-75 mt-4 fs-6" >
-                    <a href="{{ route('demandes.create') }}" class="rounded fw-bold bg-white favorite-color px-4 py-3 me-3 text-center" id="inscription-link">Faire la demande</a>
-                </div>
+               
         </div>
+    </div> --}}
+
+    <div class="d-flex justify-content-center align-center w-100 mt-4 fs-6" >
+        <a href="{{ route('before-demande') }}" class="rounded mt-4 fw-bold bg-success text-white favorite-color px-4 py-3 me-3 text-center" id="inscription-link">Fais une demande</a>
     </div>
 </section>
 @endsection

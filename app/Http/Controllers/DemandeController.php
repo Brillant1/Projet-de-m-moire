@@ -30,40 +30,29 @@ class DemandeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+   
     public function index(User $user)
     {
+        return view('front.demande.beforeDemande');
     }
 
-    public function demandeUser()
-    {
+    public function beforeDemande(Request $request)
+    {  
 
-        $demandes = Demande::where(['user_id' => Auth::user()->id])->orderBy('created_at', 'DESC')->get();
+        $candidat = Candidat::where([
+            'numero_table'=> $request->numero_table,
+            'annee_obtention' => $request->annee,
+            'nom' => $request->nom,
+            'prenom' => $request->prenom
+        ])->get();
 
-        $demandeNonValides = Demande::where(
-            [
-                'user_id' => Auth::user()->id,
-                'statut_demande' => "non_valider"
-            ]
-        )->get();
-        $demandeValides = Demande::where(
-            [
-                'user_id' => Auth::user()->id,
-                'statut_demande' => "valider"
-            ]
-        )->get();
-
-
-
-        return view('front.demande.suivie', compact('demandes', 'demandeNonValides', 'demandeValides'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
+        
+    
+        if(!is_null($candidat) && sizeof($candidat)==1 ){
+      
+            //return redirect()->route('demandes.create')->with(['candidat'=> $candidat]);
+            //return view('front.demande.demande', compact('candidat'));
         $centres = Centre::all();
         $communes = Commune::all();
         $departements = Departement::all();
@@ -72,8 +61,51 @@ class DemandeController extends Controller
         $sexes = explode(';', env('SEXE'));
         $mentions = explode(';', ENV('MENTION'));
 
-        return view('front.demande.demande', compact('centres', 'communes', 'departements', 'series', 'sexes', 'mentions', 'type_examens'));
+        return view('front.demande.demande', compact('centres', 'communes', 'departements', 'series', 'sexes', 'mentions', 'type_examens', 'candidat'));
+        }
+        else {
+            return back()->with('errorMessage', 'Il n\'existe Aucun candidat avec ces informations, veillez fournir les bonnes informations');
+        }
     }
+
+
+    public function demandeUser()
+    {
+
+        //$demandes = Demande::where(['user_id' => Auth::user()->id])->orderBy('created_at', 'DESC')->get();
+
+        $demandeNonValides = Demande::where(
+            [
+                'user_id' => Auth::user()->id,
+                'statut_demande' => "non_valider",
+                'statut_payement' => "payer"
+            ]
+        )->get();
+
+        $demandeValides = Demande::where(
+            [
+                'user_id' => Auth::user()->id,
+                'statut_demande' => "valider"
+            ]
+        )->get();
+
+        $demandeNonPayers = Demande::where(
+            [
+                'user_id' => Auth::user()->id,
+                'statut_demande'=> "non_valider",
+                'statut_payement' => "non_payer"
+            ]
+        )->get();
+
+
+        return view('front.demande.suivie', compact( 'demandeNonValides', 'demandeValides', 'demandeNonPayers'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
 
     /**
      * Store a newly created resource in storage.
@@ -85,6 +117,7 @@ class DemandeController extends Controller
 
     public function store(Request $request)
     {
+
         $filename ='';
         $releve ='';
 
@@ -103,6 +136,8 @@ class DemandeController extends Controller
         }
         
         $releve = Storage::disk('public')->put('releve_candidat_demande', $request->releve);
+        $cni  = Storage::disk('public')->put('releve_candidat_demande', $request->cni);
+        $acte_naissance  = Storage::disk('public')->put('releve_candidat_demande', $request->acte_naissance);
 
         
 
@@ -130,8 +165,11 @@ class DemandeController extends Controller
             'jury' => $request->jury,
             'type_examen' => 'BEPC',
             'releve' => $releve,
+            'cni' => $cni,
+            'acte_naissance' => $acte_naissance,
             'user_id' => Auth()->user()->id
         ];
+      
 
 
         $id = Demande::create($demandes)->id;
@@ -140,7 +178,7 @@ class DemandeController extends Controller
         $prenom = $request->prenom;
         $contact = $request->contact;
 
-        if($id){
+        if(!is_null($id)){
 
             $demandeInfos = [
                 'nom' => $request->nom,
@@ -159,75 +197,7 @@ class DemandeController extends Controller
         $message = " Jusqu'à ce que vous ne payiez, cette demande reste non valide et ne sera pas traité. Veillez payer pour faire valider votre demande";
 
         
-        return view('front.paiement', compact('message', 'email', 'nom', 'prenom', 'contact', 'callbackRoute'));
-
-
-        // return redirect()->route('validationDemande')->with([
-        //     'id'=>$id,
-        //     'email'=>$email,
-        //     'nom'=>$nom,
-        //     'prenom'=>$contact,
-        //     'callbackRoute'=>$callbackRoute,
-        //     'contact'=>$contact,
-        //     'message'=>$message
-        // ]);
-
-
-        // $photo =Session::get('photo');
-
-
-        // $nom = Session::get('nom');
-        // $prenom = Session::get('prenom');
-        // $date_naissance = Session::get('date_naissance');
-        // $email = Session::get('email');
-        // $contact = Session::get('contact');
-
-        // $sexe = Session::get('sexe');
-        // $ville_naissance = Session::get('ville_naissance');
-        // $numero_table = Session::get('numero_table');
-        // $serie = Session::get('serie');
-        // $mention = Session::get('mention');
-
-        // $departement = Session::get('departement');
-        // $commune = Session::get('commune');
-        // $centre = Session::get('centre');
-        // $numero_reference = Session::get('numero_reference');
-        // $annee_obtention = Session::get('annee_obtention');
-        // $nom_pere = Session::get('nom_pere');
-        // $nom_mere = Session::get('nom_mere');
-        // $contact_parent = Session::get('contact_parent');
-        // $type_examen = Session::get('type_examen');
-        // $user_id = session::get('user_id');
-
-        // if($photo != '' && $prenom != '' && $email !='' && $nom != '' && $annee_obtention != '' &&  $centre !='' && $commune != '' && $mention !='' 
-        // && $departement !='' && $ville_naissance !='' && $nom_mere !='' && $nom_pere !='' && $contact != '' && $contact_parent != '' && $date_naissance != '' 
-        // && $type_examen !='' && $sexe !='' && $numero_table != '' && $numero_reference !='' && $user_id != '' && $serie != ''){
-
-        // Demande::create([
-        //     'photo' => $photo,
-        //     'nom' => $nom,
-        //     'prenom' => $prenom,
-        //     'date_naissance' => $date_naissance,
-        //     'email' => $email,
-        //     'contact' => $contact,
-        //     'sexe' => $sexe,
-        //     'ville_naissance' => $ville_naissance,
-        //     'numero_table' => $numero_table,
-        //     'serie' => $serie,
-        //     'mention' => $mention,
-        //     'numero_reference' => $numero_reference,
-        //     'annee_obtention' => $annee_obtention,
-        //     'centre' => $centre,
-        //     'nom_pere' => $nom_pere,
-        //     'nom_mere' => $nom_mere,
-        //     'contact_parent' => $contact_parent,
-        //     'type_examen' => $type_examen,
-        //     'user_id' => $user_id,
-
-        // ]);
-
-        //return view('front.demande.suivie', compact('demandes', 'demandeNonValides', 'demandeValides'))->with('addedMessage', 'Votre demande est soumise avec succès');
-
+        return view('front.paiement', compact('demandeInfos','message','callbackRoute'));
 
     }
 
@@ -436,5 +406,27 @@ class DemandeController extends Controller
     {
         $demandes = Demande::where('statut_payement', 'non_payer')->get();
         return view('admin.demande.demandeNonPayee', compact('demandes'));
+    }
+
+    public function communesOfDepartement(Request $request){
+        $communesOfDepartement = Commune::where('departement_id', $request->id)->get();
+        return response()->json($communesOfDepartement);
+    }
+
+    public function download_releve($id){
+        $demande = Demande::find($id);
+        $releve_path = 'storage/'.$demande->releve;
+        return response()->download($releve_path);
+    }
+    public function download_acte($id){
+        $demande = Demande::find($id);
+
+        $acte_path = 'storage/'.$demande->acte_naissance;
+        return response()->download($acte_path);
+    }
+    public function download_cni($id){
+        $demande = Demande::find($id);
+        $cni_path = 'storage/'.$demande->cni;
+        return response()->download($cni_path);
     }
 }

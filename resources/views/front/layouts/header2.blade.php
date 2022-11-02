@@ -1,9 +1,9 @@
 
-<header class="container-fluid" >
+<header class="container-fluid shadow" >
     <div class="fw-bold text-white row bg-dark" id="flash">
         <div class="bg-favorite-color col-1 py-2 d-flex justify-content-center align-items-center text-uppercase fs-5">
             Flash Info</div>
-        <div class="bg-dark col-11 py-2  fs-5 d-flex justify-content-center align-items-center text-uppercase">
+        <div class="bg-dark col-11 py-2  fs-6 d-flex justify-content-center align-items-center text-uppercase">
             <marquee behavior="" direction="">
                 @php
                     $flash = flash_info();
@@ -59,7 +59,7 @@
                         <a href="#">Attestation</a>
                         
                         <ul class="d-flex flex-column ms-2 my-3">
-                            <a href="{{ route('demandes.create') }}" class="mb-2">
+                            <a href="{{ route('before-demande') }}" class="mb-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ff8000" class="bi bi-chevron-right" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                                 </svg>
@@ -74,7 +74,8 @@
                     
                     </li>
 
-                    <li><a href="#">DEC
+                    <li>
+                        <a href="#">DEC
 
                         <div class="d-flex flex-column ms-2 my-3">
                             <a href="{{ route('mot-dec') }}" class="mb-2">
@@ -88,9 +89,7 @@
                                 </svg>
                                 Service de la DEC</a>
                         </div>
-
-
-                    </a>
+                         </a>
                        
                     </li>
                     <li><a href="{{ route('aide') }}">Aide</a></li>
@@ -119,7 +118,7 @@
 
                 {{-- attestation link --}}
                 <li class="nav-item dropdown dropdown-etablissement li-web-only">
-                    <a class="nav-link dropdown-toggle  py-4 {{ Route::is(['demandes.create', 'demandeUser']) ? 'active' : ' ' }}"
+                    <a class="nav-link dropdown-toggle  py-4 {{ Route::is(['before-demande', 'demandeUser']) ? 'active' : ' ' }}"
                         href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown"
                         aria-expanded="true">
                         ATTESTATION
@@ -127,7 +126,7 @@
                     <ul class="dropdown-menu p-0 rounded-0 dropdown-link-etablissement mt-2"
                         aria-labelledby="navbarScrollingDropdown">
                         <li class="nav-li-rose"><a class="dropdown-item p-3"
-                                href="{{ route('demandes.create') }} {{ Route::is('demandes.create') ? 'active' : ' ' }}">Demander
+                                href="{{ route('before-demande') }} {{ Route::is('before-demande') ? 'active' : ' ' }}">Demander
                                 mon attestation</a></li>
                         <li class="nav-li-rose"><a class="dropdown-item p-3"
                                 href="{{ route('demandeUser') }}  {{ Route::is('demandeUser') ? 'active' : ' ' }} ">Suivre

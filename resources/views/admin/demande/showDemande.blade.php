@@ -265,11 +265,8 @@
                
                 
                 <div class="container mt-4">
-                
-                   
                     <iframe src="{{  asset('storage/'.$demande->releve) }}" width="100%" height="1000">Visualiser</iframe>
                     <a href="{{ route('dowload',$demande->id)}}" class="btn btn-success btn-group-sm rounded px-4 fs-5 fw-bold float-end mt-3" >Télécharger</a>
-
                 </div>
             </div>
              {{--End Main content info de la demande --}}

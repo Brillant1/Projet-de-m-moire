@@ -19,7 +19,7 @@
                     BEPC au Benin
 
                 </p>
-                <a href="{{ route('demandes.create') }}"
+                <a href="{{ route('before-demande') }}"
                     class="rounded rounded-pill px-4 py-1 fs-4 border border-2 border-white mt-3 text-white"> Demander mon
                     attestation</a>
             </div>
@@ -51,27 +51,21 @@
 
     <div class="accueil-section2 d-flex justify-content-center align-items-center flex-column">
         <p class="h2 fw-bold mt-5 mb-5 pt-5 pb-2">Taux d'admission aux derniers examens : <b>{{ $examen->annee }}</b></p>
-        <div class="d-flex justify-content-between" style="width: 70%;">
+        <div class="d-flex justify-content-between" style="width: 60%;">
             @if ($examen)
                 @foreach ($examen->examens as $key => $exam)
                     <div class="d-flex flex-column justify-content-center align-items-center">
                         <div class=" taux bg-favorite-color d-flex justify-content-center align-items-center flex-column ">
-                            {{-- <i>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="" height="" fill="white" class="bi bi-file-earmark-check-fill" viewBox="0 0 16 16">
-                            <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm1.354 4.354l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708.708z"/>
-                        </svg>
-                    </i> --}}
-                            <span class="text-white fs-4 fw-bold mt-3">{{ $exam['examen'] }}</span>
-                            <p class="text-white">{{ $exam['taux'] }}%</p>
+                            <span class="text-white fs-5 fw-bold mt-3">{{ $exam['examen'] }}</span>
+                            <p class="text-white fs-4">{{ $exam['taux'] }}%</p>
                         </div>
-                        {{-- <p class="fs-3 mt-4">CEP 2022</p> --}}
                     </div>
                 @endforeach
             @endif
         </div>
 
-        <h1 class="favorite-color w-75 text-center fw-bold" style="background-color: #cfd0e9; margin-top: 100px;">MOT
-            D'ACCUEIL DU DEC</h1>
+        <h2 class="favorite-color w-75 py-1 fs-5 text-center fw-bold" style="background-color: #cfd0e9; margin-top: 100px;">MOT
+            D'ACCUEIL DU DEC</h2>
         <div class="mot-duc w-75 text-justify fs-5  mt-5" style="line-height: 45px;">
             <p class="text-justify">Je souhaite à tous les étudiants et particulièrement aux détenteurs aux candidats admis
                 à un examen quelconque béninois la bienvenue sur le site web : monattestation.dec.bj

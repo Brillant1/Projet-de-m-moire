@@ -29,7 +29,7 @@
 
                     <div class="d-flex justify-content-between mt-5 fw-bold">
                         <p class="fs-4">Liste des demandes</p>
-                        <a href="{{ route('demandes.create') }}"
+                        <a href="{{ route('before-demande') }}"
                             class="px-5 rounded text-white fw-bold py-2 rosette-bg-green d-flex justify-content-center align-items-center">Faire
                             une
                             demande</a>

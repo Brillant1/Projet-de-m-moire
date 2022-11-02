@@ -32,14 +32,13 @@
         data-bs-ride="carousel">
 
         <div class="d-flex justify-content-center flex-column"
-            style=" z-index: 99 ;position: absolute; top: 0px; background: rgba(3, 36, 151, 0.71); width: 100% ; height: 300px;">
-            <h2 class="text-white ms-5 fw-bold" style="line-height:50px;">
-                Formulaire de demande d'attestation des examens au Bénin.
-                <br> Nous protégeons toutes vos informations personnelles.
-            </h2>
+            style=" z-index: 99 ;position: absolute; top: 0px; background: rgba(3, 36, 151, 0.71); width: 100% ; height: 250px;">
+            <h3 class="text-white ms-5 fw-bold" style="line-height:50px;">
+                FAITES ICI LA DEMANDE DE VOTRE ATTESTATION EN TROIS ETAPES
+            </h3>
         </div>
-        <div class="carousel-inner" style="height:300px;">
-            <div class="carousel-item active" style="height:300px;">
+        <div class="carousel-inner" style="height:250px;">
+            <div class="carousel-item active" style="height:250px;">
                 <img src="{{ asset('img/etu1.png') }}" class="d-block w-100" alt="...">
             </div>
         </div>
@@ -48,6 +47,12 @@
     <div class=" container demande-section-2">
         <div class="demande-section-2-1">
             <div class="info-form mt-5">
+         
+                @if(URL::previous()=="demandes")
+                    <div class="alert alert-success py-0 text-center">
+                        <span class="text-center text-danger">Super ! Vous pouvez continuer maintenant</span>
+                    </div>
+                @endif
                 <h2 class="text-center ">Veillez remplir en suivant rigoureusement les règles données, le formulaire
                     suivant pour votre demande</h2>
                 <p class="text-center text-danger">Tous les champs sont obligatoires *</p>
@@ -58,6 +63,9 @@
                         <h6> {{ session('addedMessage') }} </h6>
                     </div>
                 @endif
+
+           
+
 
                 <form action="{{ route('validationDemande') }}" enctype="multipart/form-data" method="POST" id="myForm">
                     @csrf
@@ -77,17 +85,17 @@
                         .progressbar {
                             counter-reset: step;
                         }
-
                         .progressbar::before,
                         .progress {
                             content: "";
                             position: absolute;
                             margin-top: 47px;
-                            width: 70.6%;
+                            width: 75%;
                             height: 4px;
                             background-color: #cdcdcd;
                             transform: translateY(-50%);
                             z-index: -100;
+                     
                         }
 
                         .progress {
@@ -145,11 +153,11 @@
 
                         <div class="row mb-3 mt-4">
                             <div class="form-group col-md-4 p-2">
-
-                                <label for="nom" class="control-label label-color">Mettez vos noms en ordre et en
-                                    intégralité &nbsp; <span class="text-danger">*</span></label>
+                           
+                                <label for="nom" class="control-label label-color">Nom (en intégralité)
+                                     &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 py-1" type="text" name="nom" id="nom"
-                                    value="{{ old('nom') }}">
+                                    value=" @if(!is_null($candidat)) {{ $candidat[0]->nom}}  @endif ">
                                 <span class="text-danger" id="nomError"> </span>
                                 @if ($errors->has('nom'))
                                     <span class="text-danger">{{ $errors->first('nom') }}</span>
@@ -158,10 +166,9 @@
 
                             <div class="form-group col-md-4 p-2">
 
-                                <label for="prenom" class="control-label label-color">Prénoms inscrits sur
-                                    l'acte de naissance (en ordre) &nbsp; <span class="text-danger">*</span></label>
+                                <label for="prenom" class="control-label label-color">Prénoms(dans l'ordre selon l'acte) &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 " type="text" name="prenom"
-                                    value="{{ old('prenom') }}" id="prenom">
+                                    value=" @if(!is_null($candidat)) {{ $candidat[0]->prenom }}  @endif" id="prenom">
                                 <span class="text-danger" id="prenomError"> </span>
                                 @if ($errors->has('prenom'))
                                     <span class="text-danger">{{ $errors->first('prenom') }}</span>
@@ -169,11 +176,10 @@
                             </div>
 
                             <div class="form-group col-md-4 p-2">
-                                <label for="date_naissance" class="control-label label-color">Date de naissance (celle
-                                    inscrite sur l'acte de naissance) &nbsp; <span class="text-danger">*</span></label>
-                                <input class="form-control border-1 input-mask" type="date" name="date_naissance"
-                                    value="{{ old('date_naissance') }}" id="date_naissance"
-                                    data-inputmask=" 'mask':'99/9999' " im-insert="true">
+                                <label for="date_naissance" class="control-label label-color">Date de naissance  &nbsp; <span class="text-danger">*</span></label>
+                                <input class="form-control border-1 input-mask" max="01-01-2010" type="date" name="date_naissance"
+                                    value=" @if(!is_null($candidat)) {{ $candidat[0]->date_naissance }}  @endif" id="date_naissance"
+                                    data-inputmask=" 'mask':'99/9999' " im-insert="true" >
                                 <span class="text-danger" id="date_naissanceError"> </span>
 
                                 @if ($errors->has('date_naissance'))
@@ -182,14 +188,14 @@
                             </div>
 
                         </div>
+                       
                         <div class="row mb-3">
+                           
 
                             <div class="form-group col-md-4 p-2">
-                                <label for="email" class="control-label label-color">Renseignez une adresse mail valide
-                                    et
-                                    joignable &nbsp; <span class="text-danger">*</span></label>
-                                <input class="form-control border-1 " type="mail" name="email" id="email"
-                                    value="{{ old('email') }}" placeholder="exemple@gmail.com">
+                                <label for="email" class="control-label label-color">Adresse mail &nbsp; <span class="text-danger">*</span></label>
+                                <input class="form-control border-1 " type="email" name="email" id="email"
+                                    value="@if(!is_null($candidat)) {{ $candidat[0]->email }} @else {{ old('email') }}  @endif " placeholder="exemple@gmail.com">
                                 <span class="text-danger" id="emailError"> </span>
                                 @if ($errors->has('email'))
                                     <span class="text-danger">{{ $errors->first('email') }}</span>
@@ -197,7 +203,7 @@
                             </div>
 
                             <div class="form-group col-md-4 p-2">
-                                <label for="contact" class="control-label label-color">Votre numéro (renseignez un numéro
+                                <label for="contact" class="control-label label-color">Contact (renseignez un numéro
                                     joignable) &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 contact" type="number" name="contact" id="contact"
                                     value="{{ old('contact') }}" maxlength="8" >
@@ -211,9 +217,9 @@
                                 <label class="control-label label-color" for="sexe">Sexe &nbsp; <span
                                         class="text-danger">*</span></label>
                                 <select class="form-control border-1 form-select" name="sexe">
-
                                     @foreach ($sexes as $sexe)
-                                        <option value="{{ $sexe }}"> {{ $sexe }}</option>
+                                        <option value="{{ $sexe }}" @if(!is_null($candidat)) @if($candidat[0]->sexe==$sexe) selected @endif @endif>
+                                       {{ $sexe }}</option>
                                     @endforeach
 
                                 </select>
@@ -225,7 +231,7 @@
                         <div class="row mb-3">
 
                             <div class="form-group col-md-4 p-2">
-                                <label for="ville_naissance" class="control-label label-color">Votre ville de
+                                <label for="ville_naissance" class="control-label label-color">Ville de
                                     naissance &nbsp; <span class="text-danger">*</span></label>
 
                                 <input class="form-control border-1 " type="text" name="ville_naissance"
@@ -242,7 +248,7 @@
                                     carte d'identité en main (png, jpg ou jpeg) &nbsp; <span
                                         class="text-danger">*</span></label>
                                 <input type="file" class="form-control border-1" name="photo" id="photo"
-                                    value="{{ old('photo') }}">
+                                    value="{{ old('photo') }}" accept=".png, .jpg, .jpeg">
                                 <span class="text-danger" id="photoError"> </span>
                                 @if ($errors->has('photo'))
                                     <span class="text-danger">{{ $errors->first('photo') }}</span>
@@ -278,12 +284,12 @@
 
                         <div class="row mb-3 mt-4">
                             <div class="form-group col-md-4 p-2">
-                                <label for="numero_table" class="control-label label-color">Veillez renseigner exactement
-                                    votre
+                                <label for="numero_table" class="control-label label-color">Votre
+                                    
                                     numero de table &nbsp; <span class="text-danger">*</span></label>
-                                <input class="form-control border-1 " type="text" name="numero_table"
-                                    id="numero_table" value="{{ old('numero_table') }}"
-                                    placeholder="Exemple : 528-AB7-88" >
+                                    <input type="text" class="form-control" name="numero_table" id="numero_table" value=" @if(!is_null($candidat)) {{ $candidat[0]->numero_table }}  @endif " placeholder="" >
+                                {{-- <input class="form-control border-1 "  type="text" name="numero_table" id="numero_table" value="{{ @if(!is_null($candidat)) {{ $candidat[0]->numero_table }} @endif }}" placeholder="Exemple : 528-AB7-88" > --}}
+                                    
                                 <span class="text-danger" id="numero_tableError"> </span>
 
                                 @if ($errors->has('numero_table'))
@@ -295,7 +301,7 @@
                                 <label class="control-label label-color" for="centre">Série de l'examen &nbsp; <span
                                         class="text-danger">*</span></label>
                                 <select class="form-control border-1 form-select" name="serie" id="serie">
-
+                                    <option value="">Choisissez la série</option>
                                     @foreach ($series as $serie)
                                         <option value="{{ $serie }}">{{ $serie }}</option>
                                     @endforeach
@@ -313,9 +319,8 @@
 
                             <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="mention">Mention obtenu pour
-                                    l'examen &nbsp; <span class="text-danger">*</span></label>
+                                    l'examen &nbsp;( <span class="text-danger">optionnel</span> )</label>
                                 <select class="form-control border-1 form-select" name="mention">
-
                                     @foreach ($mentions as $mention)
                                         <option value="{{ $mention }}">{{ $mention }}</option>
                                     @endforeach
@@ -325,24 +330,27 @@
 
                         <div class="row mb-3">
                             <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
-                                <label class="control-label label-color" for="departement">Département dans laquelle vous
+                                <label class="control-label label-color" for="departement">Département de
                                     avez
                                     composé &nbsp; <span class="text-danger">*</span></label>
-                                <select class="form-control border-1 form-select" name="departement">
+                                <select class="form-control border-1 form-select" name="departement" id="departement">
+                                    <option value="#">Sélectionner le département</option>
                                     @foreach ($departements as $departement)
-                                        <option value="{{ $departement->nom }}">{{ $departement->nom }}</option>
+                                        <option value="{{ $departement->id }}">{{ $departement->nom }}</option>
                                     @endforeach
-
                                 </select>
 
+                          
                             </div>
                             <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="commune">Commune où vous avez
                                     composé &nbsp; <span class="text-danger">*</span></label>
-                                <select class="form-control border-1 form-select" name="commune">
-                                    @foreach ($communes as $commune)
+                                <select class="form-control form-select border-1 form-select" name="commune" id="commune">
+
+                                    
+                                    {{-- @foreach ($communes as $commune)
                                         <option value="{{ $commune->nom }}">{{ $commune->nom }}</option>
-                                    @endforeach
+                                    @endforeach --}}
 
                                 </select>
 
@@ -361,6 +369,36 @@
 
                         </div>
 
+                        <script>
+                            $('document').ready(function() {    
+                                $('#departement').on('change', function() {
+                                    let id = $(this).val();
+                                    let commune = document.getElementById('commune');
+                                    var communeList = " ";
+                                    
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '{!! URL::to('communesOfDepartement') !!}',
+                                        data: {
+                                            'id': id,
+                                            _token :"{{ csrf_token() }}"
+                                        },                                        
+                                        success: function(data) {
+                                            console.log(data);
+                                            for(let i = 0; i < data.length; i++){
+                                                communeList += '<option value="'+ data[i].id + '">' + data[i].nom + '</option>';
+                                            }
+                                            $('#commune').html('');
+                                            $('#commune').append(communeList);
+                                        },
+                                        error: function(e) {
+                                            console.log(e);
+                                        }
+                                    })
+                                })
+                            })
+                        </script>
+
                         <div class="row mb-3">
 
                             <div class="form-group col-md-4 p-2">
@@ -371,8 +409,8 @@
                             <div class="form-group col-md-4 p-2">
                                 <label for="annee_obtention" class="control-label label-color">Année
                                     d'obtention du diplôme  &nbsp; <span class="text-danger">*</span></label>
-                                <input class="form-control  border-1 annee" type="number" name="annee_obtention" length="4"
-                                    id="annee_obtention" value="{{ old('annee_obtention') }}">
+                                <input class="form-control yearpicker  border-1 annee" type="number" min="2012" name="annee_obtention" length="4"
+                                    id="annee_obtention" value="{{ old('annee_obtention') }}" required>
                                 <span class="text-danger" id="annee_obtentionError"> </span>
 
                                 @if ($errors->has('annee_obtention'))
@@ -381,19 +419,19 @@
                             </div>
 
                             <div class="form-group col-md-4 p-2">
-                                <label class="control-label label-color" for="jury">Jury de l'examen &nbsp; <span class="text-danger">*</span></label>
+                                <label class="control-label label-color" for="jury">Jury de l'examen &nbsp; (<span class="text-danger">optionnel</span>)</label>
                                 <input type="text" class="form-control border-1 jury" id="jury" name="jury" minlength="3" maxlength="4">
-                            </div>
-                           
-                            
+                            </div>          
                         </div>
 
-                       
+                      
+
+                        {{-- Releve de note --}}
                         <div class="row mb-3">
                             <div class="form-group col p-2">
-                                <label for="photo" class="control-label label-color">Relevé de note + Acte de naissance + Carte d'identité<b class="text-uppercase"> (UN SEUL FICHIER PDF)</b> &nbsp; <span
+                                <label for="cni" class="control-label label-color">Relevé de note (maximum 10 MB)&nbsp; <span
                                         class="text-danger">*</span></label>
-                                <input type="file" class="form-control border-1" name="releve" id="releve"
+                                <input type="file" class="form-control border-1" accept=".pdf, .docx" name="releve" id="releve"
                                     value="{{ old('releve') }}">
                                 <span class="text-danger" id="releveError"> </span>
                                 @if ($errors->has('releve'))
@@ -432,8 +470,38 @@
                     {{-- form section 3 --}}
                     <div class="form-section form-section3" id="form-section3">
                         <p class="favorite-color fw-bold fs-4 pt-5">Autres informations utiles et obligatoires</p>
-
                         <div class="row mt-4 mb-3">
+
+
+                              {{--Upload acte de naissance --}}
+                        <div class="row mb-1">
+                            <div class="form-group col p-2">
+                                <label for="acte_naissance" class="control-label label-color">Acte de naissance (Taille maximale 10MB)&nbsp; <span
+                                        class="text-danger">*</span></label>
+                                <input type="file" class="form-control border-1" accept=".pdf, .docx" name="acte_naissance" id="acte_naissance"
+                                    value="{{ old('acte_naissance') }}" id="acte_naissance">
+                                <span class="text-danger" id="acteError"> </span>
+                                @if ($errors->has('acte_naissance'))
+                                    <span class="text-danger">{{ $errors->first('acte_naissance') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        {{-- Carte nationale d'identité --}}
+                        <div class="row mb-3">
+                            <div class="form-group col p-2">
+                                <label for="cni" class="control-label label-color"> Carte d'identité (Taille maximale 10MB)<span
+                                        class="text-danger">*</span></label>
+                                <input type="file" class="form-control border-1" accept=".pdf, .docx" name="cni" id="cni"
+                                    value="{{ old('cni') }}" id="cni">
+                                <span class="text-danger" id="cniError"> </span>
+                                @if ($errors->has('cni'))
+                                    <span class="text-danger">{{ $errors->first('cni') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+
                             <div class="form-group col-md-4 p-2">
                                 <label for="nom_pere" class="control-label label-color">Noms et prénoms exactes du
                                     père &nbsp; <span class="text-danger">*</span></label>
@@ -462,7 +530,7 @@
                                     d'un de vos parents &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 contact_parent" type="number" name="contact_parent"
                                     id="contact_parent" value="{{ old('contact_parent') }}" required length="8" >
-                                <span class="text-danger" id="numero_contact_parentError"> </span>
+                                <span class="text-danger" id="contact_parentError"> </span>
 
                                 @if ($errors->has('contact_parent'))
                                     <span class="text-danger">{{ $errors->first('contact_parent') }}</span>
@@ -486,30 +554,28 @@
                         </button>
                         <div class="mb-5">
                             <input type="checkbox" name="valide" id="valide" required>
-                            <span class="text-danger ps-2"> Je certifie exactes et justes toutes les informations
-                                renseignées</span> <br>
+                            <label for="valide" class="text-danger ps-2"> Je certifie exactes et justes toutes les informations
+                                renseignées</label> <br>
                             <input type="reset" value="Annuler tout"
                                 class="mt-5 btn btn-md bg-favorite-color text-white px-5 me-4">
-                            <button class="mt-5 btn btn-md btn-success px-5" id="sendDemande" type="submit">Payez pour
-                                soumettre
-                                votre demande</button>
+                            <button class="mt-5 btn btn-md btn-success px-5" id="sendDemande">Soumettre et payer</button> 
                         </div>
                     </div>
                     {{-- end form section 3 --}}
                 </form>
-
-
-
-
-
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.kkiapay.me/k.js"></script>
+    {{-- <script src="https://cdn.kkiapay.me/k.js"></script> --}}
+    <script>
+        //   $(".yearpicker").yearpicker();
+    </script>
 
     <script>
+      
         $('document').ready(function() {
+     
 
             $('#next1').click(function(e) {
                 e.preventDefault();
@@ -564,7 +630,7 @@
                     $('#form-section1').removeClass('form-section-active');
                     $('#form-section2').addClass('form-section-active');
                     $('#progresse2').addClass('progressbar-item-active');
-                    $('.progress').width('34%');
+                    $('.progress').width('38%');
                 }
             });
 
@@ -579,7 +645,10 @@
             $('#next2').click(function(e) {
 
                 var inputNumeroTableRule = /^[0-9]{3}\-[A-Za-z0-9]{3}\-[0-9]{2}$/;
+
                 var releveFileSize = document.getElementById('releve').files[0].size;
+                
+
                 var releveFileType = document.getElementById('releve').files[0].type;
                 
 
@@ -588,9 +657,9 @@
                     $('#numero_tableError').text('le numero de table est obligatoire');
                 }
 
-                else if(!inputNumeroTableRule.test($("#numero_table").val())) {
-                    $('#numero_tableError').text('le numero de table est obligatoire');
-                }
+                // else if(!inputNumeroTableRule.test($("#numero_table").val())) {
+                //     $('#numero_tableError').text('le numero de table est obligatoire');
+                // }
                 
                 else if ($('#serie').val() == '') {
                     $('#serieError').text('Choisissez une série');
@@ -601,13 +670,14 @@
                 } else if ($('#releve').val() == '') {
                     $('#releveError').text('Le releve de note est obligatoire');
                 } 
-                else if ( releveFileSize >15000000 ) {
+                else if ( releveFileSize >10000000 ) {
                     $('#releveError').text('Taille de fichier trop grande');
                 } 
 
                 else if ( releveFileType !="application/pdf") {
                     $('#releveError').text('Vous devez uploader un fichier pdf');
                 }
+
                 // else if (!allowedExtensionPdf.exec(filePathPdf)){
                 //     $('#releveError').text('Le relevé doit être au format pdf');
                 // }
@@ -615,7 +685,7 @@
                     $('#form-section2').removeClass('form-section-active');
                     $('#form-section3').addClass('form-section-active');
                     $('#progresse3').addClass('progressbar-item-active');
-                    $('.progress').width('67%');
+                    $('.progress').width('75%');
                 }
             });
 
@@ -624,32 +694,40 @@
                 $('#form-section3').removeClass('form-section-active');
                 $('#form-section2').addClass('form-section-active');
                 $('#progresse3').removeClass('progressbar-item-active');
-                $('.progress').width('34%');
+                $('.progress').width('38%');
             });
 
             $('#sendDemande').click(function(e) {
 
+                var acteFileSize = document.getElementById('acte_naissance').files[0].size;
+                var cniFileSize = document.getElementById('cni').files[0].size;
+                e.preventDefault();                
                 if ($("#nom_pere").val() == '') {
                     $('#nom_pereError').text('le nom du père est obligatoire');
                 } else if ($("#nom_mere").val() == '') {
                     $('#nom_mereError').text('le nom de la mère est obligatoire');
-
                 } else if ($("#contact_parent").val() == '') {
                     $('#contact_parentError').text('le contact du parent est obligatoire');
+                } 
+                else if ( acteFileSize >10000000 ) {
+                    $('#acteError').text('Taille de fichier trop grande');
+                } 
+                else if ( cniFileSize >10000000 ) {
+                    $('#cniError').text('Taille de fichier trop grande');
                 }
+                else{
+                    $('#myForm').submit();
+                } 
             });
+
+
 
             $(".contact_parent").inputmask("(999) 999-9999");
-
-
-            $("#annee_obtention").yearpicker({
-
-            });
-
-            // var setting = #^[0-9]{3}\-[A-Za-z0-9]{3}\-[0-9]{2}$#;
-
             
-
+            // var setting = #^[0-9]{3}\-[A-Za-z0-9]{3}\-[0-9]{2}$#;
         });
+      
+
+        
     </script>
 @endsection

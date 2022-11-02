@@ -43,19 +43,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('alertes', AlerteController::class);
     Route::resource('flashInfos', FlashInfoController::class);
     Route::resource('examens', ExamenController::class);
+ 
 });
 
 Route::post('changeStateExamen/{examen}', [ExamenController::class, 'changeStateExamen'])->name('changeStateExamen');
 
+Route::resource('demandes', App\Http\Controllers\DemandeController::class)->except(['store','create'])->middleware(['auth']);
 
-Route::resource('demandes', App\Http\Controllers\DemandeController::class)->except('store')->middleware(['auth']);
 Route::post('validationDemande', [App\Http\Controllers\DemandeController::class, 'store'])->name('validationDemande');
+
+
 
 Route::get('changeToPayState/{demande}', [App\Http\Controllers\DemandeController::class, 'changeToPayState'])->name('changeToPayState');
 Route::post('changeStateToGenerer/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'pdf2'])->name('changeStateToGenerer');
 
 Route::resource('alertes', AlerteController::class);
-// Route::post('storeDemande', [App\Http\Controllers\DemandeController::class,'storeDemande'])->name('storeDemande');
+//Route::post('storeDemande', [App\Http\Controllers\DemandeController::class,'storeDemande'])->name('storeDemande');
 Route::get('listeDemande', [App\Http\Controllers\Admin\GererDemandeController::class, 'listeDemande'])->name('listeDemande');
 Route::post('demandes/liste', [App\Http\Controllers\Admin\GererDemandeController::class,'dynamicSearchAllDemande'])->name('demandes-liste');
 
@@ -65,7 +68,8 @@ Route::get('demandeGeneree', [App\Http\Controllers\DemandeController::class, 'de
 Route::get('attestationGeneree', [GererDemandeController::class, 'attestationAll'])->name('attestation-all');
 Route::get('demandeNonPayee', [App\Http\Controllers\DemandeController::class, 'demandeNonPayee'])->name('demande-non-payee');
 
-
+Route::get('demande/create', [App\Http\Controllers\DemandeController::class, 'index'])->name('before-demande');
+Route::post('demande/create', [App\Http\Controllers\DemandeController::class, 'beforeDemande'])->name('before-demande');
 Route::get('singleDemande/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'singleDemande'])->name('singleDemande');
 Route::post('changeState/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'changeState'])->name('changeState');
 Route::get('demandeUser', [App\Http\Controllers\DemandeController::class, 'demandeUser'])->name('demandeUser')->middleware(['auth']);
@@ -82,7 +86,11 @@ Route::get('accueil', [HomeController::class,'index'])->name('accueil');
 Route::get('/', [HomeController::class,'redirectIndex']);
 
 Route::get('dowloadUserFile/{lien}', [GererDemandeController::class, 'dowloadUserFile'])->name('dowload');
-
+Route::get('downloadReleve/{id}', [App\Http\Controllers\DemandeController::class, 'download_releve'])->name('download-releve');
+Route::get('downloadActe/{id}', [App\Http\Controllers\DemandeController::class, 'download_acte'])->name('download-acte');
+Route::get('downloadACni/{id}', [App\Http\Controllers\DemandeController::class, 'download_cni'])->name('download-cni');
+// Route pour changer les communes en fonction du département
+Route::post('/communesOfDepartement', [App\Http\Controllers\DemandeController::class, 'communesOfDepartement' ])->name('communes-of-departement');
 
 
 Route::get('actualites', function () {
@@ -142,3 +150,7 @@ Route::get('motDec', function () {
 Route::get('header2', function () {
     return view('front.layouts.header2');
 })->name('header2');
+
+Route::get('test', function () {
+    return view('front.test');
+})->name('test');

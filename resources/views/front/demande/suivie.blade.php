@@ -40,21 +40,23 @@
 
                     <div class="d-flex justify-content-between mt-5 fw-bold">
                         <p class="fs-4">Liste des demandes</p>
-                        <a href="{{ route('demandes.create') }}"
+                        <a href="{{ route('before-demande') }}"
                             class="px-5 rounded text-white fw-bold py-2 rosette-bg-green d-flex justify-content-center align-items-center">Faire
                             une demande</a>
 
                     </div>
+
+
 
                     <div class="mt-5">
                         <nav>
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                 <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
                                     data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
-                                    aria-selected="true">Toutes mes demandes faites</button>
+                                    aria-selected="true">Demandes en attente</button>
                                 <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
                                     data-bs-target="#navprofile" type="button" role="tab" aria-controls="nav-profile"
-                                    aria-selected="false">Demande(s) en attente</button>
+                                    aria-selected="false">Demandes non payées</button>
                                 <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
                                     data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact"
                                     aria-selected="false">Demande(s) validée(s)</button>
@@ -67,8 +69,8 @@
                         <div class="tab-content" id="nav-tabContent">
 
                             {{-- Tabs 1 --}}
-                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
-                                aria-labelledby="nav-home-tab">
+                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                
 
                                 <div class="container-fluid d-flex justify-content-between mt-5">
                                     <div>
@@ -111,8 +113,8 @@
                                             </tr>
                                         </th>
                                         <tbody>
-                                            @if (count($demandes))
-                                                @foreach ($demandes as $demande)
+                                            @if (count($demandeNonValides)>0)
+                                                @foreach ($demandeNonValides as $demande)
                                                     <tr class="">
                                                         <td class="py-3">{{ $demande->created_at->format('d-m-Y') }}
                                                         </td>
@@ -120,14 +122,9 @@
                                                             {{ $demande->nom . ' ' . $demande->prenom }}
                                                         </td>
                                                         <td class="py-3">{{ $demande->centre }}</td>
-                                                        {{-- <td class="py-3">{{ $demande->departement }}</td> --}}
-                                                        {{-- <td class="py-3">{{ $demande->commune }}</td> --}}
+
                                                         <td class="py-3">{{ $demande->numero_table }}</td>
                                                         <td class="py-3 label-color">{{ $demande->statut_demande }}</td>
-                                                        {{-- <td class="py-3 label-color">
-                                                           {{ $demande->statut_payement }}
-                                                        </td> --}}
-                                                        {{-- <td>{{$demande->id}}</td> --}}
 
                                                         <td class="py-3">
                                                             <a title="Consulter la demande"
@@ -211,9 +208,13 @@
                                                             </div>
                                                             {{-- Modal to delete demande --}}
 
-                                                            {{-- show demande's messages to user --}}
-                                                            <button class="btn btn-sm" type="button"data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
-                                                            >
+                                                            @php
+                                                                $messages = App\Models\Alerte::where('demande_id', $demande->id)->get();
+                                                            @endphp
+
+
+                                                            {{-- Offcanva to show message to user --}}
+                                                            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20"
                                                                     height="20" fill="green"
                                                                     class="bi bi-chat-left-text" viewBox="0 0 16 16">
@@ -224,79 +225,28 @@
                                                                 </svg>
                                                             </button>
 
-                                                            
                                                             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                                                                <button type="button" class="btn-close text-reset ms-2 mt-2" data-bs-dismiss="offcanvas"
-                                                                    aria-label="Close"></button>
                                                                 <div class="offcanvas-header">
-                                                            
-                                                                    <h5 id="offcanvasRightLabel">Messages de
-                                                                        l'administration</h5>
-                                                            
+                                                                    <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+                                                                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="offcanvas-body">
-                                                            
-                                                                    @if ($demande->statut_payement == 'non_payer')
-                                                                        <p class="text-danger">Vous n'avez pas encore
-                                                                            payer pour cette demande</p>
-                                                                        <a href="#" class="btn btn-sm btn-success float-center mt-2" style="margin-left: 25%;">Payer
-                                                                            maintenant</a>
-                                                                    @endif
-                                                                    
-
-                                                                    {{-- @foreach ($demande->alertes as $alerte)
-                                                                        <div class="card mt-5">
-                                                                            <div class="card-header bg-favorite-color text-white fw-bold">
-                                                                                {{ $alerte->sujet }}
-                                                                            </div>
-                                                                            <div class="card-body">
-                                                                
-                                                                                <p class="card-text mt-3">
-                                                                                    {{ $alerte->message }}</p>
-                                                                
-                                                                            </div>
-                                                                            <div class="card-footer mt-2">
-                                                                                <a class=" favorite-color ">{{ $alerte->created_at->format('d-m-Y') }}</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    @endforeach --}}
+                                                                    ...
                                                                 </div>
                                                             </div>
-                                                               
-                                                            {{-- <div class=" collapse " id="{{'alerteMessage'. $demande->id}}" style="margin-left: 50px;">
-                                                                <div class="p-3 shadow message-collapse rounded" >  </button>
-                                                                     
-    
-                                                                    <p>Messages de l'administrtaton</p>
-    
-                                                                    @if (count($demande->alertes))
-                                                                        
-                                                                    
-                                                                    @foreach ($demande->alertes as $alerte)
-                                                                        <div class="card mt-5">
-                                                                            <div
-                                                                                class="card-header bg-favorite-color text-white fw-bold">
-                                                                                {{ $alerte->sujet }}
-                                                                            </div>
-                                                                            <div class="card-body">
-    
-                                                                                <p class="card-text mt-3">
-                                                                                    {{ $alerte->message }}</p>
-    
-                                                                            </div>
-                                                                            <div class="card-footer mt-2">
-                                                                                <a
-                                                                                    class=" favorite-color ">{{ $alerte->created_at->format('d-m-Y') }}</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    @endforeach
-                                                                    @else
-                                                                        <p>Encore aucun message pour cette demande</p>
-                                                                    @endif
-                                                                </div>
-                                                            </div> --}}
 
-                                                        </td>
+                                                            {{-- show demande's messages to user --}}
+                                                            {{-- <button class="btn btn-sm" type="button"data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                    height="20" fill="green"
+                                                                    class="bi bi-chat-left-text" viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                                                                    <path
+                                                                        d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z" />
+                                                                </svg>
+                                                            </button>                                                                                --}}
+                                                       </td>
 
                                                        
                                                     </tr>
@@ -317,6 +267,8 @@
                                                                         aria-label="Close"></button>
                                                                 </div>
                                                                 <div
+
+                                                                
                                                                     class="modal-body d-flex justify-content-center flex-column align-items-center">
                                                                     {{-- tab modal body --}}
                                                                     {{-- <img src="{{ 'storage/' . $demande->photo }}" alt="" width="600"
@@ -325,7 +277,10 @@
                                                                         <p
                                                                             class="section-title text-center first-color py-2 mt-5">
                                                                             Informations personnelles du candidat</p>
-
+                                                                        <div class="d-flex justify-content-center align-items-center">
+                                                                            <img src="{{ asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="500" height="500"> 
+                                                                        </div>
+                                                                        <hr>
                                                                         <div
                                                                             class="row-info container-fluid  d-flex justify-content-between pt-3">
 
@@ -438,6 +393,24 @@
                                                                             <p>{{ $demande->nom_mere }}</p>
 
                                                                         </div>
+                                                                        <hr>
+                                                                        <div class=" d-flex justify-content-between w-50 ">
+                                                                            <div class=" text-center">
+                                                                                <span>Rélevé</span> <br>
+                                                                                <a href=" {{ asset('storage/'.$demande->releve) }}" target="_blank" class="py-3"><img src="{{ asset('admin/img/pdf-file.svg') }}" alt="" height="50" width="50" /></a> <br>
+                                                                                <a href="{{ route('download-releve', $demande->id ) }}" class="mt-5">Télécharger</a>
+                                                                            </div>
+                                                                            <div  class=" text-center">
+                                                                                <span>Acte de naissance</span> <br>
+                                                                                <a href=" {{ asset('storage/'.$demande->acte_naissance) }}" target="_blank" class="py-3"><img src="{{ asset('admin/img/pdf-file.svg') }}" alt="" height="50" width="50" /></a> <br>
+                                                                                <a href="{{ route('download-acte', $demande->id ) }}" class="mt-5">Télécharger</a>
+                                                                            </div>
+                                                                            <div  class=" text-center">
+                                                                                <span>Carte d'identité</span> <br>
+                                                                                <a href=" {{ asset('storage/'.$demande->cni) }}" target="_blank" class="py-3"><img src="{{ asset('admin/img/pdf-file.svg') }}" alt="" height="50" width="50" /></a> <br>
+                                                                                <a href="{{ route('download-cni', $demande->id ) }}" class="mt-5">Télécharger</a>
+                                                                            </div>
+                                                                        </div>
 
                                                                     </div>
                                                                     <a href="{{ route('demandes.pdf') }}"
@@ -451,6 +424,11 @@
                                                         </div>
                                                     </div>
                                                     {{-- End show modal code --}}
+
+
+
+
+                                                    
                                                 @endforeach
                                             @endif
                                         </tbody>
@@ -463,10 +441,9 @@
 
                             {{-- Tabs 2 --}}
 
-                            <div class="tab-pane fade" id="nav-profile" role="tabpanel"
-                                aria-labelledby="nav-profile-tab">
-
-                                <div class="container-fluid d-flex justify-content-between mt-5">
+                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                benin
+                                {{-- <div class="container-fluid d-flex justify-content-between mt-5">
                                     <div>
                                         <form action="">
 
@@ -497,36 +474,37 @@
                                                 <td>Date</td>
                                                 <td>Nom & Prénoms</td>
                                                 <td>Collège</td>
-                                                {{-- <td>Dprt du collège</td> --}}
-                                                {{-- <td>Commune</td> --}}
                                                 <td>N* de Table </td>
                                                 <td>Status</td>
                                                 <td>Action</td>
                                             </tr>
                                         </th>
+                                        
                                         <tbody>
-                                            @if (count($demandeNonValides))
-                                                @foreach ($demandeNonValides as $demandeNonValide)
+
+                                         
+                                            
+                                            @if (!is_null($demandeNonPayers))
+                                                @foreach ($demandeNonPayers as $demandeNonPayer)
                                                     <tr class="">
                                                         <td class="py-3">
-                                                            {{ $demandeNonValide->created_at->format('d-m-Y') }}
+                                                            {{ $demandeNonPayer->created_at->format('d-m-Y') }}
                                                         </td>
                                                         <td class="py-3">
-                                                            {{ $demandeNonValide->nom . ' ' . $demandeNonValide->prenom }}
+                                                            {{ $demandeNonPayer->nom . ' ' . $demandeNonPayer->prenom }}
                                                         </td>
-                                                        <td class="py-3">{{ $demandeNonValide->centre }}</td>
-                                                        {{-- <td class="py-3">{{ $demandeNonValide->departement }}</td> --}}
-                                                        {{-- <td class="py-3">{{ $demandeNonValide->commune }}</td> --}}
-                                                        <td class="py-3">{{ $demandeNonValide->numero_table }}</td>
+                                                        <td class="py-3">{{ $demandeNonPayer->centre }}</td>
+                                                        
+                                                        <td class="py-3">{{ $demandeNonPayer->numero_table }}</td>
                                                         <td class="py-3 label-color">
-                                                            {{ $demandeNonValide->statut_demande }}
+                                                            {{ $demandeNonPayer->statut_demande }}
                                                         </td>
                                                         <td class="py-3">
 
                                                             <a title="Consulter le résultat"
-                                                                href="{{ route('demandes.show', ['demande' => $demandeNonValide->id]) }}"
+                                                                href="{{ route('demandes.show', ['demande' => $demandeNonPayer->id]) }}"
                                                                 class="btn btn-sm text-primary" data-bs-toggle="modal"
-                                                                data-bs-target="{{ '#showModal' . $demandeNonValide->id }}"
+                                                                data-bs-target="{{ '#showModal' . $demandeNonPayer->id }}"
                                                                 title="Consulter">
 
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20"
@@ -539,7 +517,7 @@
                                                                 </svg>
                                                             </a>
 
-                                                            <a href="{{ route('demandes.edit', ['demande' => $demandeNonValide->id]) }}"
+                                                            <a href="{{ route('demandes.edit', ['demande' => $demandeNonPayer->id]) }}"
                                                                 title="Editer le résultat"
                                                                 class="btn btn-sm text-success ">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20"
@@ -552,7 +530,7 @@
                                                                 </svg>
                                                             </a>
                                                             <a
-                                                                href="{{ route('demandes.destroy', ['demande' => $demandeNonValide->id]) }}">
+                                                                href="{{ route('demandes.destroy', ['demande' => $demandeNonPayer->id]) }}">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="35"
                                                                     height="35" fill="red" class="bi bi-x"
                                                                     viewBox="0 0 16 16">
@@ -575,10 +553,10 @@
                                                         </td>
                                                     </tr>
 
-                                                    {{-- Show modal code --}}
+    
 
                                                     <div class="modal fade container-fluid"
-                                                        id="{{ 'showModal' . $demandeNonValide->id }}" tabindex="-1">
+                                                        id="{{ 'showModal' . $demandeNonPayer->id }}" tabindex="-1">
                                                         <div class="modal-dialog" style="max-width: 60%">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -590,8 +568,8 @@
                                                                 </div>
                                                                 <div
                                                                     class="modal-body d-flex justify-content-center flex-column align-items-center">
-                                                                    {{-- tab modal body --}}
-                                                                    <img src="{{ 'storage/' . $demandeNonValide->photo }}"
+                                                                 
+                                                                    <img src="{{ 'storage/' . $demandeNonPayer->photo }}"
                                                                         alt="" width="600" height="400"
                                                                         style="object-fit: cover;">
                                                                     <div class="container mt-2">
@@ -604,7 +582,7 @@
 
                                                                             <p>Nom :</p>
                                                                             <p class="">
-                                                                                {{ $demandeNonValide->nom }}</p>
+                                                                                {{ $demandeNonPayer->nom }}</p>
 
                                                                         </div>
 
@@ -613,7 +591,7 @@
 
                                                                             <p>Prénom :</p>
                                                                             <p class="">
-                                                                                {{ $demandeNonValide->prenom }}
+                                                                                {{ $demandeNonPayer->prenom }}
                                                                             </p>
 
                                                                         </div>
@@ -621,7 +599,7 @@
                                                                             class="row-info container-fluid  d-flex justify-content-between">
 
                                                                             <p>Date de naissance :</p>
-                                                                            <p>{{ $demandeNonValide->date_naissance }}
+                                                                            <p>{{ $demandeNonPayer->date_naissance }}
                                                                             </p>
 
                                                                         </div>
@@ -629,14 +607,14 @@
                                                                             class="row-info container-fluid  d-flex justify-content-between">
 
                                                                             <p class="">Nom du collège :</p>
-                                                                            <p>{{ $demandeNonValide->centre }}</p>
+                                                                            <p>{{ $demandeNonPayer->centre }}</p>
 
                                                                         </div>
                                                                         <div
                                                                             class=" row-info container-fluid  d-flex justify-content-between">
 
                                                                             <p>Contact du candidat :</p>
-                                                                            <p>{{ $demandeNonValide->contact }}</p>
+                                                                            <p>{{ $demandeNonPayer->contact }}</p>
 
                                                                         </div>
 
@@ -649,7 +627,7 @@
                                                                             class=" row-info container-fluid  d-flex justify-content-between">
 
                                                                             <p>Numero de table :</p>
-                                                                            <p>{{ $demandeNonValide->numero_table }}</p>
+                                                                            <p>{{ $demandeNonPayer->numero_table }}</p>
 
                                                                         </div>
 
@@ -657,7 +635,7 @@
                                                                             class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
 
                                                                             <p>Année d'obtention du diplôme :</p>
-                                                                            <p>{{ $demandeNonValide->annee_obtention }}
+                                                                            <p>{{ $demandeNonPayer->annee_obtention }}
                                                                             </p>
 
                                                                         </div>
@@ -665,21 +643,21 @@
                                                                             class="row-info container-fluid  d-flex justify-content-between">
 
                                                                             <p>Série d'examen :</p>
-                                                                            <p>{{ $demandeNonValide->serie }}</p>
+                                                                            <p>{{ $demandeNonPayer->serie }}</p>
 
                                                                         </div>
                                                                         <div
                                                                             class="row-info container-fluid  d-flex justify-content-between">
 
                                                                             <p>Numero de référence :</p>
-                                                                            <p>{{ $demandeNonValide->numero_reference }}
+                                                                            <p>{{ $demandeNonPayer->numero_reference }}
                                                                             </p>
 
                                                                         </div>
                                                                         <div
                                                                             class="pt-3 row-info container-fluid  d-flex justify-content-between">
                                                                             <p>Centre de composition :</p>
-                                                                            <p>{{ $demandeNonValide->centre }}</p>
+                                                                            <p>{{ $demandeNonPayer->centre }}</p>
                                                                         </div>
 
                                                                     </div>
@@ -693,28 +671,28 @@
                                                                             class=" row-info container-fluid  d-flex justify-content-between">
 
                                                                             <p>Commune du centre :</p>
-                                                                            <p>{{ $demandeNonValide->commune }}</p>
+                                                                            <p>{{ $demandeNonPayer->commune }}</p>
 
                                                                         </div>
                                                                         <div
                                                                             class="row-info container-fluid  d-flex justify-content-between">
 
                                                                             <p>Département :</p>
-                                                                            <p>{{ $demandeNonValide->departement }}</p>
+                                                                            <p>{{ $demandeNonPayer->departement }}</p>
 
                                                                         </div>
                                                                         <div
                                                                             class="row-info container-fluid  d-flex justify-content-between">
 
                                                                             <p>Nom du père :</p>
-                                                                            <p>{{ $demandeNonValide->nom_pere }}</p>
+                                                                            <p>{{ $demandeNonPayer->nom_pere }}</p>
 
                                                                         </div>
                                                                         <div
                                                                             class="row-info container-fluid  d-flex justify-content-between">
 
                                                                             <p>Nom de la mère :</p>
-                                                                            <p>{{ $demandeNonValide->nom_mere }}</p>
+                                                                            <p>{{ $demandeNonPayer->nom_mere }}</p>
 
                                                                         </div>
 
@@ -729,13 +707,13 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    {{-- End show modal code --}}
+                                                  
                                                 @endforeach
                                             @endif
 
                                         </tbody>
                                     </table>
-                                </div>
+                                </div> --}}
                             </div>
                             {{-- end tabs2 --}}
 
@@ -813,8 +791,7 @@
                             {{-- Tabs 4 --}}
                             <div class="tab-pane fade" id="nav-attestation" role="tabpanel"
                                 aria-labelledby="nav-attestation-tab">
-                                ------------------
-                                ..................
+                               bj
                             </div>
                             {{-- End tabs 4 --}}
 
