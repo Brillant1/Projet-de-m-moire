@@ -201,6 +201,6 @@ class CandidatController extends Controller
     public function destroy(Candidat $candidat)
     {
         $candidat->delete();
-        return back()->with('alert-danger', 'Candidat supprimé' );
+        return back()->with('deletedMessage', 'Candidat supprimé' );
     }
 }

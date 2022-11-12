@@ -36,7 +36,7 @@
                 </div>
             @endif
             @if (session('deletedMessage'))
-                <div class="alert alert-danger mb-3">
+                <div class="alert alert-success mb-3">
                     <h6> {{ session('deletedMessage') }} </h3>
                 </div>
             @endif

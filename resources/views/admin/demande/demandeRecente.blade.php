@@ -15,9 +15,9 @@
                 </div>
                 <div class="text-center d-flex justify-content-between mt-2">
     
-                    <a class="btn bg-favorite-color py-2 fw-bold text-white d-flex justify-content-between align-items-center"
+                    {{-- <a class="btn bg-favorite-color py-2 fw-bold text-white d-flex justify-content-between align-items-center"
                         href="#">Ajouter un
-                        nouveau</a>
+                        nouveau</a> --}}
     
                 </div>
             </div>

@@ -5,19 +5,19 @@
         <nav class="mb-3">
             <div class="d-flex justify-content-between align-items-center bg-white px-3 py-4">
                 <div class=" ">
-                    <h1 style="font-size: 1.2rem;">Liste des centres</h1>
+                    <h1 style="font-size: 1.2rem;">Liste des colleges</h1>
                     <ol class="breadcrumb mt-1 mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('centres.index') }}">Dashboard</a></li> &nbsp; /
-                        <li class="breadcrumb-item"><a href="{{ route('centres.index') }}">Centres</a></li> &nbsp; /
+                        <li class="breadcrumb-item"><a href="{{ route('colleges.index') }}">Dashboard</a></li> &nbsp; /
+                        <li class="breadcrumb-item"><a href="{{ route('colleges.index') }}">colleges</a></li> &nbsp; /
     
-                        <li class="breadcrumb-item active">Liste des centre</li>
+                        <li class="breadcrumb-item active">Liste des college</li>
                         </li>
                     </ol>
                 </div>
                 <div class="text-center d-flex justify-content-between mt-2">
     
                     <a class="btn bg-favorite-color py-2 fw-bold text-white d-flex justify-content-between align-items-center"
-                        href=" {{ route('centres.create') }} ">Ajouter un
+                        href=" {{ route('colleges.create') }} ">Ajouter un
                         nouveau</a>
     
                 </div>
@@ -40,10 +40,10 @@
                 </div>
             @endif
             {{-- <div class="text-center my-3 alert bg-warning">
-                <h4 class="text-white font-italic fw-bold">Liste des centres</h4>
+                <h4 class="text-white font-italic fw-bold">Liste des colleges</h4>
             </div>
             <div class="text-center mb-4 d-flex justify-content-end">
-                <a class="btn btn-success p-2 fw-bold text-white" href=" {{ route('centres.create') }} ">Ajouter un
+                <a class="btn btn-success p-2 fw-bold text-white" href=" {{ route('colleges.create') }} ">Ajouter un
                     nouveau</a>
             </div> --}}
 
@@ -56,13 +56,12 @@
                     id="sampleTable">
                     <thead>
                         <tr class="">
-                            <th class=" ">Centre</th>
-                            <th class=" ">Référence</th>
+                            <th class=" ">Collège</th>
+                            
                             <th class="">Commune</th>
-                            <th class="">Département</th>
+                            
                             <th class=" ">Directeur</th>
-                            <th class="">Nombre composé</th>
-                            <th class=" ">Nombre d'admis</th>
+                            
                             <th class=" ">Action</th>
                         </tr>
 
@@ -70,21 +69,20 @@
                     </thead>
                     <tbody>
 
-                        @foreach ($centres as $centre)
+                        @foreach ($colleges as $college)
                             <tr class="">
 
-                                <td class=" px-4">{{ $centre->nom }}</td>
-                                <td class=" px-4">{{ $centre->reference }}</td>
-                                <td class=" px-4">{{ $centre->commune->nom }}</td>
-                                <td class=" px-4">{{ $centre->commune->departement->nom }}</td>
-                                <td class=" px-4">{{ $centre->directeur}}</td>
-                                <td class=" px-4">{{ $centre->nombre_candidat}}</td>
-                                <td class=" px-4">{{ $centre->nombre_candidat_admis}}</td>
+                                <td class=" px-4">{{ $college->nom }}</td>
+                               
+                                <td class=" px-4">{{ $college->commune->nom }}</td>
+                                
+                                <td class=" px-4">{{ $college->directeur}}</td>
+                               
 
                                 <td class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex justify-content-evenly w-100">
                  
-                                        <a href="{{ route('centres.edit', ['centre' => $centre->id]) }}"
+                                        <a href="{{ route('colleges.edit', ['college' => $college->id]) }}"
                                             title="Editer" class="ms-2">
 
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -95,7 +93,7 @@
                                         </a>
 
                                         <a href="#" class="text-danger" data-bs-toggle="modal" title="Supprimer"
-                                        data-bs-target="{{ '#deleteModal' . $centre->id }}">
+                                        data-bs-target="{{ '#deleteModal' . $college->id }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                                 fill="currentColor" class="bi bi-x text-danger" viewBox="0 0 16 16">
                                                 <path
@@ -105,7 +103,7 @@
 
                                         
 
-                                        <div class="modal fade" id="{{ 'deleteModal' . $centre->id }}"
+                                        <div class="modal fade" id="{{ 'deleteModal' . $college->id }}"
                                             tabindex="-1">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
@@ -115,11 +113,11 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        Voulez-vous vraiment supprimmer la centre : <br>
-                                                        {{ $centre->nom }}
+                                                        Voulez-vous vraiment supprimmer le college : <br>
+                                                        {{ $college->nom }}
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <form method="POST" action="{{ route('centres.destroy', ['centre' => $centre->id]) }}">
+                                                        <form method="POST" action="{{ route('colleges.destroy', ['college' => $college->id]) }}">
 
                                                             <input type="hidden" name="_method" value="DELETE">
                                                             <input type="hidden" name="_token"

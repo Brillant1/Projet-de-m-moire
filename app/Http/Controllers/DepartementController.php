@@ -91,6 +91,6 @@ class DepartementController extends Controller
     public function destroy($id)
     {
         Departement::findOrFail($id)->delete();
-        return back()->with('deletedMessage','Département supprimé !');
+        return back()->with('deletedMessage','Département supprimé avec succès !');
     }
 }

@@ -34,7 +34,7 @@
                 </div>
             @endif
             @if (session('deletedMessage'))
-                <div class="alert alert-danger mb-3">
+                <div class="alert alert-success mb-3">
                     <h6> {{ session('deletedMessage') }} </h3>
                 </div>
             @endif
@@ -103,7 +103,7 @@
                                         </a>
 
                                         <a href="#" class="text-danger" data-bs-toggle="modal"
-                                            data-bs-target="{{ '#deleteModal' . $candidat->nom }}" title="Supprimer">
+                                            data-bs-target="{{ '#deleteModal' . $candidat->id }}" title="Supprimer">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                                 fill="currentColor" class="bi bi-x text-danger" viewBox="0 0 16 16">
                                                 <path
@@ -114,7 +114,7 @@
 
 
                                         {{-- delete modal --}}
-                                        <div class="modal fade" id="{{ 'deleteModal' . $candidat->nom }}" tabindex="-1">
+                                        <div class="modal fade" id="{{ 'deleteModal' . $candidat->id }}" tabindex="-1">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">

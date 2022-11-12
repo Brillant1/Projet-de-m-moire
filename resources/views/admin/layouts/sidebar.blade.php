@@ -18,31 +18,33 @@
           
           <li>
             <a href="{{ route('demande-recente') }}">
-              <i class="bi bi-circle"></i><span>Demandes récentes payées</span>
+              <i class="bi bi-circle"></i><span>Demandes payées</span>
             </a>
           </li>
-          <li>
-            <a href="{{ route('demande-non-payee') }}">
-              <i class="bi bi-circle"></i><span>Demandes non payées</span>
-            </a>
-          </li>
+          
           <li>
             <a href="{{ route('demande-approuvee') }}">
               <i class="bi bi-circle"></i><span>Demandes approuvées</span>
             </a>
           </li>
+
           <li>
-            <a href="{{ route('demande-generee') }}">
-              <i class="bi bi-circle"></i><span>Demandes générées</span>
+            <a href="{{ route('demande-non-payee') }}">
+              <i class="bi bi-circle"></i><span>Demandes non payées</span>
             </a>
           </li>
+          {{-- <li>
+            <a href="{{ route('demande-generee') }}">
+              <i class="bi bi-circle"></i><span>Attestatio</span>
+            </a>
+          </li> --}}
 
           
-          <li>
+          {{-- <li>
             <a href="{{ route('listeDemande') }}">
               <i class="bi bi-circle"></i><span>Toutes les demandes</span>
             </a>
-          </li>
+          </li> --}}
 
         </ul>
       </li>
@@ -80,6 +82,27 @@
 
         </ul>
       </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#colleges-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Colleges</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="colleges-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{ route('colleges.index') }}">
+              <i class="bi bi-circle"></i><span>Liste des colleges</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('colleges.create') }}">
+              <i class="bi bi-circle"></i><span> Ajouter college</span>
+            </a>
+          </li>
+
+        </ul>
+      </li>
+
 
 
       <li class="nav-item">

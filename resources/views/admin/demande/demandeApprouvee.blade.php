@@ -14,10 +14,10 @@
                     </ol>
                 </div>
                 <div class="text-center d-flex justify-content-between mt-2">
-    
+{{--     
                     <a class="btn bg-favorite-color py-2 fw-bold text-white d-flex justify-content-between align-items-center"
                         href="#">Ajouter un
-                        nouveau</a>
+                        nouveau</a> --}}
     
                 </div>
             </div>
@@ -58,6 +58,7 @@
                             <th class=" ">Nom et Prénoms</th>
                             <th class=" ">N° Table</th>
                             <th class="">Centre</th>
+                            <th>Année</th>
                             <th>Approuvée le</th>
                             <th class="">Action</th>
                         </tr>
@@ -76,6 +77,7 @@
                                 <td class=" ">{{ $demande->numero_table }}</td>
 
                                 <td class=" ">{{ $demande->centre }}</td>
+                                <td>{{ $demande->annee_obtention }}</td>
                                 <td class="">{{ $demande->updated_at->format('d-m-Y') }}</td>
                                 <td class="">
                                     <div class="d-flex justify-content-evenly w-100">

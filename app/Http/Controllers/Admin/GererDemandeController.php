@@ -30,6 +30,7 @@ class GererDemandeController extends Controller
     public function listeDemande()
     {
         $demandes = Demande::orderBy('created_at', 'DESC')->get();
+        dd($demandes);
         $centres = Centre::all();
         $communes = Commune::all();
         $departements = Departement::all();
@@ -91,16 +92,12 @@ class GererDemandeController extends Controller
             Mail::send('emails.attestation', $demande, function ($message) use ($demande, $pdf) {
 
                 $message->to("esaietchagnonsi@gmail.com", $demande->nom)
-
                     ->subject($demande->prenom)
-
                     ->attachData($pdf->output(), "attestation_BEPC.pdf");
-            });
+                }); 
 
             $demande->statut_demande = "generer";
             $demande->save();
-
-
             return back()->with('changeStateTogenerer', "Vous avez généré l'attestation en l'avez envoyé au mail du demandeur");
         } else if ($demande->statut_demande == "generer") {
             return back()->with('alredyGenerateMessage', "Vous avez déjà généré cette attestation");

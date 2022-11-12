@@ -65,8 +65,8 @@
                         <div class="form-group col-md-4 p-2">
 
 
-                            <label for="nom" class="control-label label-color">Mettez vos noms en ordre et en
-                                intégralité</label>
+                            <label for="nom" class="control-label label-color">Nom (en intégralité)
+                                &nbsp; <span class="text-danger">*</span></label>
                             <input class="form-control border-2 " type="text" name="nom" id="nom" value="{{ $demande->nom }}">
 
                             @if ($errors->has('nom'))
@@ -76,8 +76,7 @@
 
                         <div class="form-group col-md-4 p-2">
 
-                            <label for="prenom" class="control-label label-color">Mettez tous les prénoms inscrits sur
-                                l'acte de naissance</label>
+                            <label for="prenom" class="control-label label-color">Prénoms(dans l'ordre selon l'acte) &nbsp; <span class="text-danger">*</span></label>
                             <input class="form-control border-2 " type="text" name="prenom" id="prenom" value="{{ $demande->prenom }}">
                             @if ($errors->has('prenom'))
                                 <span class="text-danger">{{ $errors->first('prenom') }}</span>
@@ -85,8 +84,7 @@
                         </div>
 
                         <div class="form-group col-md-4 p-2">
-                            <label for="date_naissance" class="control-label label-color">Votre date de naissance (celle
-                                inscrite sur l'acte de naissance)</label>
+                            <label for="date_naissance" class="control-label label-color">Date de naissance  &nbsp; <span class="text-danger">*</span></label>
                             <input class="form-control border-2 " type="date" name="date_naissance" id="date_naissance" value="{{ $demande->date_naisance }}">
 
                             @if ($errors->has('date_naissance'))
@@ -98,8 +96,7 @@
                     <div class="row mb-3">
 
                         <div class="form-group col-md-4 p-2">
-                            <label for="email" class="control-label label-color">Renseignez une adresse mail valide et
-                                joignable</label>
+                            <label for="email" class="control-label label-color">Adresse mail &nbsp; <span class="text-danger">*</span></label>
                             <input class="form-control border-2 " type="mail" name="email" id="email" value="{{ $demande->email }}">
                             @if ($errors->has('email'))
                                 <span class="text-danger">{{ $errors->first('email') }}</span>
@@ -107,8 +104,8 @@
                         </div>
 
                         <div class="form-group col-md-4 p-2">
-                            <label for="contact" class="control-label label-color">Votre numéro (renseignez un numéro
-                                joignable)</label>
+                            <label for="contact" class="control-label label-color">Contact (renseignez un numéro
+                                joignable) &nbsp; <span class="text-danger">*</span></label>
                             <input class="form-control border-2 " type="number" maxlenght="8" minlenght="8" name="contact"
                                 id="contact" value="{{ $demande->contact }}">
                             @if ($errors->has('contact'))
@@ -117,7 +114,8 @@
                         </div>
 
                         <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
-                            <label class="control-label label-color" for="sexe">Sexe</label>
+                            <label class="control-label label-color" for="sexe">Sexe &nbsp; <span
+                                class="text-danger">*</span></label>
                             <select class="form-control border-2 form-select" style="height: 50px;" name="sexe" id="sexe_id">
 
                                 @foreach ($sexes as $sexe)
@@ -133,7 +131,8 @@
                     <div class="row mb-3">
 
                         <div class="form-group col-md-4 p-2">
-                            <label for="ville_naissance" class="control-label label-color">Votre ville de naissance</label>
+                            <label for="ville_naissance" class="control-label label-color">Ville de
+                                naissance &nbsp; <span class="text-danger">*</span></label>
                             <input class="form-control border-2 " type="text" name="ville_naissance" id="ville_naissance" value="{{ $demande->ville_naissance }}">
 
                             @if ($errors->has('vile_naissance'))
@@ -141,10 +140,12 @@
                             @endif
                         </div>
                         <div class="form-group col-md-8 p-2">
-                            <label for="photo" class="control-label label-color">Photo claire jusqu'au ventre munie de votre
-                                carte d'identité en main</label>
+                            <label for="photo" class="control-label label-color">Photo claire jusqu'au ventre munie
+                                de votre
+                                carte d'identité en main (png, jpg ou jpeg) &nbsp; <span
+                                    class="text-danger">*</span></label>
                             <input type="file" class="form-control border-2" name="photo" id="photo">
-                            <img src="{{asset('storage/'.$demande->photo) }}" width="60" height="60"  alt="">
+                            <img src="{{asset('storage/photo_candidat_demande/'.$demande->photo) }}" width="60" height="60"  alt="">
                             @if ($errors->has('photo'))
                                 <span class="text-danger">{{ $errors->first('photo') }}</span>
                             @endif
@@ -156,8 +157,9 @@
 
                     <div class="row mb-3 mt-4">
                         <div class="form-group col-md-4 p-2">
-                            <label for="numero_table" class="control-label label-color">Veillez renseigner exactement votre
-                                numero de table</label>
+                            <label for="numero_table" class="control-label label-color">Votre
+                                    
+                                numero de table &nbsp; <span class="text-danger">*</span></label>
                             <input class="form-control border-2 " type="text" name="numero_table" id="numero_table" value="{{ $demande->numero_table }}">
 
                             @if ($errors->has('numero_table'))
@@ -166,21 +168,21 @@
                         </div>
 
                         <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
-                            <label class="control-label label-color" for="type_examen">Type de l'examen</label>
-                            <select class="form-control border-2 form-select" style="height: 50px;" name="type_examen" id="examen_id">
-                                @foreach ($type_examens as $type_examen)
-                                    <option value="{{ $type_examen }}" @if( old('examen_id', $demande->type_examen) == $type_examen) selected @endif>{{ $type_examen }}</option>
+                            <label class="control-label label-color" for="centre">Série de l'examen &nbsp; <span
+                                class="text-danger">*</span></label>
+                            <select class="form-control border-2 form-select" style="height: 50px;" name="serie" id="serie">
+                                @foreach ($series as $serie)
+                                    <option value="{{ $serie }}" @if( old('serie', $demande->serie) == $serie) selected @endif>{{ $serie }}</option>
                                 @endforeach
 
                             </select>
 
-
                         </div>
 
                         <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
-                            <label class="control-label label-color" for="mention">Mention obtenu pour l'examen</label>
+                            <label class="control-label label-color" for="mention">Mention obtenu pour
+                                l'examen &nbsp;( <span class="text-danger">optionnel</span> )</label>
                             <select class="form-control border-2 form-select" style="height: 50px;" name="mention" id="mention_id">
-
                                 @foreach ($mentions as $mention)
                                     <option value="{{ $mention }}" @if( old('mention_id', $demande->mention)== $mention) selected @endif>{{ $mention }}</option>
                                 @endforeach
@@ -193,21 +195,22 @@
 
                     <div class="row mb-3">
                         <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
-                            <label class="control-label label-color" for="commune">Commune dans laquelle vous avez
-                                composé</label>
-                            <select class="form-control border-2 form-select" style="height: 50px;" name="commune" id="commune_id">
-                                @foreach ($communes as $commune)
-                                    <option value="{{ $commune->id }}"  @if ( old('commune_id', $demande->commune) == $commune->nom) selected @endif >{{ $commune->nom }}</option>
+                            <label class="control-label label-color" for="departement">Département de
+                                avez
+                                composé &nbsp; <span class="text-danger">*</span></label>
+                            <select class="form-control border-2 form-select" style="height: 50px;" name="departement" id="departement_id">
+                                @foreach ($departements as $departement)
+                                    <option value="{{ $departement->id }}"  @if ( old('departement_id', $demande->departement) == $departement->nom) selected @endif >{{ $departement->nom }}</option>
                                 @endforeach
-
                             </select>
 
                         </div>
                         <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
-                            <label class="control-label label-color" for="commune">Commune où vous avez composé</label>
+                            <label class="control-label label-color" for="commune">Commune où vous avez
+                                composé &nbsp; <span class="text-danger">*</span></label>
                             <select class="form-control border-2 form-select" style="height: 50px;" name="commune">
                                 @foreach ($communes as $commune)
-                                    <option value="{{ $commune->nom }}">{{ $commune->nom }}</option>
+                                    <option value="{{ $commune->nom }}"  @if ( old('commune_id', $demande->commune) == $commune->nom) selected @endif >{{ $commune->nom }}</option>
                                 @endforeach
 
                             </select>
@@ -215,10 +218,10 @@
                         </div>
                         <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
                             <label class="control-label label-color" for="centre">Centre dans lequel vous avez
-                                composé</label>
+                                composé &nbsp; <span class="text-danger">*</span></label>
                             <select class="form-control border-2 form-select" style="height: 50px;" name="centre">
                                 @foreach ($centres as $centre)
-                                    <option value="{{ $centre->nom }}">{{ $centre->nom }}</option>
+                                    <option value="{{ $centre->nom }}" @if ( old('centre_id', $demande->centre) == $centre->nom) selected @endif>{{ $centre->nom }}</option>
                                 @endforeach
 
                             </select>
@@ -240,9 +243,10 @@
                         </div>
 
                         <div class="form-group col-md-4 p-2">
-                            <label for="numero_reference" class="control-label label-color">Veillez renseigner exactement
-                                votre numero de référence</label>
-                            <input class="form-control border-2 " type="text" name="numero_reference" id="numero_reference" value="{{ $demande->numero_reference }}">
+                           
+                                <label class="control-label label-color" for="jury">Jury de l'examen &nbsp; (<span class="text-danger">optionnel</span>)</label>
+                                <input type="text" class="form-control border-1 jury" id="jury" name="jury" value="{{ $demande->jury }}" minlength="3" maxlength="4">
+                          
 
                             @if ($errors->has('numero_reference'))
                                 <span class="text-danger">{{ $errors->first('numero_reference') }}</span>
@@ -258,6 +262,35 @@
 
                             </select>
 
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="form-group col-4 p-2">
+                            <label for="cni" class="control-label label-color">Relevé de note (maximum 10 MB)&nbsp;</label>
+                            <input type="file" class="form-control border-1" accept=".pdf, .docx" name="releve" id="releve"
+                                >
+                            
+                            @if ($errors->has('releve'))
+                                <span class="text-danger">{{ $errors->first('releve') }}</span>
+                            @endif
+                        </div>
+                        <div class="form-group col-4 p-2">
+                            <label for="acte_naissance" class="control-label label-color">Acte de naissance (Taille maximale 10MB)&nbsp;</label>
+                            <input type="file" class="form-control border-1" accept=".pdf, .docx" name="acte_naissance" id="acte_naissance"
+                                id="acte_naissance">
+                        
+                            @if ($errors->has('acte_naissance'))
+                                <span class="text-danger">{{ $errors->first('acte_naissance') }}</span>
+                            @endif
+                        </div>
+                        <div class="form-group col p-2">
+                            <label for="cni" class="control-label label-color"> Carte d'identité (Taille maximale 10MB)</label>
+                            <input type="file" class="form-control border-1"  accept=".pdf, .docx" name="cni" id="cni"
+                                 id="cni">
+                          
+                            @if ($errors->has('cni'))
+                                <span class="text-danger">{{ $errors->first('cni') }}</span>
+                            @endif
                         </div>
                     </div>
 

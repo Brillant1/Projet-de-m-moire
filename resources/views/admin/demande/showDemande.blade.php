@@ -128,7 +128,7 @@
                         Vous l'alerterez peut-être pour le lui en rappeler
                     </p>
                 @else
-                <p class="alert alert-success fs-6 mt-5 text-center fw-bold">{{ $demande->nom.' '.$demande->prenom }} 
+                <p class="alert alert-success fs-6 mt-5  fw-bold"> <span class="text-danger">Note:</span> {{ $demande->nom.' '.$demande->prenom }} 
                     a payé un montant de 5000F pour cette demande le {{ $demande->updated_at->format('d-m-Y') }}. Solde délivré du compte de Esaie TCHAGNONSI. ID de la transaction : {{ $demande->kkiapayPayement_id }}  
                 </p>
                 @endif
@@ -137,13 +137,13 @@
 
             {{-- Main content info de la demande --}}
             <div class="d-flex justify-content-center flex-column align-items-center">
-                
-                
-                <img src="{{ asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="700"
-                    style="object-fit: cover;">
+               
+                <img src="{{ asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="700">
+            
+            
                 <div class="container mt-2">
                     <p class="section-title text-center first-color py-2 mt-5">Informations personnelles du demandeur</p>
-
+                    {{-- <p class=" favorite-color h3 text-start ms-2  py-2 mt-5">Informations personnelles</p> --}}
                     <div class="row-info container-fluid  d-flex justify-content-between pt-3">
                         <p>Nom :</p>
                         <p class="">{{ $demande->nom }}</p>
@@ -190,7 +190,7 @@
                 </div>
                 <div class="container">
                     <p class="section-title text-center first-color py-2 mt-5">Informations sur le diplôme demandé</p>
-
+                    {{-- <p class=" favorite-color h3 text-start ms-2  py-2 mt-5">Informations sur le diplôme</p> --}}
 
                     <div class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
                         <p>Centre de composition :</p>
@@ -238,9 +238,9 @@
                     </div>
                 </div>
 
-                <div class="container mb-4">
+                <div class="container mb-3">
+                    {{-- <p class=" favorite-color h3 text-start ms-2  py-2 mt-5">Autres informations utiles</p> --}}
                     <p class="section-title text-center first-color py-2 mt-5">Autres informations utiles</p>
-
                     <div class="pt-3 row-info container-fluid  d-flex justify-content-between">
 
                         <p>Nom du père :</p>
@@ -265,16 +265,50 @@
                
                 
                 <div class="container mt-4">
-                    <iframe src="{{  asset('storage/'.$demande->releve) }}" width="100%" height="1000">Visualiser</iframe>
-                    <a href="{{ route('dowload',$demande->id)}}" class="btn btn-success btn-group-sm rounded px-4 fs-5 fw-bold float-end mt-3" >Télécharger</a>
+
+
+                    <div class=" d-flex justify-content-between w-50 ms-4 ">
+                        <div class=" text-center">
+                            @if (!is_null($demande->releve))
+                                <span>Rélevé</span> <br>
+                                <a href=" {{ asset('storage/'.$demande->releve) }}" target="_blank" class="py-3"><img src="{{ asset('admin/img/pdf-file.svg') }}" alt="" height="50" width="50" /></a> <br>
+                                <a href="{{ route('download-releve', $demande->id ) }}" class="mt-5">Télécharger</a>
+                            @else
+                            Non soumis    
+                            @endif
+                        </div>
+                        <div  class=" text-center">
+                            @if (!is_null($demande->acte_naissance))
+                            <span>Acte de naissance</span> <br>
+                            <a href=" {{ asset('storage/'.$demande->acte_naissance) }}" target="_blank" class="py-3"><img src="{{ asset('admin/img/pdf-file.svg') }}" alt="" height="50" width="50" /></a> <br>
+                            <a href="{{ route('download-acte', $demande->id ) }}" class="mt-5">Télécharger</a>
+                            @else
+                            Non soumise
+                            @endif
+                        </div>
+                        <div  class=" text-center">
+                            @if (!is_null($demande->cni))
+                            <span>Carte d'identité</span> <br>
+                            <a href=" {{ asset('storage/'.$demande->cni) }}" target="_blank" class="py-3"><img src="{{ asset('admin/img/pdf-file.svg') }}" alt="" height="50" width="50" /></a> <br>
+                            <a href="{{ route('download-cni', $demande->id ) }}" class="mt-5">Télécharger</a>
+                            @else
+                            Non soumis
+                            @endif
+                        </div>
+                    </div>
+
+
+
+                    {{-- <iframe src="{{  asset('storage/'.$demande->releve) }}" width="100%" height="1000">Visualiser</iframe>
+                    <a href="{{ route('dowload',$demande->id)}}" class="btn btn-success btn-group-sm rounded px-4 fs-5 fw-bold float-end mt-3" >Télécharger</a> --}}
                 </div>
             </div>
              {{--End Main content info de la demande --}}
 
-            <p class="mt-5 ms-5 fs-5 fw-bold text-dark text-start">
+            <p class="mt-5 ms-3 fs-5 text-dark text-start">
                 @if (count($candidatAdmis) > 0)
                     @foreach ($candidatAdmis as $candidatAdmis)
-                        Après vérification des informations à notre portée, le candidat <strong>
+                      <span class="text-danger">Note:</span>  Le candidat <strong>
                             {{ $candidatAdmis->nom }}
                             {{ $candidatAdmis->prenom }} </strong> né le
                         <strong>{{ $candidatAdmis->date_naissance }}</strong>

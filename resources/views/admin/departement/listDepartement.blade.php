@@ -28,6 +28,16 @@
 
 
     <div class="tile mt-3">
+        @if (session('updatedMessage'))
+        <div class="alert alert-success mb-3">
+            <h6> {{ session('updatedMessage') }} </h3>
+        </div>
+    @endif
+    @if (session('deletedMessage'))
+        <div class="alert alert-success mb-3">
+            <h6> {{ session('deletedMessage') }} </h3>
+        </div>
+    @endif
         <div class="tile-body"> 
         </div>
 

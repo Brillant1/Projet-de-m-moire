@@ -42,7 +42,7 @@
                 </div>
             @endif
             @if (Session::has('deletedMessage'))
-                <div class="alert alert-danger mb-3">
+                <div class="alert alert-success mb-3">
                     <h6> {{ Session::get('deletedMessage') }} </h3>
                 </div>
             @endif
@@ -123,6 +123,7 @@
                             <th class=" ">Prénom</th>
                             <th class=" ">N° Table</th>
                             <th class="">Centre</th>
+                            <th>Année</th>
                             <th class="">Action</th>
                         </tr>
                     </thead>
@@ -137,6 +138,7 @@
                                 <td class=" ">{{ $demande->numero_table }}</td>
 
                                 <td class=" ">{{ $demande->centre }}</td>
+                                <td>{{ $demande->annee_obtention }}</td>
                                 <td class="">
                                     <div class="d-flex justify-content-evenly w-100">
 

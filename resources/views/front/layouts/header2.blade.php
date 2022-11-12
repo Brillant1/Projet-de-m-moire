@@ -123,7 +123,7 @@
                         aria-expanded="true">
                         ATTESTATION
                     </a>
-                    <ul class="dropdown-menu p-0 rounded-0 dropdown-link-etablissement mt-2"
+                    <ul class="dropdown-menu p-0  dropdown-link-etablissement mt-2" style="box-shadow: 0px 3.87546px 18.4084px rgba(0, 0, 0, 0.08); border-radius:2px;"
                         aria-labelledby="navbarScrollingDropdown">
                         <li class="nav-li-rose"><a class="dropdown-item p-3"
                                 href="{{ route('before-demande') }} {{ Route::is('before-demande') ? 'active' : ' ' }}">Demander
@@ -143,7 +143,7 @@
                         aria-expanded="true">
                         DEC
                     </a>
-                    <ul class="dropdown-menu p-0 rounded-0 dropdown-link-etablissement mt-2"
+                    <ul class="dropdown-menu p-0 dropdown-link-etablissement mt-2" style="box-shadow: 0px 3.87546px 18.4084px rgba(0, 0, 0, 0.08); border-radius:2px;"
                         aria-labelledby="navbarScrollingDropdown">
                         <li class="nav-li-rose"><a class="dropdown-item p-3"
                                 href="{{ route('mot-dec') }} {{ Route::is('mot-dec') ? 'active' : ' ' }}">Mot

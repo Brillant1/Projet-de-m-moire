@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Centre;
+use App\Models\College;
 use App\Models\Commune;
-use App\Models\Departement;
 use Illuminate\Http\Request;
-use App\Http\Requests\CentreRequest;
 
-class CentreController extends Controller
+class CollegeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +15,8 @@ class CentreController extends Controller
      */
     public function index()
     {
-        $centres= Centre::with('commune')->get();
-        return view('admin.centre.listCentre', compact('centres'));
+        $colleges= College::with('commune')->get();
+        return view('admin.college.index', compact('colleges'));
     }
 
     /**
@@ -29,7 +27,7 @@ class CentreController extends Controller
     public function create()
     {
         $communes = Commune::with('departement')->get();
-        return view('admin.centre.addCentre', compact('communes'));
+        return view('admin.college.ajout', compact('communes'));
     }
 
     /**
@@ -38,28 +36,25 @@ class CentreController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CentreRequest $request)
+    public function store(Request $request)
     {
-        $centres= [
+        $colleges = [
             'nom'=> $request->nom,
-            'reference'=>$request->reference,
-            'annee'=>$request->annee,
-            'directeur'=>$request->directeur,
-            'nombre_candidat'=>$request->nombre_candidat,
-            'nombre_candidat_admis'=>$request->nombre_candidat_admis,
+            'directeur' => $request->directeur,
             'commune_id'=> $request->commune_id
-       ];
-       Centre::create($centres);
-       return back()->with('addedMessage',' Centre ajouté avec succès.');
+        ];
+
+        College::create($colleges);
+        return back()->with('addedMessage',' Collège ajouté avec succès.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Centre  $centre
+     * @param  \App\Models\College  $college
      * @return \Illuminate\Http\Response
      */
-    public function show(Centre $centre)
+    public function show(College $college)
     {
         //
     }
@@ -67,46 +62,44 @@ class CentreController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Centre  $centre
+     * @param  \App\Models\College  $college
      * @return \Illuminate\Http\Response
      */
-    public function edit(Centre $centre)
+    public function edit(College $college)
     {
         $communes = Commune::all();
-        return view('admin.centre.editCentre', compact('centre','communes'));
+        return view('admin.college.edit', compact('college','communes'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Centre  $centre
+     * @param  \App\Models\College  $college
      * @return \Illuminate\Http\Response
      */
-    public function update(CentreRequest $request, Centre $centre)
+    public function update(Request $request, College $college)
     {
-        $centre->update([
+        $college->update([
             'nom'=> $request->nom,
-            'reference'=>$request->reference,
             'commune' => $request->commune_id,
-            'annee'=>$request->annee,
             'directeur'=>$request->directeur,
             'nombre_candidat'=>$request->nombre_candidat,
             'nombre_candidat_admis'=>$request->nombre_candidat_admis,
         ]);
-        $centres = Centre::all();
-        return view('admin.centre.listCentre', compact('centres'))->with('updatedMessage',' Centre mis à jour');
+        $colleges = College::all();
+        return view('admin.centre.listCentre', compact('colleges'))->with('updatedMessage',' Centre mis à jour');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Centre  $centre
+     * @param  \App\Models\College  $college
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Centre $centre)
+    public function destroy(College $college)
     {
-        $centre->delete();
-        return back()->with('deletedMessage', 'Centre supprimé avec succès');
+        $college->delete();
+        return back()->with('deletedMessage', 'college supprimé avec succès');
     }
 }

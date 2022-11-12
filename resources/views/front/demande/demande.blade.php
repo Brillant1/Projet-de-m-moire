@@ -259,7 +259,7 @@
                         </div>
                         <div class="d-flex justify-content-end ">
 
-                            <button
+                            <button type="button"
                                 class="btn btn-next next1 text-white fw-bold p-2 text-center col-2 mt-5 mb-5 rounded bg-success"
                                 id="next1">
                                 Suivant
@@ -338,7 +338,9 @@
                                     @foreach ($departements as $departement)
                                         <option value="{{ $departement->id }}">{{ $departement->nom }}</option>
                                     @endforeach
+
                                 </select>
+                                <span class="text-danger" id="departementError"> </span>
 
                           
                             </div>
@@ -358,10 +360,10 @@
                             <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="centre">Centre dans lequel vous avez
                                     composé &nbsp; <span class="text-danger">*</span></label>
-                                <select class="form-control border-1 form-select" name="centre">
-                                    @foreach ($centres as $centre)
+                                <select class="form-control border-1 form-select" name="centre" id="centre">
+                                    {{-- @foreach ($centres as $centre)
                                         <option value="{{ $centre->nom }}">{{ $centre->nom }}</option>
-                                    @endforeach
+                                    @endforeach --}}
 
                                 </select>
 
@@ -369,48 +371,21 @@
 
                         </div>
 
-                        <script>
-                            $('document').ready(function() {    
-                                $('#departement').on('change', function() {
-                                    let id = $(this).val();
-                                    let commune = document.getElementById('commune');
-                                    var communeList = " ";
-                                    
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: '{!! URL::to('communesOfDepartement') !!}',
-                                        data: {
-                                            'id': id,
-                                            _token :"{{ csrf_token() }}"
-                                        },                                        
-                                        success: function(data) {
-                                            console.log(data);
-                                            for(let i = 0; i < data.length; i++){
-                                                communeList += '<option value="'+ data[i].id + '">' + data[i].nom + '</option>';
-                                            }
-                                            $('#commune').html('');
-                                            $('#commune').append(communeList);
-                                        },
-                                        error: function(e) {
-                                            console.log(e);
-                                        }
-                                    })
-                                })
-                            })
-                        </script>
+
 
                         <div class="row mb-3">
 
                             <div class="form-group col-md-4 p-2">
                                 <label class="control-label label-color" for="etablissement">Établissement fréquenté &nbsp; <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control border-1 etablissement" id="etablissement" name="etablissement">
+                                <span class="text-danger" id="etablissementError"> </span>
                             </div>
 
                             <div class="form-group col-md-4 p-2">
                                 <label for="annee_obtention" class="control-label label-color">Année
                                     d'obtention du diplôme  &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control yearpicker  border-1 annee" type="number" min="2012" name="annee_obtention" length="4"
-                                    id="annee_obtention" value="{{ old('annee_obtention') }}" required>
+                                    id="annee_obtention" value="{{ old('annee_obtention') }}" >
                                 <span class="text-danger" id="annee_obtentionError"> </span>
 
                                 @if ($errors->has('annee_obtention'))
@@ -432,7 +407,7 @@
                                 <label for="cni" class="control-label label-color">Relevé de note (maximum 10 MB)&nbsp; <span
                                         class="text-danger">*</span></label>
                                 <input type="file" class="form-control border-1" accept=".pdf, .docx" name="releve" id="releve"
-                                    value="{{ old('releve') }}">
+                                    value="{{ old('releve') }}" required>
                                 <span class="text-danger" id="releveError"> </span>
                                 @if ($errors->has('releve'))
                                     <span class="text-danger">{{ $errors->first('releve') }}</span>
@@ -453,7 +428,7 @@
                                 &nbsp; &nbsp;
                                 Précédent
                             </button>
-                            <button
+                            <button type="button"
                                 class="text-white fw-bold btn btn-next p-2 ms-3 text-center col-2 mt-5 mb-5 rounded btn btn-success"
                                 id="next2">
                                 Suivant
@@ -479,7 +454,7 @@
                                 <label for="acte_naissance" class="control-label label-color">Acte de naissance (Taille maximale 10MB)&nbsp; <span
                                         class="text-danger">*</span></label>
                                 <input type="file" class="form-control border-1" accept=".pdf, .docx" name="acte_naissance" id="acte_naissance"
-                                    value="{{ old('acte_naissance') }}" id="acte_naissance">
+                                    value="{{ old('acte_naissance') }}" id="acte_naissance" required>
                                 <span class="text-danger" id="acteError"> </span>
                                 @if ($errors->has('acte_naissance'))
                                     <span class="text-danger">{{ $errors->first('acte_naissance') }}</span>
@@ -492,7 +467,7 @@
                             <div class="form-group col p-2">
                                 <label for="cni" class="control-label label-color"> Carte d'identité (Taille maximale 10MB)<span
                                         class="text-danger">*</span></label>
-                                <input type="file" class="form-control border-1" accept=".pdf, .docx" name="cni" id="cni"
+                                <input type="file" class="form-control border-1" required accept=".pdf, .docx" name="cni" id="cni"
                                     value="{{ old('cni') }}" id="cni">
                                 <span class="text-danger" id="cniError"> </span>
                                 @if ($errors->has('cni'))
@@ -553,9 +528,9 @@
                             Précédent
                         </button>
                         <div class="mb-5">
-                            <input type="checkbox" name="valide" id="valide" required>
+                            {{-- <input type="checkbox" name="valide" id="valide" required>
                             <label for="valide" class="text-danger ps-2"> Je certifie exactes et justes toutes les informations
-                                renseignées</label> <br>
+                                renseignées</label> <br> --}}
                             <input type="reset" value="Annuler tout"
                                 class="mt-5 btn btn-md bg-favorite-color text-white px-5 me-4">
                             <button class="mt-5 btn btn-md btn-success px-5" id="sendDemande">Soumettre et payer</button> 
@@ -583,7 +558,7 @@
                 let photo = $("#photo").val();
                 let nbre = photo.length;
 
-                // var sizePhoto = document.getElementById('photo').files[0].size;
+              
                
                 
                 var fileInput = document.getElementById('photo');
@@ -644,15 +619,12 @@
 
             $('#next2').click(function(e) {
 
+                e.preventDefault();
                 var inputNumeroTableRule = /^[0-9]{3}\-[A-Za-z0-9]{3}\-[0-9]{2}$/;
 
-                var releveFileSize = document.getElementById('releve').files[0].size;
+                // var releveFileSize = document.getElementById('releve').files[0].size;
+                // var releveFileType = document.getElementById('releve').files[0].type;
                 
-
-                var releveFileType = document.getElementById('releve').files[0].type;
-                
-
-                e.preventDefault();
                 if ($("#numero_table").val() == '') {
                     $('#numero_tableError').text('le numero de table est obligatoire');
                 }
@@ -663,24 +635,29 @@
                 
                 else if ($('#serie').val() == '') {
                     $('#serieError').text('Choisissez une série');
-                } else if ($("#annee_obtention").val() == '') {
+                } 
+                else if($('#departement').val() == '' || $('#departement').val() == '#'){
+                    alert('Veillez sélectionner le département');
+                }
+                else if($('#etablissement').val() ==''){
+                    $('#etablissementError').text('Collège obligatoire');
+                }
+                else if ($("#annee_obtention").val() == '') {
                     $('#annee_obtentionError').text('Année obligatoire');
                 } else if ($("#annee_obtention").val() < 2010 || $("#annee_obtention").val() > 2022) {
                     $('#annee_obtentionError').text('Format de l\'année non correct');
                 } else if ($('#releve').val() == '') {
                     $('#releveError').text('Le releve de note est obligatoire');
                 } 
-                else if ( releveFileSize >10000000 ) {
-                    $('#releveError').text('Taille de fichier trop grande');
-                } 
+                // else if ( releveFileSize >10000000 ) {
+                //     $('#releveError').text('Taille de fichier trop grande');
+                // } 
 
-                else if ( releveFileType !="application/pdf") {
-                    $('#releveError').text('Vous devez uploader un fichier pdf');
-                }
-
-                // else if (!allowedExtensionPdf.exec(filePathPdf)){
-                //     $('#releveError').text('Le relevé doit être au format pdf');
+                // else if ( releveFileType !="application/pdf") {
+                //     $('#releveError').text('Vous devez uploader un fichier pdf');
                 // }
+               
+
                 else {
                     $('#form-section2').removeClass('form-section-active');
                     $('#form-section3').addClass('form-section-active');
@@ -698,31 +675,88 @@
             });
 
             $('#sendDemande').click(function(e) {
-
-                var acteFileSize = document.getElementById('acte_naissance').files[0].size;
-                var cniFileSize = document.getElementById('cni').files[0].size;
-                e.preventDefault();                
-                if ($("#nom_pere").val() == '') {
+                e.preventDefault(); 
+                //var acteFileSize = document.getElementById('acte_naissance').files[0].size;
+                // var cniFileSize = document.getElementById('cni').files[0].size;
+                if($('#acte_naissance').val() == '') {
+                    $('#acteError').text('l\'acte de naissance est obligatoire'); 
+                }
+                else if($('#cni').val() == '') {
+                    $('#cniError').text('la carte d\identité est obligatoire');
+                } 
+                      
+                else if ($("#nom_pere").val() == '') {
                     $('#nom_pereError').text('le nom du père est obligatoire');
                 } else if ($("#nom_mere").val() == '') {
                     $('#nom_mereError').text('le nom de la mère est obligatoire');
                 } else if ($("#contact_parent").val() == '') {
                     $('#contact_parentError').text('le contact du parent est obligatoire');
                 } 
-                else if ( acteFileSize >10000000 ) {
-                    $('#acteError').text('Taille de fichier trop grande');
-                } 
-                else if ( cniFileSize >10000000 ) {
-                    $('#cniError').text('Taille de fichier trop grande');
-                }
+               
                 else{
                     $('#myForm').submit();
                 } 
             });
 
+            
+
+            $('#departement').on('change', function() {
+                let id = $(this).val();
+                let commune = document.getElementById('commune');
+                var communeList = " ";
+                
+                $.ajax({
+                    type: 'POST',
+                    url: '{!! URL::to('communesOfDepartement') !!}',
+                    data: {
+                        'id': id,
+                        _token :"{{ csrf_token() }}"
+                    },                                        
+                    success: function(data) {
+                        console.log(data);
+                        for(let i = 0; i < data.length; i++){
+                            communeList += '<option value="'+ data[i].id + '">' + data[i].nom + '</option>';
+                        }
+                        $('#commune').html('');
+                        $('#commune').append(communeList);
+                    },
+                    error: function(e) {
+                        console.log(e);
+                    }
+                })
+            });
 
 
-            $(".contact_parent").inputmask("(999) 999-9999");
+            $('#commune').on('change', function() {
+                let id = $(this).val();
+                let centre = document.getElementById('commune');
+                var centreList = " ";
+                
+                $.ajax({
+                    type: 'POST',
+                    url: '{!! URL::to('centreOfCommune') !!}',
+                    data: {
+                        'id': id,
+                        _token :"{{ csrf_token() }}"
+                    },                                        
+                    success: function(data) {
+                        console.log(data);
+                        for(let i = 0; i < data.length; i++){
+                            centreList += '<option value="'+ data[i].id + '">' + data[i].nom + '</option>';
+                        }
+                        $('#centre').html('');
+                        $('#centre').append(centreList);
+                    },
+                    error: function(e) {
+                        console.log(e);
+                    }
+                })
+            });
+
+
+
+
+            // $(".contact_parent").inputmask("(999) 999-9999");
             
             // var setting = #^[0-9]{3}\-[A-Za-z0-9]{3}\-[0-9]{2}$#;
         });

@@ -96,9 +96,17 @@ class DemandeController extends Controller
                 'statut_payement' => "non_payer"
             ]
         )->get();
+        $demandeGenerers = Demande::where(
+            [
+                'user_id' => Auth::user()->id,
+                'statut_demande'=> "generer",
+                'statut_payement' => "payer"
+            ]
+        )->get();
 
 
-        return view('front.demande.suivie', compact( 'demandeNonValides', 'demandeValides', 'demandeNonPayers'));
+
+        return view('front.demande.suivie', compact( 'demandeNonValides', 'demandeValides', 'demandeNonPayers','demandeGenerers'));
     }
 
     /**
@@ -386,31 +394,35 @@ class DemandeController extends Controller
 
     public function demandeRecente()
     {
-        $demandes = Demande::where(['statut_payement' => 'payer', 'statut_demande' => 'non_valider'])->get();
+        $demandes = Demande::where(['statut_payement' => 'payer', 'statut_demande' => 'non_valider'])->orderBy('created_at', 'DESC')->get();
         return view('admin.demande.demandeRecente', compact('demandes'));
     }
 
     public function demandeApprouvee()
     {
-        $demandes = Demande::where('statut_demande', 'valider')->get();
+        $demandes = Demande::where('statut_demande', 'valider')->orderBy('created_at', 'DESC')->get();
         return view('admin.demande.demandeApprouvee', compact('demandes'));
     }
 
     public function demandeGeneree()
     {
-        $demandes = Demande::where('statut_demande', 'generer')->get();
+        $demandes = Demande::where('statut_demande', 'generer')->orderBy('created_at', 'DESC')->get();
         return view('admin.demande.demandeGenerer', compact('demandes'));
     }
 
     public function demandeNonPayee()
     {
-        $demandes = Demande::where('statut_payement', 'non_payer')->get();
+        $demandes = Demande::where('statut_payement', 'non_payer')->orderBy('created_at', 'DESC')->get();
         return view('admin.demande.demandeNonPayee', compact('demandes'));
     }
 
     public function communesOfDepartement(Request $request){
         $communesOfDepartement = Commune::where('departement_id', $request->id)->get();
         return response()->json($communesOfDepartement);
+    }
+    public function centreOfCommune(Request $request){
+        $centreOfCommune = Centre::where('commune_id', $request->id)->get();
+        return response()->json($centreOfCommune);
     }
 
     public function download_releve($id){
@@ -429,4 +441,10 @@ class DemandeController extends Controller
         $cni_path = 'storage/'.$demande->cni;
         return response()->download($cni_path);
     }
+    public function download_attestation($id){
+        $demande = Demande::find($id);
+        $cni_path = 'storage/'.$demande->cni;
+        return response()->download($cni_path);
+    }
+    
 }

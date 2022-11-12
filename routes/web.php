@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AlerteController;
 use App\Http\Controllers\CentreController;
+use App\Http\Controllers\CollegeController;
 use App\Http\Controllers\CommuneController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CandidatController;
@@ -43,6 +44,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('alertes', AlerteController::class);
     Route::resource('flashInfos', FlashInfoController::class);
     Route::resource('examens', ExamenController::class);
+    Route::resource('colleges', CollegeController::class);
+
+Route::get('demande/create', [App\Http\Controllers\DemandeController::class, 'index'])->name('before-demande');
+Route::post('demande/create', [App\Http\Controllers\DemandeController::class, 'beforeDemande'])->name('before-demande');
  
 });
 
@@ -68,8 +73,6 @@ Route::get('demandeGeneree', [App\Http\Controllers\DemandeController::class, 'de
 Route::get('attestationGeneree', [GererDemandeController::class, 'attestationAll'])->name('attestation-all');
 Route::get('demandeNonPayee', [App\Http\Controllers\DemandeController::class, 'demandeNonPayee'])->name('demande-non-payee');
 
-Route::get('demande/create', [App\Http\Controllers\DemandeController::class, 'index'])->name('before-demande');
-Route::post('demande/create', [App\Http\Controllers\DemandeController::class, 'beforeDemande'])->name('before-demande');
 Route::get('singleDemande/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'singleDemande'])->name('singleDemande');
 Route::post('changeState/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'changeState'])->name('changeState');
 Route::get('demandeUser', [App\Http\Controllers\DemandeController::class, 'demandeUser'])->name('demandeUser')->middleware(['auth']);
@@ -89,8 +92,11 @@ Route::get('dowloadUserFile/{lien}', [GererDemandeController::class, 'dowloadUse
 Route::get('downloadReleve/{id}', [App\Http\Controllers\DemandeController::class, 'download_releve'])->name('download-releve');
 Route::get('downloadActe/{id}', [App\Http\Controllers\DemandeController::class, 'download_acte'])->name('download-acte');
 Route::get('downloadACni/{id}', [App\Http\Controllers\DemandeController::class, 'download_cni'])->name('download-cni');
+Route::get('downloadAttestation/{id}', [App\Http\Controllers\DemandeController::class, 'download_attestation'])->name('download-attestation');
+
 // Route pour changer les communes en fonction du département
 Route::post('/communesOfDepartement', [App\Http\Controllers\DemandeController::class, 'communesOfDepartement' ])->name('communes-of-departement');
+Route::post('/centreOfCommune', [App\Http\Controllers\DemandeController::class, 'centreOfCommune' ])->name('centre-of-commune');
 
 
 Route::get('actualites', function () {
