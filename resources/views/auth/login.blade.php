@@ -125,7 +125,7 @@
                         </div>
                         <div class="d-flex justify-content-between mt-4">
                             <p>Vous n'avez pas de compte ?</p>
-                            <a href="{{ route('register') }}" class="text-danger">Inscrivez-vous <span>
+                            <a href="{{ route('register') }}" class="text-primary">Inscrivez-vous <span>
                                     <i>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                             fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">

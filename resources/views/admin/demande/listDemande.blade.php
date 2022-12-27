@@ -115,7 +115,7 @@
             </div>
 
             <div class="table-responsive container-fluid">
-                <table class="table datatable table-striped border-collapse table-bordered ">
+                <table class="table table-striped border-collapse table-bordered ">
                     <thead>
                         <tr class=" ">
                             <th class="">Photo</th>
@@ -123,6 +123,7 @@
                             <th class=" ">Prénom</th>
                             <th class=" ">N° Table</th>
                             <th class="">Centre</th>
+                            <th>Commune</th>
                             <th>Année</th>
                             <th class="">Action</th>
                         </tr>
@@ -130,14 +131,31 @@
                     <tbody>
 
                         @foreach ($demandes as $demande)
+                      
+
+                        @php
+                       
+                        $centres = App\Models\Centre::where('id',$demande->centre)->get();    
+                        $communes = App\Models\Commune::where('id',$demande->commune)->get();    
+
+                        @endphp
                             <tr class="">
-                                <td class=" "><img src="{{ asset('storage/photo_candidat_demande/' . $demande->photo) }}" alt=""
-                                        width="60" height="60" style="object-fit: cover;"></td>
+                                <td class=" "><img src="{{ asset('storage/photo_candidat_demande/' . $demande->photo) }}" alt=""width="60" height="60" style="object-fit: cover;"></td>                    
                                 <td class="">{{ $demande->nom }}</td>
                                 <td class="">{{ $demande->prenom }}</td>
                                 <td class=" ">{{ $demande->numero_table }}</td>
 
-                                <td class=" ">{{ $demande->centre }}</td>
+                                <td class=" ">
+                                    @foreach ($centres as $centre)
+                                       {{ $centre->nom }}
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach ($communes as $commune)
+                                        {{ $commune->nom }}
+                                    @endforeach
+                                </td>
+                              
                                 <td>{{ $demande->annee_obtention }}</td>
                                 <td class="">
                                     <div class="d-flex justify-content-evenly w-100">

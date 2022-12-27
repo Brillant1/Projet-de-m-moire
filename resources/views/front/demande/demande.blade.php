@@ -445,7 +445,7 @@
                     {{-- form section 3 --}}
                     <div class="form-section form-section3" id="form-section3">
                         <p class="favorite-color fw-bold fs-4 pt-5">Autres informations utiles et obligatoires</p>
-                        <div class="row mt-4 mb-3">
+                        <div class="row mt-2 mb-3">
 
 
                               {{--Upload acte de naissance --}}

@@ -47,7 +47,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('colleges', CollegeController::class);
 
 Route::get('demande/create', [App\Http\Controllers\DemandeController::class, 'index'])->name('before-demande');
-Route::post('demande/create', [App\Http\Controllers\DemandeController::class, 'beforeDemande'])->name('before-demande');
+Route::post('demande/create', [App\Http\Controllers\DemandeController::class, 'beforeDemande']);
  
 });
 
@@ -57,6 +57,7 @@ Route::resource('demandes', App\Http\Controllers\DemandeController::class)->exce
 
 Route::post('validationDemande', [App\Http\Controllers\DemandeController::class, 'store'])->name('validationDemande');
 
+Route::post('attestation-eleve', [GererDemandeController::class, 'attestation'])->name('attestation-eleve');
 
 
 Route::get('changeToPayState/{demande}', [App\Http\Controllers\DemandeController::class, 'changeToPayState'])->name('changeToPayState');
@@ -98,7 +99,6 @@ Route::get('downloadAttestation/{id}', [App\Http\Controllers\DemandeController::
 Route::post('/communesOfDepartement', [App\Http\Controllers\DemandeController::class, 'communesOfDepartement' ])->name('communes-of-departement');
 Route::post('/centreOfCommune', [App\Http\Controllers\DemandeController::class, 'centreOfCommune' ])->name('centre-of-commune');
 
-
 Route::get('actualites', function () {
     return view('front/actualites');
 })->name('actualites');
@@ -124,13 +124,7 @@ Route::get('emailConfirmation', function () {
 })->name('emailConfirmation');
 
 
-Route::get('attestation', function () {
-    return view('emails.attestation');
-})->name('attestation');
 
-Route::get('attestation1', function () {
-    return view('emails.attestation1');
-})->name('attestation1');
 
 Route::get('demande/page', function(){
     return view('front.demandeRule');
@@ -160,3 +154,6 @@ Route::get('header2', function () {
 Route::get('test', function () {
     return view('front.test');
 })->name('test');
+Route::get('attestation1', function(){
+    return view('emails.attestation');
+})->name('attestation1');

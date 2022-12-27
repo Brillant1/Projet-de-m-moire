@@ -26,7 +26,7 @@
 
 
 
-    <div class="title mt-3" >
+    <div class="title mt-3"  style="margin-bottom: 115px;">
         <div class="tile-body">
             @if (Session::has('updatedMessage'))
                 <div class="alert alert-success mb-3">
@@ -51,32 +51,58 @@
 
         <div class="shadow p-5 bg-white" style="border-radius: 10px;">
             <div class="table-responsive container-fluid">
-                <table class="table datatable table-striped border-collapse table-bordered ">
+                <table class="table table-striped border-collapse table-bordered" id="payeDemandeTable">
                     <thead>
                         <tr class=" ">
-                            <th class="">Photo</th>
+                            <th>Date</th>
                             <th class=" ">Nom et Prénoms</th>
                             <th class=" ">N° Table</th>
+                            <th>Commune</th>
                             <th class=" ">Centre</th>
-                            <th>Demande faite le</th>
+                            <th>Diplôme</th>
+                            
                             <th class=" ">Action</th>
                         </tr>
-
-                        <style>
-
-                        </style>
-                    </thead>
+                    {{-- </thead>
+                    <tfoot class="">
+                        <tr class="" style="display:  table-header-group;" id="demandepayeefooter">
+                            <th class="datefoot">Date</th>
+                            <th class="nomfoot ">Nom et Prénoms</th>
+                            <th class="numerofoot ">N° Table</th>
+                            <th class="communefoot">Commune</th>
+                            <th class="centrefoot ">Centre</th>
+                            <th class="diplomefoot">Diplôme</th>
+                            
+                            <th class=" ">Action</th>
+                        </tr>
+                    </tfoot> --}}
                     <tbody>
 
                         @foreach ($demandes as $demande)
+                        
+                        @php
+                        $centres = App\Models\Centre::where('id',$demande->centre)->get();   
+                        $commune = App\Models\Commune::where('id',$demande->commune)->get();
+                             
+                        @endphp
                             <tr class="">
-                                <td class=" "><img src="{{  asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="60" height="60"
-                                    style="object-fit: cover;"></td>
-                                <td class="">{{ $demande->nom.' '. $demande->prenom  }}</td>
-                                <td class=" ">{{ $demande->numero_table }}</td>
-
-                                <td class=" ">{{ $demande->centre }}</td>
                                 <td class="">{{ $demande->created_at->format('d-m-Y') }}</td>
+                                {{-- <td class=" "><img src="{{  asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="60" height="60"
+                                    style="object-fit: cover;"></td> --}}
+                                <td class="">{{ $demande->nom  }}</td>
+                                <td class=" ">{{ $demande->numero_table }}</td>
+                                <td>
+                                    @foreach ($commune as $commune)
+                                        {{ $commune->nom }}
+                                    @endforeach
+                                </td>
+                                <td class=" ">
+                                    @foreach ($centres as $centre)
+                                    {{ $centre->nom }}
+                                    @endforeach
+                                </td>
+                                <td>{{ $demande->type_examen }}</td>
+                              
                                 <td class="">
                                     <div class="d-flex justify-content-evenly w-100">
 
@@ -98,4 +124,40 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#payeDemandeTable tfoot .nomfoot,#payeDemandeTable tfoot .datefoot, #payeDemandeTable tfoot .numerofoot, #payeDemandeTable tfoot .communefoot,  #payeDemandeTable tfoot .centrefoot,  #payeDemandeTable tfoot .diplomefoot')
+                .each(function() {
+                var title = $(this).text();
+                $(this).html('<input type="text" placeholder="Entrer ' + title + '" />');
+            });
+
+        var demandePayeeTable = $('#payeDemandeTable').DataTable({
+            "initComplete": function() {
+                    this.api().columns().every(function(column) {
+                        var that = this;
+                        $('input', this.footer()).on('keyup change clear', function() {
+
+                            if (that.search() !== this.value) {
+                                that.search(this.value).draw();
+                            }
+                        });
+                    })
+                },
+            "language": {
+                    "info": "_END_ sur _TOTAL_ entrées",
+                    "infoEmpty": "_END_ sur _TOTAL_ entrées",
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                },
+            order: [[0, 'desc']],
+        });
+    });
+    </script>
+    
 @endsection
+
+
+
+

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\DemandeRequest;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -74,7 +75,7 @@ class DemandeController extends Controller
 
         //$demandes = Demande::where(['user_id' => Auth::user()->id])->orderBy('created_at', 'DESC')->get();
 
-        $demandeNonValides = Demande::where(
+        $demandeNonValides = Demande::orderBy('created_at','DESC')->where(
             [
                 'user_id' => Auth::user()->id,
                 'statut_demande' => "non_valider",
@@ -82,21 +83,21 @@ class DemandeController extends Controller
             ]
         )->get();
 
-        $demandeValides = Demande::where(
+        $demandeValides = Demande::orderBy('created_at','DESC')->where(
             [
                 'user_id' => Auth::user()->id,
                 'statut_demande' => "valider"
             ]
         )->get();
 
-        $demandeNonPayers = Demande::where(
+        $demandeNonPayers = Demande::orderBy('created_at','DESC')->where(
             [
                 'user_id' => Auth::user()->id,
                 'statut_demande'=> "non_valider",
                 'statut_payement' => "non_payer"
             ]
         )->get();
-        $demandeGenerers = Demande::where(
+        $demandeGenerers = Demande::orderBy('created_at','DESC')->where(
             [
                 'user_id' => Auth::user()->id,
                 'statut_demande'=> "generer",
@@ -247,75 +248,69 @@ class DemandeController extends Controller
      */
     public function update(Request $request, Demande $demande)
     {
+
+        $filename = '';
+        $cni = '';
+        $releve= '';
+        $acte_naissance ='';
+
         if ($request->hasFile('photo')) {
             Storage::disk('public')->delete($demande->photo);
             $filename = Storage::disk('public')->put('avatars/img', $request->photo);
-            $demande->update([
-                'nom' => $request->nom,
-                'prenom' => $request->prenom,
-                'date_naissance' => $request->date_naissance,
-                'email' => $request->email,
-                'contact' => $request->contact,
-                'sexe' => $request->sexe,
-                'ville_naissance' => $request->ville_naissance,
-                'photo' => $filename,
-                'numero_table' => $request->numero_table,
-                'serie' => $request->serie,
-                'mention' => $request->mention,
-                'departement' => $request->departement,
-                'commune' => $request->commune,
-                'centre' => $request->centre,
-                'numero_reference' => $request->numero_reference,
-                'annee_obtention' => $request->annee_obtention,
-                'nom_pere'  => $request->nom_pere,
-                'nom_mere' => $request->nom_mere,
-                'contact_parent' => $request->contact_parent,
-                'etablissement' => $request->etablissement,
-                'jury' => $request->jury,
-                'type_examen' => $request->type_examen,
-                'user_id' => Auth()->user()->id
-            ]);
-        } else {
+        }
+        else{
             $filename = $demande->photo;
-            $demande->update(
-                [
-                    'nom' => $request->nom,
-                    'prenom' => $request->prenom,
-                    'contact' => $request->contact,
-                    'sexe' => $request->sexe,
-                    'serie' => $request->serie,
-                    'releve' => $request->releve,
-                    'mention' => $request->mention,
-                    'numero_table' => $request->numero_table,
-                    'numero_reference' => $request->numero_reference,
-                    'annee_obtention' => $request->annee_obtention,
-                    'date_naissance' => $request->date_naissance,
-                    'nom_pere'  => $request->pere,
-                    'nom_mere' => $request->mere,
-                    'photo' => $filename
-                ]
-            );
+        }
+        if ($request->hasFile('cni')) {
+            Storage::disk('public')->delete($demande->cni);
+            $cni = Storage::disk('public')->put('releve_candidat_demande', $request->cni);
+        }
+        else{
+            $cni = $demande->cni;
+        }
+        if ($request->hasFile('releve')) {
+            Storage::disk('public')->delete($demande->releve);
+            $releve = Storage::disk('public')->put('releve_candidat_demande', $request->releve);
+        }
+        else{
+            $releve = $demande->releve;
+        }
+        if ($request->hasFile('acte_naissance')) {
+            Storage::disk('public')->delete($demande->acte_naissance);
+            $acte_naissance = Storage::disk('public')->put('releve_candidat_demande', $request->acte_naissance);
+        }else{
+            $acte_naissance = $demande->acte_naissance;
         }
 
-        $demande->update(
-            [
-                'nom' => $request->nom,
-                'prenom' => $request->prenom,
-                'contact' => $request->contact,
-                'sexe' => $request->sexe,
-                'serie' => $request->serie,
-                'mention' => $request->mention,
-                'numero_table' => $request->numero_table,
-                'numero_reference' => $request->numero_reference,
-                'annee_obtention' => $request->annee_obtention,
-                'date_naissance' => $request->date_naissance,
-                'nom_pere'  => $request->nom_pere,
-                'nom_mere' => $request->nom_mere,
-                'photo' => $filename
-            ]
-        );
-
-
+        $demande->update([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'date_naissance' => $request->date_naissance,
+            'email' => $request->email,
+            'contact' => $request->contact,
+            'sexe' => $request->sexe,
+            'ville_naissance' => $request->ville_naissance,
+            'photo' => $filename,
+            'numero_table' => $request->numero_table,
+            'serie' => $request->serie,
+            'mention' => $request->mention,
+            'departement' => $request->departement,
+            'commune' => $request->commune,
+            'centre' => $request->centre,
+            'numero_reference' => $request->numero_reference,
+            'annee_obtention' => $request->annee_obtention,
+            'nom_pere'  => $request->nom_pere,
+            'nom_mere' => $request->nom_mere,
+            'contact_parent' => $request->contact_parent,
+            'etablissement' => $request->etablissement,
+            'jury' => $request->jury,
+            'type_examen' => 'BEPC',
+            'releve' => $releve,
+            'cni' => $cni,
+            'acte_naissance' => $acte_naissance,
+            'user_id' => Auth()->user()->id
+        ]);
+       
         $demandes = Demande::where('user_id', Auth::user()->id)->get();
         return back()->with([
             'updatedMessage' => 'Demande modifiée avec succès',
@@ -337,14 +332,10 @@ class DemandeController extends Controller
 
     public function pdf()
     {
-
-        $recapitulatif = Demande::where(
-            [
+        $recapitulatif = Demande::where([
                 'user_id' => Auth::user()->id,
                 'statut_demande' => "valider"
-            ]
-        )->first();
-
+            ])->first();
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('front.recapitulatif', compact('recapitulatif'));
         return $pdf->stream();
@@ -365,23 +356,24 @@ class DemandeController extends Controller
 
         $demandes = Demande::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->get();
 
-        $demandeNonValides = Demande::where(
-            [
-                'user_id' => Auth::user()->id,
-                'statut_demande' => "non_valider"
-            ]
-        )->get();
-        $demandeValides = Demande::where(
-            [
+        $demandeNonValides = Demande::where(['user_id' => Auth::user()->id,
+                'statut_demande' => "non_valider"])->get();
+        
+                
+        $demandeValides = Demande::where([
                 'user_id' => Auth::user()->id,
                 'statut_demande' => "valider"
-            ]
-        )->get();
+            ] )->get();
+       
 
 
         if ($kkiapay->verifyTransaction($transaction_id)->status == "SUCCESS") {
             $demande->statut_payement = "payer";
             $demande->kkiapayPayement_id =  $transaction_id;
+            $code = strtotime($demande->created_at);
+            $code = bcrypt($code);
+            $code = '@#'.substr($code, strlen($code)-15).'#@';
+            $demande->code = $code;
             $demande->save();
             // Session::flash('paymentSuccessMessage', 'Transaction réussie,
             //         restez en écoute des nouvelles concernant votre demande');

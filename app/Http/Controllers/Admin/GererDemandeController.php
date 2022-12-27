@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 
+
 class GererDemandeController extends Controller
 {
     /**
@@ -26,11 +27,15 @@ class GererDemandeController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
+    public function attestation(){
+        $pdf = App::make('dompdf.wrapper');
+        $pdf -> loadView('emails.attestation1');
+        $pdf->setPaper("a4", "landscape" );
+        return $pdf->stream();
+    }
     public function listeDemande()
     {
         $demandes = Demande::orderBy('created_at', 'DESC')->get();
-        dd($demandes);
         $centres = Centre::all();
         $communes = Commune::all();
         $departements = Departement::all();
@@ -76,15 +81,13 @@ class GererDemandeController extends Controller
         $demande->statut_demande = "generer";
         $demande->save();
         $demandes = Demande::orderBy('created_at', 'DESC')->get();
-       
-        return  redirect()->route('listeDemande', ['demandes' => $demandes])->with('generateMessage', 'Attestation générée et envoyée au mail du demandeur avec succès avec succès !');
+        return redirect()->route('listeDemande', ['demandes' => $demandes])->with('generateMessage', 'Attestation générée et envoyée au mail du demandeur avec succès avec succès !');
     }
 
 
     public function changeStateTogenerer(Demande $demande)
     {
-
-        if ($demande->statut_demande == "valider") {
+        if ($demande->statut_demande == "valider"){
 
             $pdf = App::make('dompdf.wrapper');
             $pdf->PDF::loadView('emails.attestation', compact('demande'));
@@ -135,6 +138,10 @@ class GererDemandeController extends Controller
         $demande = Demande::findOrFail($id);
         $lien = 'storage/'.$demande->releve;
         return response()->download(public_path($lien));
+    }
+
+    public function attestationAll( Demande $demande){
+
     }
 
 }

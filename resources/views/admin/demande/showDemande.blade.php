@@ -6,7 +6,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Demandes</a></li> &nbsp; /
                 <li class="breadcrumb-item"><a href="{{ route('listeDemande') }}">Listes des demandes</a></li> &nbsp; /
-                <li class="breadcrumb-item active">Détails de la demande</li>
+                <li class="breadcrumb-item active">Demande payé</li>
                 </li>
             </ol>
         </nav>
@@ -15,14 +15,18 @@
     <div class="tile">
         <div class="tile-body">
             @if (session('updatedMessage'))
-                <div class="alert alert-success mb-3">
-                    <h6> {{ session('updatedMessage') }} </h3>
-                </div>
+            <div class="alert alert-success mb-3  alert-dismissible fade show" role="alert">
+                <h6> {{ session('updatedMessage') }} </h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div> 
             @endif
             @if (session('deletedMessage'))
-                <div class="alert alert-danger mb-3">
+                <div class="alert alert-success mb-3  alert-dismissible fade show" role="alert">
                     <h6> {{ session('deletedMessage') }} </h3>
-                </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                
+                </div>   
+               
             @endif
 
             <div class="text-center mb-4 d-flex justify-content-between">
@@ -61,25 +65,27 @@
                 </div>
 
             </div>
+            
             @if (session('changeStateMessage'))
-                <div class="alert alert-success text-center container-fluid  my-3 d-flex justify-content-between">
+                <div class="alert alert-success alert-dismissible fade show text-center container-fluid  my-2 d-flex justify-content-between">
                     <h5> {{ session('changeStateMessage') }} </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
             @if (session('alreadyChangeStateMessage'))
-                <div class="alert alert-info text-center container-fluid  my-3 d-flex justify-content-between">
+                <div class="alert alert-info text-center container-fluid  my-1 d-flex justify-content-between">
                     <h5> {{ session('alreadyChangeStateMessage') }} </h5>
                     <a href="{{ route('attestation', ['demande' => $demande->id]) }}"
                         class="btn btn-success rounded px-3 text-white"> Générer l'attestation</a>
                 </div>
             @endif
             @if (session('changeStateTogenerer'))
-                <div class="alert alert-info text-center container-fluid  my-3 d-flex justify-content-between">
+                <div class="alert alert-info text-center container-fluid  my-1 d-flex justify-content-between">
                     <h5> {{ session('changeStateTogenerer') }} </h5>
                 </div>
             @endif
             @if (session('invalidDemandeMessage'))
-                <div class="alert alert-info text-center container-fluid  my-3 d-flex justify-content-between">
+                <div class="alert alert-info text-center container-fluid  my-1 d-flex justify-content-between">
                     <h5> {{ session('invalidDemandeMessage') }} </h5>
                 </div>
             @endif
@@ -124,13 +130,17 @@
             <div class="container">
 
                 @if ($demande->statut_payement == 'non_payer')
-                    <p class="alert alert-danger fs-6 mt-4 text-center fw-bold">{{ $demande->nom.' '.$demande->prenom }} n'a pas encore payé pour sa demande.
+                    <p class="alert alert-warning alert-dismissible fade show fs-6 mt-4 text-center fw-bold">{{ $demande->nom.' '.$demande->prenom }} n'a pas encore payé pour sa demande.
                         Vous l'alerterez peut-être pour le lui en rappeler
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </p>
                 @else
-                <p class="alert alert-success fs-6 mt-5  fw-bold"> <span class="text-danger">Note:</span> {{ $demande->nom.' '.$demande->prenom }} 
-                    a payé un montant de 5000F pour cette demande le {{ $demande->updated_at->format('d-m-Y') }}. Solde délivré du compte de Esaie TCHAGNONSI. ID de la transaction : {{ $demande->kkiapayPayement_id }}  
-                </p>
+                    <div class="alert alert-success fs-6 mt-5  alert-dismissible fade show" role="alert">
+                        <span class="text-danger">Note:</span> {{$demande->prenom}} 
+                            a payé pour cette demande le {{ $demande->updated_at->format('d-m-Y') }}. Solde délivré du compte de Esaie TCHAGNONSI. ID de la transaction : {{ $demande->kkiapayPayement_id }}  
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                       
+                    </div>              
                 @endif
             </div>
 
@@ -138,7 +148,7 @@
             {{-- Main content info de la demande --}}
             <div class="d-flex justify-content-center flex-column align-items-center">
                
-                <img src="{{ asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="700">
+                {{-- <img src="{{ asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="700"> --}}
             
             
                 <div class="container mt-2">
@@ -194,14 +204,25 @@
 
                     <div class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
                         <p>Centre de composition :</p>
-                        <p>{{ $demande->centre }}</p>
+                        <p>
+                            {{-- 
+                            @php
+                                $centre = App\Models\Centre::where('id', $demande->centre)->get();
+                            @endphp --}}
+                            
+                            {{ $demande->centre }}</p>
 
                     </div>
 
                     <div class=" row-info container-fluid  d-flex justify-content-between">
 
-                        <p>Commune du centre :</p>
-                        <p>{{ $demande->commune }}</p>
+                        <p>Commune :</p>
+
+                        <p>
+                            {{-- @php
+                                $commune = App\Models\Commune::where('id', $demande->commune)->get();
+                            @endphp --}}
+                            {{ $demande->commune }}</p>
 
                     </div>
                     
@@ -242,10 +263,8 @@
                     {{-- <p class=" favorite-color h3 text-start ms-2  py-2 mt-5">Autres informations utiles</p> --}}
                     <p class="section-title text-center first-color py-2 mt-5">Autres informations utiles</p>
                     <div class="pt-3 row-info container-fluid  d-flex justify-content-between">
-
                         <p>Nom du père :</p>
                         <p>{{ $demande->nom_pere }}</p>
-
                     </div>
                    
                     <div class="row-info container-fluid d-flex justify-content-between">
@@ -463,7 +482,7 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                L'attestation une fois générée sera directement envoyée au mail du candidat:
+                                L'attestation une fois générée sera directement envoyée au mail du demandeur:
                                 <span class="text-danger"> {{ $demande->nom }} {{ $demande->prenom }} Êtes-vous sûr
                                     de le faire ?</span>
                             </div>

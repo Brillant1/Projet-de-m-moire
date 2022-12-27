@@ -18,6 +18,8 @@
         }
     </style>
 
+
+
     <div id="carouselExampleIndicators" class="carousel slide container-fluid p-0 m-0 position-relative"
         data-bs-ride="carousel">
 
@@ -41,6 +43,12 @@
         </div>
     @endif
     <div class="container-fluid mt-5 ">
+        <form action="{{ route('attestation-eleve') }}" method="POST" class="attestation-pdf-form">
+            @csrf
+            <input type="hidden" name="id" value="">
+            <input type="submit" value="Télécharger">
+        </form>
+       
         <div class="container">
             <form action="{{ route('contactstore') }}" method="POST">
                 @csrf

@@ -99,7 +99,7 @@
                             </div>
                             <div class="d-flex justify-content-between mt-5">
                                 <p>Vous aviez déjà un compte ?</p>
-                                <a href="{{ route('login') }}" class="text-danger">Se connecter <span>
+                                <a href="{{ route('login') }}" class="text-primary  ">Se connecter <span>
                                         <i>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                 fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">

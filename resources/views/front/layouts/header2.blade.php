@@ -170,7 +170,7 @@
                 @guest
                     <li class="nav-link loginButton fw-bold rounded-pill" id="loginButton">
                         <a href="{{ route('login') }}" style="color: #1117AB"
-                            class="mt-1 w-100 h-100 text-white">CONNEXION</a>
+                            class="mt-1 w-100 h-100 text-white  text-center">CONNEXION</a>
                     </li>
                     <li class="nav-link rounded-pill registerButton" id="registerButton"><a href="{{ route('register') }}"
                             class="pt-1">INSCRIPTION</a></li>

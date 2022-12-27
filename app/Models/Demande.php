@@ -37,7 +37,8 @@ class Demande extends Model
         'user_id',
         'kkiapayPayement_id ',
         'acte_naissance',
-        'cni'
+        'cni',
+        'code'
         
     ];
 

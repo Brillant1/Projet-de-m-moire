@@ -14,9 +14,8 @@
 
             </div>
             <div class=" div-bienvenue d-flex justify-content-center flex-column align-items-center ">
-                <p class="text-white text-center">
-                    Bienvenu sur la plateforme officielle de <br> demande et de suivie de vos attestions du <br> CEP et du
-                    BEPC au Benin
+                <p class="text-white text-center w-75">
+                    Bienvenu sur votre plateforme de demande et de  suivie <br> de vos attestations d'étude secondaire au Bénin.
 
                 </p>
                 <a href="{{ route('before-demande') }}"

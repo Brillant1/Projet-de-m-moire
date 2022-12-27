@@ -10,4 +10,7 @@
   <script src="{{asset("admin/vendor/php-email-form/validate.js")}}"></script>
   <script src="{{asset("admin/js/main.js")}}"></script>
   <script src="{{ asset('js/yearpicker.js') }}"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+  {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
 

@@ -1,6 +1,27 @@
 @extends('admin.layouts.template')
 @section('content')
     <div class="pagetitle mt-3">
+        <style>
+            .dataTables_filter{
+                display: flex;
+                justify-content:end;
+                
+            }
+            .dataTables_filter, .dataTables_length{
+                margin-bottom: 15px;
+            }
+            .dataTables_filter label, .dataTables_length label{
+                display: flex;
+                align-items: center;
+            }
+            .dataTables_length label select{
+                width: 60px !important;
+            }
+            #sampleTable th {
+                background:  rgba(3, 36, 151, 0.96);;
+                color: white;
+            }
+        </style>
        
         <nav>
             <div class="d-flex justify-content-between align-items-center bg-white px-3 py-4">
@@ -43,12 +64,12 @@
 
         <div class="shadow p-5 bg-white" style="border-radius: 10px;">
             <div class="table-responsive container-fluid border-3" style="border-radius: 5px;">
-                <table class="table datatable table-striped  border-collapse table-bordered">
+                <table class="table  table-striped  border-collapse table-bordered" id="sampleTable">
                     <thead>
                         <tr class=" ">
                             <th class=" ">Département</th>
                             <th class=" ">Référence</th>
-                            <th class=" ">Action</th>
+                            <th class=" text-center ">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -125,7 +146,13 @@
     </div>
     <script>
         $('document').ready(function() {
-            $('#sampleTable').datatables();
+            $('#sampleTable').DataTable({
+                "language": {
+                    "info": "_END_ sur _TOTAL_ entrées",
+                    "infoEmpty": "_END_ sur _TOTAL_ entrées",
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                },
+            });
         });
     </script>
 @endsection

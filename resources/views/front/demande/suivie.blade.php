@@ -21,17 +21,24 @@
 
                     <p class="text-center fs-2 mt-5 fw-bold">Récapitulatif des demandes</p>
 
+
+
                     @if (session('deletedMessage'))
-                        <div class="alert alert-success">
-                            <h6> {{ session('deletedMessage') }} </h6>
-                        </div>
-                    @endif
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('deletedMessage') }}
+                        <button class="btn-close  bg-none bg-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif  
 
                     @if (session('addedDemandeMessage'))
-                        <div class="alert alert-success">
-                            <h6> {{ session('addedDemandeMessage') }} </h6>
-                        </div>
-                    @endif
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('addedDemandeMessage') }}
+                        <button class="btn-close  bg-none bg-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif  
+
+                   
+                  
 
                     @if (Session::has('paymentSuccessMessage'))
                         <p class="alert {{ Session::get('alert-class', 'alert-success') }}">
@@ -53,7 +60,7 @@
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                 <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
                                     data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
-                                    aria-selected="true">Demandes en attente</button>
+                                    aria-selected="true">Demandes récente</button>
                                
                                 <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
                                     data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact"
@@ -98,7 +105,7 @@
                                             <tr class="">
                                                 <td>Date</td>
                                                 <td>Nom & Prénoms</td>
-                                                <td>Collège</td>
+                                                <td>Centre</td>
                                                 {{-- <td>Dprt du collège</td> --}}
                                                 {{-- <td>Commune</td> --}}
                                                 <td>N* de Table </td>
@@ -112,13 +119,20 @@
                                         <tbody>
                                             @if (count($demandeNonValides)>0)
                                                 @foreach ($demandeNonValides as $demande)
+                                                   
+                                                    @php
+                                                        $centres = App\Models\Centre::where('id',$demande->centre)->get();
+                                                    @endphp
                                                     <tr class="">
                                                         <td class="py-3">{{ $demande->created_at->format('d-m-Y') }}
                                                         </td>
                                                         <td class="py-3">
                                                             {{ $demande->nom . ' ' . $demande->prenom }}
                                                         </td>
-                                                        <td class="py-3">{{ $demande->centre }}</td>
+                                                        <td class="py-3">
+                                                          {{ $demande->centre}}
+                                                            
+                                                        </td>
 
                                                         <td class="py-3">{{ $demande->numero_table }}</td>
                                                         <td class="py-3 label-color">{{ $demande->statut_demande }}</td>
@@ -152,9 +166,9 @@
                                                                         d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                                                 </svg>
                                                             </a>
-                                                           
-                                                            <a href="#" class="btn btn-sm "
-                                                                title="Supprimer la demande" data-bs-toggle="modal"
+                                                            
+                                                            <a href="#" class="btn btn-sm" title="Supprimer la demande" data-bs-toggle="modal"
+                                                                
                                                                 data-bs-target="{{ '#deleteModal' . $demande->id }}">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="35"
                                                                     height="35" fill="red" class="bi bi-x"
@@ -163,6 +177,52 @@
                                                                         d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                                                                 </svg>
                                                             </a>
+
+                                                            <a href="#" class="btn btn-sm" title="Info" data-bs-toggle="modal"                    
+                                                                data-bs-target="{{ '#infoModal' . $demande->id }}">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                    height="20" fill="green"
+                                                                    class="bi bi-chat-left-text" viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                                                                    <path
+                                                                        d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z" />
+                                                                </svg>
+                                                            </a>    
+
+                                                            @php
+                                                                $alertes = App\Models\Alerte::where('demande_id',$demande->id)->get();
+                                                              
+                                                            @endphp
+                                                            <div class="modal fade" id="{{ 'infoModal' . $demande->id }}">
+                                                                <div class=" modal-dialog">
+                                                                    <div class=" modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title">Quelques infos à propos de cette demande</h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class=" modal-body">
+                                                                            @forelse($alertes as $alerte)
+                                                                            <div>
+                                                                                <p class=" fw-bold">{{ $alerte->created_at->format('d-m-Y') }} &nbsp; &nbsp;
+                                                                                Message de l'administrateur
+                                                                                </p>
+                                                                                <p>{{ $alerte->message }}</p>
+                                                                            </div>
+                                                                            @empty
+                                                                                    L'admin n'a émis aucun message pour moment
+                                                                        
+                                                                            @endforelse 
+                                                                            <hr>
+                                                                            
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
                                                             {{-- Modal to delete demande --}}
                                                             <div class="modal fade"
                                                                 id="{{ 'deleteModal' . $demande->id }}"
@@ -211,7 +271,7 @@
 
 
                                                             {{-- Offcanva to show message to user --}}
-                                                            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                                            {{-- <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20"
                                                                     height="20" fill="green"
                                                                     class="bi bi-chat-left-text" viewBox="0 0 16 16">
@@ -220,17 +280,9 @@
                                                                     <path
                                                                         d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z" />
                                                                 </svg>
-                                                            </button>
+                                                            </button> --}}
 
-                                                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                                                                <div class="offcanvas-header">
-                                                                    <h5 id="offcanvasRightLabel">Offcanvas right</h5>
-                                                                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="offcanvas-body">
-                                                                    ...
-                                                                </div>
-                                                            </div>
+                                                          
 
                                                             {{-- show demande's messages to user --}}
                                                             {{-- <button class="btn btn-sm" type="button"data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
@@ -304,8 +356,9 @@
                                                                         <div
                                                                             class="row-info container-fluid  d-flex justify-content-between">
 
-                                                                            <p class="">Nom du collège :</p>
-                                                                            <p>{{ $demande->centre }}</p>
+                                                                            <p class="">Centre :</p>
+                                                                            <p>
+                                                                                {{$demande->centre}}</p>
 
                                                                         </div>
                                                                         <div
@@ -328,16 +381,12 @@
                                                                             class="section-title text-center first-color py-2 mt-5">
                                                                             Informations sur le diplôme</p>
 
-                                                                        <div
-                                                                            class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
-
+                                                                        <div class="pt-3 row-info container-fluid  d-flex justify-content-between ">                                                               
                                                                             <p>Année d'obtention du diplôme :</p>
                                                                             <p>{{ $demande->annee_obtention }}</p>
-
                                                                         </div>
                                                                         <div
                                                                             class="row-info container-fluid  d-flex justify-content-between">
-
                                                                             <p>Série d'examen :</p>
                                                                             <p>{{ $demande->serie }}</p>
 
@@ -352,7 +401,15 @@
                                                                         <div
                                                                             class="pt-3 row-info container-fluid  d-flex justify-content-between">
                                                                             <p>Centre de composition :</p>
-                                                                            <p>{{ $demande->centre }}</p>
+                                                                            <p>
+                                                                                <p class="text-danger">
+                                                                                    @php
+                                                                                        $centre = App\Models\Centre::where('id', $demande->centre)->get();
+                                                                                       
+                                                                                    @endphp
+                                                                                    {{ $demande->centre }}</p>
+                                                                                
+                                                                              </p>
                                                                         </div>
 
                                                                     </div>
@@ -366,14 +423,23 @@
                                                                             class=" row-info container-fluid  d-flex justify-content-between">
 
                                                                             <p>Commune du centre :</p>
-                                                                            <p>{{ $demande->commune }}</p>
+                                                                          
+                                                                            <p  class="text-danger">
+                                                                              {{ $demande->commune}}
+                                                                                
+                                                                            </p>
 
                                                                         </div>
                                                                         <div
                                                                             class="row-info container-fluid  d-flex justify-content-between">
 
                                                                             <p>Département :</p>
-                                                                            <p>{{ $demande->departement }}</p>
+                                                                            <p  class="text-danger">
+                                                                                @php
+                                                                                $departement = App\Models\Departement::where('id', $demande->departement)->get();
+                                                                                @endphp
+                                                                                {{ $departement[0]->nom }}
+                                                                            </p>
 
                                                                         </div>
                                                                         <div
@@ -483,6 +549,10 @@
                                         <tbody>
                                             @if (count($demandeValides))
                                                 @foreach ($demandeValides as $demandeValide)
+                                                @php
+                                                $centres = App\Models\Centre::where('id',$demande->centre)->get();
+                                                $communes = App\Models\Commune::where('id',$demande->commune)->get();
+                                                @endphp
                                                     <tr class="">
                                                         <td class="py-3">
                                                             {{ $demandeValide->created_at->format('d-m-Y') }}
@@ -492,7 +562,7 @@
                                                         </td>
                                                         <td class="py-3">{{ $demandeValide->centre }}</td>
                                                         {{-- <td class="py-3">{{ $demandeValide->departement }}</td> --}}
-                                                        <td class="py-3">{{ $demandeValide->commune }}</td>
+                                                        <td class="py-3">{{ $demandeValide->commune}}</td>
                                                         <td class="py-3">{{ $demandeValide->numero_table }}</td>
                                                         <td class="py-3 label-color">
                                                             {{ $demandeValide->statut_demande }}
