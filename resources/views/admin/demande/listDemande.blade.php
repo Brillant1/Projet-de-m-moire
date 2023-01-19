@@ -1,4 +1,7 @@
 @extends('admin.layouts.template')
+<style>
+    
+</style>
 @section('content')
     <div class="pagetitle mt-3" style="border-radius: 10px;">
         <nav>
@@ -115,7 +118,7 @@
             </div>
 
             <div class="table-responsive container-fluid">
-                <table class="table table-striped border-collapse table-bordered ">
+                <table class="table border-collapse" id="demandeTable">
                     <thead>
                         <tr class=" ">
                             <th class="">Photo</th>
@@ -128,6 +131,18 @@
                             <th class="">Action</th>
                         </tr>
                     </thead>
+                    <tfoot>
+                        <tr class="" id="">
+                            <th class=""></th>
+                            <th class=" ">Nom</th>
+                            <th class=" ">Prénom</th>
+                            <th class=" ">N° Table</th>
+                            <th class="">Centre</th>
+                            <th>Commune</th>
+                            <th>Année</th>
+                            <th class=""></th>
+                        </tr>
+                    </tfoot>
                     <tbody>
 
                         @foreach ($demandes as $demande)
@@ -180,8 +195,19 @@
     </div>
 
     <script>
+
         $('document').ready(function() {
+
+            let demandeTable = $('#demandeTable').Datatables({
+                
+            });
+
+
             $('#annee').yearpicker();
         })
     </script>
+
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+    
 @endsection

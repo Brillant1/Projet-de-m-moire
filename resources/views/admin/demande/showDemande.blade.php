@@ -203,6 +203,10 @@
                     {{-- <p class=" favorite-color h3 text-start ms-2  py-2 mt-5">Informations sur le diplôme</p> --}}
 
                     <div class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
+                        @php
+                            $centres = App\Models\Centre::where('id',$demande->centre)->get();   
+                            $communes = App\Models\Commune::where('id',$demande->commune)->get();    
+                        @endphp
                         <p>Centre de composition :</p>
                         <p>
                             {{-- 
@@ -210,7 +214,9 @@
                                 $centre = App\Models\Centre::where('id', $demande->centre)->get();
                             @endphp --}}
                             
-                            {{ $demande->centre }}</p>
+                            @foreach ($centres as $centre)
+                                {{ $centre->nom }}
+                            @endforeach</p>
 
                     </div>
 
@@ -222,7 +228,9 @@
                             {{-- @php
                                 $commune = App\Models\Commune::where('id', $demande->commune)->get();
                             @endphp --}}
-                            {{ $demande->commune }}</p>
+                            @foreach ($communes as $commune)
+                            {{ $commune->nom }}
+                            @endforeach</p>
 
                     </div>
                     
@@ -405,9 +413,10 @@
                                             <label for="sujet" class=" px-2">Sujet du message</label>
                                             <select class="form-select  px-2" aria-label="Default select example"
                                                 id="sujet" name="sujet" required>
-                                                @foreach ($sujets as $sujet)
-                                                    <option value="{{ $sujet }}">{{ $sujet }}</option>
-                                                @endforeach
+                                                <option value="">Sélectionnez</option>
+                                                <option value="Infos">Infos</option>
+                                                <option value="Infos">Note</option>
+                                                <option value="Infos">Rejet de demande</option>
 
                                             </select>
                                         </div>
@@ -415,7 +424,7 @@
 
 
 
-                                        <label for="exampleFormControlTextarea1">Message au demandeur
+                                        <label for="exampleFormControlTextarea1">Message
                                             {{ $demande->nom . ' ' . $demande->prenom }}</label>
                                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="message"
                                             style="height: 150px;"></textarea>
@@ -476,7 +485,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Confirmer
-                                    <strong class="text-danger">la génération</strong> de l'attestation
+                                    <strong class="">la génération</strong> de l'attestation
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>

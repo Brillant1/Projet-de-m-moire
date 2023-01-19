@@ -60,7 +60,7 @@
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                 <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
                                     data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
-                                    aria-selected="true">Demandes récente</button>
+                                    aria-selected="true">Demandes en attente</button>
                                
                                 <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
                                     data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact"
@@ -68,7 +68,7 @@
 
                                 <button class="nav-link" id="nav-attestation-tab" data-bs-toggle="tab"
                                     data-bs-target="#nav-attestation" type="button" role="tab"
-                                    aria-controls="nav-attestation" aria-selected="false">Mes attestations</button>
+                                    aria-controls="nav-attestation" aria-selected="false">Mes documents</button>
                             </div>
                         </nav>
                         <div class="tab-content" id="nav-tabContent">
@@ -105,11 +105,14 @@
                                             <tr class="">
                                                 <td>Date</td>
                                                 <td>Nom & Prénoms</td>
+                                                <td>N° de Table </td>
                                                 <td>Centre</td>
+                                                <td>Commune</td>
+                                                <td>Statut</td>
                                                 {{-- <td>Dprt du collège</td> --}}
                                                 {{-- <td>Commune</td> --}}
-                                                <td>N* de Table </td>
-                                                <td>Status</td>
+                                                
+                                              
                                                 {{-- <td>Paiement</td>
                                                 <th>Alertes</th> --}}
                                                 <td class=" ps-5 ">Action</td>
@@ -119,9 +122,11 @@
                                         <tbody>
                                             @if (count($demandeNonValides)>0)
                                                 @foreach ($demandeNonValides as $demande)
+                                               
                                                    
                                                     @php
                                                         $centres = App\Models\Centre::where('id',$demande->centre)->get();
+                                                        $communes = App\Models\Commune::where('id', $demande->commune)->get();
                                                     @endphp
                                                     <tr class="">
                                                         <td class="py-3">{{ $demande->created_at->format('d-m-Y') }}
@@ -129,13 +134,21 @@
                                                         <td class="py-3">
                                                             {{ $demande->nom . ' ' . $demande->prenom }}
                                                         </td>
-                                                        <td class="py-3">
-                                                          {{ $demande->centre}}
-                                                            
-                                                        </td>
 
                                                         <td class="py-3">{{ $demande->numero_table }}</td>
-                                                        <td class="py-3 label-color">{{ $demande->statut_demande }}</td>
+                                                        <td class="py-3 label-color">
+                                                            @foreach ($centres as $centre)
+                                                                {{ $centre->nom }}
+                                                            @endforeach
+                                                        </td>
+                                                        <td class="py-3">
+                                                          @foreach ($communes as $commune)
+                                                              {{ $commune->nom }}
+                                                          @endforeach
+                                                            
+                                                        </td>
+                                                        <td>{{ $demande->statut_demande }}</td>
+
 
                                                         <td class="py-3">
                                                             <a title="Consulter la demande"
@@ -493,6 +506,8 @@
 
                                                     
                                                 @endforeach
+                                            @else
+                                            <h5 class=" text-center">Pas de demande validé</h5>
                                             @endif
                                         </tbody>
                                     </table>
@@ -549,10 +564,10 @@
                                         <tbody>
                                             @if (count($demandeValides))
                                                 @foreach ($demandeValides as $demandeValide)
-                                                @php
-                                                $centres = App\Models\Centre::where('id',$demande->centre)->get();
-                                                $communes = App\Models\Commune::where('id',$demande->commune)->get();
-                                                @endphp
+                                                    @php
+                                                    $centres = App\Models\Centre::where('id',$demandeValide->centre)->get();
+                                                    $communes = App\Models\Commune::where('id',$demandeValide->commune)->get();
+                                                    @endphp
                                                     <tr class="">
                                                         <td class="py-3">
                                                             {{ $demandeValide->created_at->format('d-m-Y') }}
@@ -582,31 +597,90 @@
                             {{-- Tabs 4 --}}
                             <div class="tab-pane fade" id="nav-attestation" role="tabpanel"
                                 aria-labelledby="nav-attestation-tab">
-                                <h3 class=" favorite-color my-3">Toutes mes attestations</h3>
                                 <div>
-                                    
-                                        
-                                   
-                                        
-                                  
                                     <div class="row">
-                                        @forelse ($demandeGenerers as $demandeGenerer)
-                                        <div class="col col-lg-3 ">
-                                            <div class="card border-0">
-                                               
-                                                <div class="card-body text-center">
-                                                    <a href=" {{ asset('storage/'.$demande->acte_naissance) }}" target="_blank" class="py-3"><img src="{{ asset('admin/img/pdf-file.svg') }}" alt="" height="75" width="75" /></a> <br>
-                                                </div>
-                                                <div class="card-footer border-0 bg-whie" style="line-height: 15px;">
-                                                    <p>Demandée le: {{ $demandeGenerer->created_at }}</p>
-                                                    <p>Emise le: {{ $demandeGenerer->updated_at }}</p>
-                                                    <a href="{{ route('download-attestation', $demandeGenerer->id ) }}" class="btn btn-success btn-sm">Télécharger</a>
-                                                </div>
+                                      
+                                        <div class="container-fluid d-flex justify-content-between mt-5">
+                                            <div>
+                                                <form action="">
+        
+                                                    <div class="input-group border border-1 rounded">
+                                                        <input class="form-control border-0 rounded" type="text"
+                                                            value="Rechercher ..." id="example-search-input">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div>
+                                                <form action="">
+                                                    <select class="form-select form-select-md mb-3 rounded"
+                                                        aria-label=".form-select-lg example">
+                                                        <div class="">
+                                                            <option selected>Filtrer suivant ...</option>
+                                                            <option value="1">One</option>
+                                                            <option value="2">Two</option>
+                                                            <option value="3">Three</option>
+                                                        </div>
+                                                    </select>
+                                                </form>
                                             </div>
                                         </div>
-                                        @empty
-                                        Aucune attestation disponible pour le moment
-                                        @endforelse
+                                        <div class="">
+                                            <table class="table">
+                                                <th>
+                                                    <tr class="">
+                                                        <td>Nom & Prénom(s)</td>
+                                                        <td>N° Table</td>
+                                                        <td>Demandé le</td>
+                                                        <td>Délivré le</td>
+                                                        <td>Status</td>
+                                                        <td>Action</td>
+                                                    </tr>
+                                                </th>
+                                                <tbody>
+                                                    
+                                                    
+                                                        @forelse($demandeGenerers as $demandeGenerer)
+                                                            <tr class="">
+                                                                <td class="py-3">
+                                                                    {{ $demandeGenerer->nom . ' ' . $demandeGenerer->prenom }}
+                                                                </td>
+                                                                <td class="py-3">
+                                                                    {{ $demandeGenerer->numero_table }}
+                                                                </td>
+                                                                <td class="py-3">
+                                                                    {{ $demandeGenerer->created_at->format('d-m-Y') }} à {{ $demandeGenerer->created_at->format('H:i:s') }}
+                                                                </td>
+                                                                <td class="py-3">
+                                                                    {{ $demandeGenerer->updated_at->format('d-m-Y') }} à {{ $demandeGenerer->updated_at->format('H:i:s') }}
+                                                                    
+                                                                </td>
+                                                               
+                                                                
+                                                                <td class="py-3 label-color text-danger">
+                                                                    Délivré
+                                                                </td>
+                                                                <td>
+                                                                  
+                                                                    @if(!is_null($demandeGenerer->attestation))
+
+                                                                    <a href="{{ route('download-attestation', $demandeGenerer->id ) }}" class=" text-white bg-success p-1 rounded d-flex justify-content-center align-items-center">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                                                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                                                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                                                        </svg>
+                                                                    </a>
+                                                                    @endif
+
+                                                                </td>
+                                                            </tr>
+                                                        @empty
+                                                            Pas d'attestation générée
+                                                        @endforelse
+                                                  
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
                                     </div>
                                    
 

@@ -90,7 +90,7 @@
                             content: "";
                             position: absolute;
                             margin-top: 47px;
-                            width: 75%;
+                            width: 70%;
                             height: 4px;
                             background-color: #cdcdcd;
                             transform: translateY(-50%);
@@ -217,10 +217,13 @@
                                 <label class="control-label label-color" for="sexe">Sexe &nbsp; <span
                                         class="text-danger">*</span></label>
                                 <select class="form-control border-1 form-select" name="sexe">
-                                    @foreach ($sexes as $sexe)
+                                    <option value="Masculin">Masculin</option>
+                                    <option value="Féminin">Féminin</option>
+                                    <option value="Autres">Autres</option>
+                                    {{-- @foreach ($sexes as $sexe)
                                         <option value="{{ $sexe }}" @if(!is_null($candidat)) @if($candidat[0]->sexe==$sexe) selected @endif @endif>
                                        {{ $sexe }}</option>
-                                    @endforeach
+                                    @endforeach --}}
 
                                 </select>
 
@@ -302,9 +305,12 @@
                                         class="text-danger">*</span></label>
                                 <select class="form-control border-1 form-select" name="serie" id="serie">
                                     <option value="">Choisissez la série</option>
-                                    @foreach ($series as $serie)
+                                    <option value="Mod.Court">Mod.Court</option>
+                                    <option value="Mod.Long">Mod.Long</option>
+                                    <option value="CAP">CAP</option>
+                                    {{-- @foreach ($series as $serie)
                                         <option value="{{ $serie }}">{{ $serie }}</option>
-                                    @endforeach
+                                    @endforeach --}}
 
                                 </select>
                                 <span class="text-danger" id="serieError"> </span>
@@ -321,9 +327,13 @@
                                 <label class="control-label label-color" for="mention">Mention obtenu pour
                                     l'examen &nbsp;( <span class="text-danger">optionnel</span> )</label>
                                 <select class="form-control border-1 form-select" name="mention">
-                                    @foreach ($mentions as $mention)
+                                    <option value="Passable">Passable</option>
+                                    <option value="A.Bien">A.Bien</option>
+                                    <option value="Bien">Bien</option>
+                                    <option value="Exellente">Exellente</option>
+                                    {{-- @foreach ($mentions as $mention)
                                         <option value="{{ $mention }}">{{ $mention }}</option>
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
                             </div>
                         </div>
@@ -533,7 +543,7 @@
                                 renseignées</label> <br> --}}
                             <input type="reset" value="Annuler tout"
                                 class="mt-5 btn btn-md bg-favorite-color text-white px-5 me-4">
-                            <button class="mt-5 btn btn-md btn-success px-5" id="sendDemande">Soumettre et payer</button> 
+                            <button class="mt-5 btn btn-md btn-success px-5" id="sendDemande">Soumettre la demande</button> 
                         </div>
                     </div>
                     {{-- end form section 3 --}}
@@ -541,6 +551,27 @@
             </div>
         </div>
     </div>
+
+    <div class="modal rounded fade alert-payement" data-bs-backdrop="static" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              {{-- <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5> --}}
+              <button type="button" class="btn-close text-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-center align-items-center flex-column">
+                <p class="text-center">Demande d'attestation</p>
+                <img src="{{ asset('img/pay.png') }}" alt="" width="100" class="my-4">
+                <p class="text-center text-primary">
+                    Cette opération nécessite des frais d’une valeur de <span class="text-danger">5000 FCFA</span> payable par MTN Mobile money ou Moov Money
+                </p>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+               <button type="button" class="btn rounded text-white" id="ok" style="background-color: #078466">Continuer</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     {{-- <script src="https://cdn.kkiapay.me/k.js"></script> --}}
     <script>
@@ -605,7 +636,7 @@
                     $('#form-section1').removeClass('form-section-active');
                     $('#form-section2').addClass('form-section-active');
                     $('#progresse2').addClass('progressbar-item-active');
-                    $('.progress').width('38%');
+                    $('.progress').width('33.34%');
                 }
             });
 
@@ -662,7 +693,7 @@
                     $('#form-section2').removeClass('form-section-active');
                     $('#form-section3').addClass('form-section-active');
                     $('#progresse3').addClass('progressbar-item-active');
-                    $('.progress').width('75%');
+                    $('.progress').width('67%');
                 }
             });
 
@@ -671,7 +702,7 @@
                 $('#form-section3').removeClass('form-section-active');
                 $('#form-section2').addClass('form-section-active');
                 $('#progresse3').removeClass('progressbar-item-active');
-                $('.progress').width('38%');
+                $('.progress').width('33.34%');
             });
 
             $('#sendDemande').click(function(e) {
@@ -692,10 +723,13 @@
                 } else if ($("#contact_parent").val() == '') {
                     $('#contact_parentError').text('le contact du parent est obligatoire');
                 } 
-               
                 else{
-                    $('#myForm').submit();
-                } 
+                    $('#staticBackdrop').modal('show');
+                }
+            });
+            $('#ok').click(function(){
+                $('#myForm').submit();
+                $('#staticBackdrop').modal('hide');
             });
 
             

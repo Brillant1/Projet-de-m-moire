@@ -127,10 +127,14 @@
                             <label class="control-label label-color" for="sexe">Sexe &nbsp; <span
                                 class="text-danger">*</span></label>
                             <select class="form-control border-1 py-1 form-select" style="height: 50px;" name="sexe" id="sexe_id">
-
-                                @foreach ($sexes as $sexe)
+                                {{-- <option value="{{ $demande->sexe }}">{{ $demande->sexe }}</option> --}}
+                                    <option value="Masculin" @if ($demande->sexe=="Masculin") selected @endif >Masculin</option>
+                                       
+                                    <option value="Féminin"  @if ($demande->sexe=="Féminin") selected @endif>Féminin</option>
+                                    <option value="Autres"  @if ($demande->sexe=="Autres") selected @endif>Autres</option>
+                                {{-- @foreach ($sexes as $sexe)
                                     <option value="{{ $sexe }}" @if ( old('sexe_id', $demande->sexe) == $sexe) selected @endif>{{ $sexe }}</option>
-                                @endforeach
+                                @endforeach --}}
 
                             </select>
 
@@ -181,9 +185,12 @@
                             <label class="control-label label-color" for="centre">Série de l'examen &nbsp; <span
                                 class="text-danger">*</span></label>
                             <select class="form-control border-1  form-select" style="height: 50px;" name="serie" id="serie">
-                                @foreach ($series as $serie)
-                                    <option value="{{ $serie }}" @if( old('serie', $demande->serie) == $serie) selected @endif>{{ $serie }}</option>
-                                @endforeach
+                                <option value="Mod.Court" @if($demande->serie=="Mod.Court") selected @endif >Mod.Court</option>
+                                    
+                                
+                                <option value="Mod.Court"  @if($demande->serie=="Mod.Long") selected @endif >Mod.Long</option>
+                                <option value="CAP"  @if($demande->serie=="CAP") selected @endif >CAP</option>
+                               
 
                             </select>
 
@@ -193,9 +200,14 @@
                             <label class="control-label label-color" for="mention">Mention obtenu pour
                                 l'examen &nbsp;( <span class="text-danger">optionnel</span> )</label>
                             <select class="form-control border-1  form-select" style="height: 50px;" name="mention" id="mention_id">
-                                @foreach ($mentions as $mention)
+                                <option value="Passable" @if($demande->mention=="Passable")selected @endif >Passable</option>  
+                                <option value="A.Bien" @if($demande->mention=="A.Bien")selected @endif>A.Bien</option>
+                                <option value="Bien" @if($demande->mention=="Bien")selected @endif>Bien</option>
+                                <option value="Exellente" @if($demande->mention=="Excellente")selected @endif>Exellente</option>
+
+                                {{-- @foreach ($mentions as $mention)
                                     <option value="{{ $mention }}" @if( old('mention_id', $demande->mention)== $mention) selected @endif>{{ $mention }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
 
                         </div>
@@ -241,7 +253,7 @@
                     </div>
 
                     <div class="row mb-3">
-                        <div class="form-group col-md-4 p-2">
+                        <div class="form-group col-md-6 p-2">
                             <label for="annee_obtention" class="control-label label-color">Veillez renseigner l'année où
                                 vous avez eu le diplôme</label>
                             <input class="form-control border-1  " type="number" maxlenght="4" max="{{ date('Y') }}"
@@ -252,7 +264,7 @@
                             @endif
                         </div>
 
-                        <div class="form-group col-md-4 p-2">
+                        <div class="form-group col-md-6 p-2">
                            
                                 <label class="control-label label-color" for="jury">Jury de l'examen &nbsp; (<span class="text-danger">optionnel</span>)</label>
                                 <input type="text" class="form-control border-1  jury" id="jury" name="jury" value="{{ $demande->jury }}" minlength="3" maxlength="4">
@@ -262,17 +274,7 @@
                                 <span class="text-danger">{{ $errors->first('numero_reference') }}</span>
                             @endif
                         </div>
-                        <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
-                            <label class="control-label label-color" for="centre">Série de l'examen</label>
-                            <select class="form-control border-1  form-select" style="height: 50px;" name="serie" id="serie_id">
-
-                                @foreach ($series as $serie)
-                                    <option value="{{ $serie }}" @if( old('serie_id', $demande->serie) == $serie) selected @endif >{{ $serie }}</option>
-                                @endforeach
-
-                            </select>
-
-                        </div>
+                        
                     </div>
                     <div class="row mb-3">
                         <div class="form-group col-4 p-2">

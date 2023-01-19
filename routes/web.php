@@ -93,11 +93,15 @@ Route::get('dowloadUserFile/{lien}', [GererDemandeController::class, 'dowloadUse
 Route::get('downloadReleve/{id}', [App\Http\Controllers\DemandeController::class, 'download_releve'])->name('download-releve');
 Route::get('downloadActe/{id}', [App\Http\Controllers\DemandeController::class, 'download_acte'])->name('download-acte');
 Route::get('downloadACni/{id}', [App\Http\Controllers\DemandeController::class, 'download_cni'])->name('download-cni');
-Route::get('downloadAttestation/{id}', [App\Http\Controllers\DemandeController::class, 'download_attestation'])->name('download-attestation');
+//Route::get('downloadAttestation/{id}', [App\Http\Controllers\DemandeController::class, 'download_attestation'])->name('download-attestation');
 
 // Route pour changer les communes en fonction du département
 Route::post('/communesOfDepartement', [App\Http\Controllers\DemandeController::class, 'communesOfDepartement' ])->name('communes-of-departement');
 Route::post('/centreOfCommune', [App\Http\Controllers\DemandeController::class, 'centreOfCommune' ])->name('centre-of-commune');
+
+
+//Route::get('downloadAttestation/{id}', [HomeController::class, 'download_attestation'])->name('download-attestation');
+
 
 Route::get('actualites', function () {
     return view('front/actualites');
@@ -157,3 +161,6 @@ Route::get('test', function () {
 Route::get('attestation1', function(){
     return view('emails.attestation');
 })->name('attestation1');
+Route::get('pdf', function(){
+    return view('front.pdf');
+});

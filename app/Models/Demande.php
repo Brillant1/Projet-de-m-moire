@@ -38,7 +38,8 @@ class Demande extends Model
         'kkiapayPayement_id ',
         'acte_naissance',
         'cni',
-        'code'
+        'code',
+        'attestation'
         
     ];
 

@@ -12,11 +12,12 @@ use Illuminate\Http\Request;
 use App\Mail\AttestationMail;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
+use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-
+ 
 
 
 class GererDemandeController extends Controller
@@ -75,13 +76,40 @@ class GererDemandeController extends Controller
 
     public function pdf2(Demande $demande)
     {
-        $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('emails.attestation', compact('demande'));
-        Mail::to($demande->email)->send(new AttestationMail($pdf));
+        $dompdf = new Dompdf();
+        $data['id'] = $demande->id;
+        $data['prenom'] = $demande->prenom;
+
+        $html = view('front.pdf', ['data'=>$data]); 
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4','paysage');
+        $dompdf->render();
+        $output = $dompdf->output();
+        $fileName = $demande->nom.'_'.$demande->prenom.'_'.$demande->numero_table.'.pdf';
+        file_put_contents($fileName, $output);
+        //return response()->download($fileName);
+       
+       
+        Mail::send('emails.attestation', $data, function ($message) use ($data, $output, $fileName) {
+        $message->to("esaietchagnonsi@gmail.com")
+            ->subject( $data['prenom'])
+            ->attachData($output, $fileName);
+        });
+
+        Storage::disk('public')->put('attestation/'.$fileName,$output);
+
+        $pdf_url = Storage::url('attestation' . '/' . $fileName);
+         
+        //$dompdf->save('app/public/attestation'.$fileName);     
         $demande->statut_demande = "generer";
+        $demande->attestation = $pdf_url;
+        $code = strtotime($demande->created_at);
+        $code = bcrypt($code);
+        $code = '@#'.substr($code, strlen($code)-15).'#@';
+        $demande->code = $code;
         $demande->save();
         $demandes = Demande::orderBy('created_at', 'DESC')->get();
-        return redirect()->route('listeDemande', ['demandes' => $demandes])->with('generateMessage', 'Attestation générée et envoyée au mail du demandeur avec succès avec succès !');
+        return redirect()->route('listeDemande', ['demandes' => $demandes])->with('generateMessage', 'Attestation générée et envoyée au mail du demandeur avec succès !');
     }
 
 

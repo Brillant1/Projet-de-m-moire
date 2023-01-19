@@ -83,21 +83,21 @@ class DemandeController extends Controller
             ]
         )->get();
 
-        $demandeValides = Demande::orderBy('created_at','DESC')->where(
+        $demandeValides = Demande::orderBy('updated_at','DESC')->where(
             [
                 'user_id' => Auth::user()->id,
                 'statut_demande' => "valider"
             ]
         )->get();
 
-        $demandeNonPayers = Demande::orderBy('created_at','DESC')->where(
+        $demandeNonPayers = Demande::orderBy('updated_at','DESC')->where(
             [
                 'user_id' => Auth::user()->id,
                 'statut_demande'=> "non_valider",
                 'statut_payement' => "non_payer"
             ]
         )->get();
-        $demandeGenerers = Demande::orderBy('created_at','DESC')->where(
+        $demandeGenerers = Demande::orderBy('updated_at','DESC')->where(
             [
                 'user_id' => Auth::user()->id,
                 'statut_demande'=> "generer",
@@ -203,7 +203,7 @@ class DemandeController extends Controller
 
       
         $callbackRoute = route("changeToPayState", ["demande" => $id]);
-        $message = " Jusqu'à ce que vous ne payiez, cette demande reste non valide et ne sera pas traité. Veillez payer pour faire valider votre demande";
+        $message = " Procéder maintenant au paiement en cliquant sur le bouton PAYER MAINTENANT. Sans cela, votre demande ne fera objet d'aucun traitement. Merci";
 
         
         return view('front.paiement', compact('demandeInfos','message','callbackRoute'));
@@ -370,10 +370,7 @@ class DemandeController extends Controller
         if ($kkiapay->verifyTransaction($transaction_id)->status == "SUCCESS") {
             $demande->statut_payement = "payer";
             $demande->kkiapayPayement_id =  $transaction_id;
-            $code = strtotime($demande->created_at);
-            $code = bcrypt($code);
-            $code = '@#'.substr($code, strlen($code)-15).'#@';
-            $demande->code = $code;
+            
             $demande->save();
             // Session::flash('paymentSuccessMessage', 'Transaction réussie,
             //         restez en écoute des nouvelles concernant votre demande');
@@ -433,10 +430,10 @@ class DemandeController extends Controller
         $cni_path = 'storage/'.$demande->cni;
         return response()->download($cni_path);
     }
-    public function download_attestation($id){
-        $demande = Demande::find($id);
-        $cni_path = 'storage/'.$demande->cni;
-        return response()->download($cni_path);
-    }
+    // public function download_attestation($id){
+    //     $demande = Demande::find($id);
+    //     $cni_path = 'storage/'.$demande->cni;
+    //     return response()->download($cni_path);
+    // }
     
 }
