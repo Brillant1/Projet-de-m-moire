@@ -1,48 +1,6 @@
-<style>
-    .dropdown-item:hover,
-    .p-flash-first {
-        color: white !important;
-        background-color: #032497;
-    }
 
-    .p-flash-first:first-child {
-        color: white;
-        background-color: #032497;
-        height: 100%;
-    }
-
-    #flash {
-        width: 100%;
-    }
-
-    #flash>div:first-child {
-        widows: 20%;
-    }
-
-    #flash>div:last-child {
-        widows: 70%;
-    }
-
-    .flash-info {
-        animation: marquee 10s linear alternate;
-    }
-
-    @keyframes marquee {
-        0% {
-            -moz-transform: translateX(100%);
-            -webkit-transform: translateX(100%);
-            transform: translateX(100%);
-        }
-
-        100% {
-            -moz-transform: translateX(-100%);
-            -webkit-transform: translateX(-100%);
-            transform: translateX(-100%);
-        }
-    }
-</style>
-<header class="shadow" style="background-color: #fff;">
-    <div class="fw-bold text-white row mx-0" id="flash">
+<header class="container-fluid shadow" >
+    <div class="fw-bold text-white row bg-dark" id="flash">
         <div class="bg-favorite-color col-1 py-2 d-flex justify-content-center align-items-center text-uppercase fs-5">
             Flash Info</div>
         <div class="bg-dark col-11 py-2  fs-6 d-flex justify-content-center align-items-center text-uppercase">
@@ -50,53 +8,172 @@
                 @php
                     $flash = flash_info();
                 @endphp
-
                 {{ $flash }}
             </marquee>
         </div>
     </div>
-    <nav class="navbar1 d-flex py-3" id="navbar1">
-        <a href="{{ route('accueil') }}" class="logo ms-5">
-            <img src="{{ asset('admin/img/logoDec.png') }}" alt="">
+    <nav class="navbar navbar-expand-lg container-fluid " id="navbar">
+        <a class="navbar-brand my-0" href="#" id="logo">
+            <img class=" logo" src="{{ asset('admin/img/logoDec.png') }}" alt="">
         </a>
-        <div class="divNav container-fluid d-flex  justify-content-around " style="width: 85%; margin-left: 100px; ">
-            <ul class="d-flex justify-content-between align-items-center h-100 list-unstyled" id="ul1"
-                style="white:70%; margin-left: 100px;">
-                <li class="nav-link scrollto favorite-color"><a class=""
-                        href="{{ route('accueil') }}">ACCUEIL</a></li>
-                <li class="nav-item dropdown" style="l">
-                    <a class="nav-link dropdown-toggle favorite-color dropdown-link-main d-flex justify-content-center align-items-center favorite-color"
-                        href="#">
+
+      
+
+        {{-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button> --}}
+
+        <button class="border-0 mx-5 mobile-toggle mobile-toggle-square"type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+            <i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#ff8000"
+                    class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z" />
+                </svg>
+            </i>
+        </button>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+                <h5 id="offcanvasRightLabel"> </h5>
+                <button type="button" class=" border-none border-0 btn-x text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close">
+
+                    <i class="btn-x ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="#ff8000"
+                            class="bi bi-x" viewBox="0 0 16 16">
+                            <path
+                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                    </i>
+                
+                </button>
+            </div>
+            <div class="offcanvas-body ms-0">
+                <ul class="ps-0 ms-0">
+                    <li><a href="{{ route('accueil') }}">Accueil</a></li>
+
+                   
+                    <li class="">
+                        <a href="#">Attestation</a>
+                        
+                        <ul class="d-flex flex-column ms-2 my-3">
+                            <a href="{{ route('before-demande') }}" class="mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ff8000" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                </svg>
+                                Faire une demande</a>
+                            <a href="{{ route('demandeUser') }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ff8000" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                </svg>
+                                Suivre ma demande</a>
+                        </ul>
+                        
+                    
+                    </li>
+
+                    {{-- <li>
+                        <a href="#">DEC
+
+                        <div class="d-flex flex-column ms-2 my-3">
+                            <a href="{{ route('mot-dec') }}" class="mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ff8000" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                </svg>
+                                Mot du DEC</a>
+                            <a href="{{ route('service-dec') }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ff8000" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                </svg>
+                                Service de la DEC</a>
+                        </div>
+                         </a>
+                       
+                    </li> --}}
+                    <li><a href="{{ route('aide') }}">Aide</a></li>
+                    <li><a href="{{ route('contact-create') }}">Contact</a></li>
+                    @guest               
+                    <li><a href="{{ route('login') }}">Connexion</a></li>
+                    <li><a href="{{ route('register') }}">Inscription</a></li>
+                    @endguest
+                    @auth
+                    <li class="text-danger"><a href="{{ route('logout') }}">Déconnexion</a></li>
+                    @endauth
+                </ul>
+            </div>
+        </div>
+
+
+
+        <div class="collapse navbar-expand-lg navbar-collapse" id="navbarSupportedContent">
+
+            <ul class="navbar-nav nav-ul1 me-auto mb-2 mb-lg-0 d-flex justify-content-between align-items-center">
+                <li class="nav-item">
+                <li class="nav-item favorite-color ">
+                    <a class="nav-link text-uppercase  {{ Route::is('accueil') ? 'active' : ' ' }} " aria-current="page"
+                        href="{{ route('accueil') }}">Accueil</a>
+                </li>
+
+                {{-- attestation link --}}
+                <li class="nav-item dropdown dropdown-etablissement li-web-only">
+                    <a class="nav-link dropdown-toggle  py-4 {{ Route::is(['before-demande', 'demandeUser']) ? 'active' : ' ' }}"
+                        href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="true">
                         ATTESTATION
                     </a>
-                    <div class="dropdown-menu dropdown-menu1 ms-2 py-2 bg-white" id="">
-                        <a class="dropdown-item py-2  text-dark" href="{{ route('before-demande') }}">Demander mon
-                            attestation</a>
-                        <a class="dropdown-item py-2  text-dark" href="{{ route('demandeUser') }}">Suivre mes
-                            demandes</a>
-                    </div>
+                    <ul class="dropdown-menu p-0  dropdown-link-etablissement mt-2" style="box-shadow: 0px 3.87546px 18.4084px rgba(0, 0, 0, 0.08); border-radius:2px;"
+                        aria-labelledby="navbarScrollingDropdown">
+                        <li class="nav-li-rose"><a class="dropdown-item p-3"
+                                href="{{ route('before-demande') }} {{ Route::is('before-demande') ? 'active' : ' ' }}">Demander
+                                mon attestation</a></li>
+                        <li class="nav-li-rose"><a class="dropdown-item p-3"
+                                href="{{ route('demandeUser') }}  {{ Route::is('demandeUser') ? 'active' : ' ' }} ">Suivre
+                                mes demandes</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item dropdown" style="l">
-                    <a class="nav-link dropdown-toggle favorite-color dropdown-link-dec d-flex justify-content-center align-items-center"
-                        href="#">
+                {{--end attestation link --}}
+
+                
+                {{-- DEC link --}}
+                {{-- <li class="nav-item dropdown dropdown-etablissement li-web-only">
+                    <a class="nav-link dropdown-toggle  py-4 {{ Route::is(['mot-dec', 'service-dec']) ? 'active' : ' ' }}"
+                        href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="true">
                         DEC
                     </a>
-                    <div class="dropdown-menu dropdown-menu-dec ms-2 py-2 bg-white" id="">
-                        <a class="dropdown-item py-2 text-dark" href="#">Mot d'accueil du DEC</a>
-                        <a class="dropdown-item py-2 text-dark" href="#">Services du DEC</a>
-                    </div>
+                    <ul class="dropdown-menu p-0 dropdown-link-etablissement mt-2" style="box-shadow: 0px 3.87546px 18.4084px rgba(0, 0, 0, 0.08); border-radius:2px;"
+                        aria-labelledby="navbarScrollingDropdown">
+                        <li class="nav-li-rose"><a class="dropdown-item p-3"
+                                href="{{ route('mot-dec') }} {{ Route::is('mot-dec') ? 'active' : ' ' }}">Mot
+                                d'accueil du DEC</a></li>
+                        <li class="nav-li-rose"><a class="dropdown-item p-3"
+                                href="{{ route('service-dec') }}  {{ Route::is('service-dec') ? 'active' : ' ' }} ">Services
+                                de la DEC</a></li>
+                    </ul>
+                </li> --}}
+                {{--end DEC link --}}
+
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::is('aide') ? 'active' : ' ' }}" href="{{ route('aide') }}">AIDE</a>
                 </li>
-                <li class="nav-link scrollto favorite-color"><a href="{{ route('aide') }}">COMMENT ÇA MARCHE</a></li>
-                <li class="nav-link favorite-color"><a href="{{ route('contact-create') }}">CONTACT</a></li>
+
+                <li class="nav-item favorite-color">
+                    <a class="nav-link {{ Route::is('contact-create') ? 'active' : ' ' }}"
+                        href="{{ route('contact-create') }}">CONTACT</a>
+                </li>
             </ul>
-            <ul class="d-flex justify-content-between align-items-center authButton mt-3" id="ul2">
+            {{-- auth link --}}
+
+            <ul class=" authButton mt-3" id="ul2">
                 @guest
-                    <li class="nav-link loginButton fw-bold rounded-pill d-flex justify-content-between align-items-center">
+                    <li class="nav-link loginButton fw-bold rounded-pill" id="loginButton">
                         <a href="{{ route('login') }}" style="color: #1117AB"
-                            class="mt-1 ms-1 w-100 h-100 d-flex justify-content-between align-items-center text-white">CONNEXION</a>
+                            class="mt-1 w-100 h-100 text-white  text-center">CONNEXION</a>
                     </li>
-                    <li class="nav-link rounded-pill registerButton d-flex justify-content-between align-items-center"><a
-                            href="{{ route('register') }}" class="pt-1">INSCRIPTION</a></li>
+                    <li class="nav-link rounded-pill registerButton" id="registerButton"><a href="{{ route('register') }}"
+                            class="pt-1">INSCRIPTION</a></li>
                 @endguest
                 @auth
                     <li class="nav-item dropdown">
@@ -113,14 +190,13 @@
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <a href="" class="dropdown-item">Profil</a>
 
-                            <a class="dropdown-item" data-toggle="modal" 
-                            data-target="#logoutModal"
-                             href="{{ route('logout') }}"
+                            <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal"
+                                href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
-                             document.getElementById('logout-form').submit();">
+                                 document.getElementById('logout-form').submit();">
                                 {{ __('Se déconnecter') }}
                             </a>
-                            
+
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
@@ -128,60 +204,27 @@
                     </li>
                 @endauth
             </ul>
-        </div>
 
+            {{-- end auth link --}}
+
+        </div>
     </nav>
 
-    <div class="nav-mobile" id="nav-mobile">
-        <ul>
-            <li><a href="">Accueil</a></li>
-            <li><a href="">Demande</a></li>
-            <li><a href="">Mes demande</a></li>
-            <li><a href="">Actualités</a></li>
-            <li><a href="">Aide</a></li>
-            <li><a href="">CONNEXION</a></li>
-            <li><a href="">INSCRIPTION</a></li>
-
-        </ul>
-    </div>
-    <i class="mobile-nav-toggle" id="toggle">
-        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="green" class="bi bi-list"
-            viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
-        </svg>
-    </i>
-
-</header>
-
-<script>
-    $(document).ready(function() {
-
-        $('.dropdown-link-main').click(function() {
-            $('.dropdown-menu1').toggle('500');
-        });
-        $('.dropdown-link-dec').click(function() {
-            $('.dropdown-menu-dec').toggle('500');
-        })
-    });
-
-
-
-    window.addEventListener('scroll', myFunction);
-        var navbar = document.getElementById("navbar1");
+    <script>
+        window.addEventListener('scroll', myFunction);
+        var navbar = document.getElementById("navbar");
         var sticky = navbar.offsetTop;
 
         function myFunction() {
 
             if (window.pageYOffset >= sticky) {
-                navbar.classList.add("fixed-top");
-                navbar.classList.add("bg-white");
-                navbar.classList.add("shadow");
-               
+                navbar.classList.add("fixed-top")
+                navbar.classList.add("shadow")
+                navbar.classList.add("bg-white")
             } else {
                 navbar.classList.remove("fixed-top");
-               
-                
+                navbar.classList.remove("shadow");
             }
         }
-</script>
+    </script>
+</header>

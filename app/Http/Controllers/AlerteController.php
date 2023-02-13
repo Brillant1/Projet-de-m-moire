@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alerte;
+use App\Models\Demande;
 use Illuminate\Http\Request;
 
 class AlerteController extends Controller
@@ -37,13 +38,21 @@ class AlerteController extends Controller
 
     public function store(Request $request)
     {
+        $id = $request->demande_id;
+        $demande = Demande::find($id);
+       
         $alerte = new Alerte();
         $alerte->nom = $request->nom;
         $alerte->sujet = $request->sujet;
         $alerte->message = $request->message;
-        $alerte->save();
-        return back()->with('addedAlerteMessage', "L'alerte a bien été envoyée");
+        $alerte->demande_id = $request->demande_id;
 
+        $demande->statut_demande = 'rejeter';
+        $demande->save();
+        $alerte->save();
+        
+        $message = "Vous avez invalidé cette demande et alerté le demandeur des raisons";
+        return response()->json($message);
     }
 
     /**

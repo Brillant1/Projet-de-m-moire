@@ -39,7 +39,7 @@ return new class extends Migration
             $table->string('jury')->nullable();
             $table->integer('contact_parent');
             $table->string('kkiapayPayement_id ');
-            $table->enum('statut_demande',['valider', 'non_valider', 'generer'])->default('non_valider');
+            $table->enum('statut_demande',['valider', 'non_valider', 'generer','rejeter'])->default('non_valider');
             $table->enum('statut_payement',['non_payer', 'payer'])->default('non_payer');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();

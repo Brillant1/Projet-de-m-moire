@@ -83,21 +83,21 @@ class DemandeController extends Controller
             ]
         )->get();
 
-        $demandeValides = Demande::orderBy('updated_at','DESC')->where(
+        $demandeValides = Demande::orderBy('created_at','DESC')->where(
             [
                 'user_id' => Auth::user()->id,
                 'statut_demande' => "valider"
             ]
         )->get();
 
-        $demandeNonPayers = Demande::orderBy('updated_at','DESC')->where(
+        $demandeNonPayers = Demande::orderBy('created_at','DESC')->where(
             [
                 'user_id' => Auth::user()->id,
                 'statut_demande'=> "non_valider",
                 'statut_payement' => "non_payer"
             ]
         )->get();
-        $demandeGenerers = Demande::orderBy('updated_at','DESC')->where(
+        $demandeGenerers = Demande::orderBy('created_at','DESC')->where(
             [
                 'user_id' => Auth::user()->id,
                 'statut_demande'=> "generer",
@@ -105,9 +105,24 @@ class DemandeController extends Controller
             ]
         )->get();
 
+        $demandeRejetes = Demande::orderBy('updated_at','DESC')->where(
+            [
+                'user_id' => Auth::user()->id,
+                'statut_demande'=> "rejeter",
+             
+            ]
+        )->get();
 
 
-        return view('front.demande.suivie', compact( 'demandeNonValides', 'demandeValides', 'demandeNonPayers','demandeGenerers'));
+        $demandeAll = Demande::orderBy('created_at','DESC')->where(
+            [
+                'user_id' => Auth::user()->id,
+            ]
+        )->get();
+
+
+
+        return view('front.demande.suivie', compact( 'demandeNonValides','demandeRejetes','demandeAll', 'demandeValides', 'demandeNonPayers','demandeGenerers'));
     }
 
     /**
@@ -179,8 +194,6 @@ class DemandeController extends Controller
             'user_id' => Auth()->user()->id
         ];
       
-
-
         $id = Demande::create($demandes)->id;
         $email = $request->email;
         $nom = $request->nom;
@@ -330,14 +343,15 @@ class DemandeController extends Controller
         return back()->with('deletedMessage', 'Demande supprimée avec succès');
     }
 
-    public function pdf()
+    public function pdf(Demande $demande)
     {
-        $recapitulatif = Demande::where([
-                'user_id' => Auth::user()->id,
-                'statut_demande' => "valider"
-            ])->first();
+        // $recapitulatif = Demande::where([
+        //         'user_id' => Auth::user()->id,
+        //         'statut_demande' => "valider"
+        //     ])->first();
+        // $recapitulatif = Demande::find($id);
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('front.recapitulatif', compact('recapitulatif'));
+        $pdf->loadView('front.recapitulatif', compact('demande'));
         return $pdf->stream();
     }
 
@@ -383,8 +397,13 @@ class DemandeController extends Controller
 
     public function demandeRecente()
     {
-        $demandes = Demande::where(['statut_payement' => 'payer', 'statut_demande' => 'non_valider'])->orderBy('created_at', 'DESC')->get();
-        return view('admin.demande.demandeRecente', compact('demandes'));
+        $demandes = Demande::where('statut_payement' ,'payer')
+        ->where('statut_demande' ,'non_valider')
+        ->where('user_id', Auth::user()?->id)
+        ->orderBy('created_at', 'DESC')->get();
+        $departements = Departement::all();
+        $communes = Commune::all();
+        return view('admin.demande.demandeRecente', compact('demandes','departements','communes'));
     }
 
     public function demandeApprouvee()
@@ -421,7 +440,6 @@ class DemandeController extends Controller
     }
     public function download_acte($id){
         $demande = Demande::find($id);
-
         $acte_path = 'storage/'.$demande->acte_naissance;
         return response()->download($acte_path);
     }
@@ -430,10 +448,10 @@ class DemandeController extends Controller
         $cni_path = 'storage/'.$demande->cni;
         return response()->download($cni_path);
     }
-    // public function download_attestation($id){
-    //     $demande = Demande::find($id);
-    //     $cni_path = 'storage/'.$demande->cni;
-    //     return response()->download($cni_path);
-    // }
+    public function download_attestation($id){
+        $demande = Demande::find($id);
+        $cni_path = 'storage/'.$demande->cni;
+        return response()->download($cni_path);
+    }
     
 }

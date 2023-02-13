@@ -13,16 +13,16 @@
                     class="text-black;"></button>
 
             </div>
-            <div class=" div-bienvenue d-flex justify-content-center flex-column align-items-center ">
-                <p class="text-white text-center w-75">
-                    Bienvenu sur votre plateforme de demande et de  suivie <br> de vos attestations d'étude secondaire au Bénin.
+            <div class=" border border-white  div-bienvenue d-flex justify-content-center flex-column align-items-center">
+                <p class="text-white text-center">
+                    Bienvenue sur votre plateforme de demande et de  suivie de vos attestations d'étude secondaire au Bénin.
 
                 </p>
                 <a href="{{ route('before-demande') }}"
-                    class="rounded rounded-pill px-4 py-1 fs-4 border border-2 border-white mt-3 text-white"> Demander mon
+                    class=" rounded-pill px-4 py-1 fs-4 border border-2 border-white text-white btn-demande"> Demander mon
                     attestation</a>
             </div>
-            <div class="carousel-inner" style="width: 100%;">
+            <div class="carousel-inner " style="width: 100%;">
                 <div class="carousel-item active">
                     <img src="{{ asset('img/etu1.png') }}" class="d-block w-100" alt="...">
                 </div>
@@ -33,7 +33,7 @@
                     <img src="{{ asset('img/etu1.png') }}" class="d-block w-100" alt="...">
                 </div>
             </div>
-            <div class="d-flex justify-content-center align-items-center">
+            <div class="d-md-flex d-none  justify-content-center align-items-center">
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                     data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -48,24 +48,29 @@
         </div>
     </div>
 
+
     <div class="accueil-section2 d-flex justify-content-center align-items-center flex-column">
-        <p class="h2 fw-bold mt-5 mb-5 pt-5 pb-2">Taux d'admission aux derniers examens : <b>{{ $examen->annee }}</b></p>
-        <div class="d-flex justify-content-between" style="width: 60%;">
-            @if ($examen)
-                @foreach ($examen->examens as $key => $exam)
-                    <div class="d-flex flex-column justify-content-center align-items-center">
-                        <div class=" taux bg-favorite-color d-flex justify-content-center align-items-center flex-column ">
-                            <span class="text-white fs-5 fw-bold mt-3">{{ $exam['examen'] }}</span>
+        <p class="h2 fw-bold mt-5 mb-5 pt-5 pb-2 p-taux">Taux d'admission aux derniers examens : <b> @if(!is_null($examen))
+            {{ $examen->annee }}
+        @endif </b></p>
+        <div class=" main-exam-container">
+            @if (!is_null($examen))
+                <div class=" row ">
+                    @foreach ($examen->examens as $key => $exam)
+                    <div class=" col-6 col-md-3 d-flex justify-content-center mt-3">
+                        <div class="taux bg-favorite-color d-flex justify-content-center align-items-center flex-column rounded-circle ">
+                            <span class="text-white fw-bold mt-3">{{ $exam['examen'] }}</span>
                             <p class="text-white fs-4">{{ $exam['taux'] }}%</p>
                         </div>
                     </div>
-                @endforeach
+                    @endforeach
+                </div> 
             @endif
         </div>
 
-        <h2 class="favorite-color w-75 py-1 fs-5 text-center fw-bold" style="background-color: #cfd0e9; margin-top: 100px;">MOT
+        <h2 class="h2-accueil favorite-color py-1 text-center fw-bold mt-5" style="background-color: #cfd0e9;">MOT
             D'ACCUEIL DU DEC</h2>
-        <div class="mot-duc w-75 text-justify fs-5  mt-5" style="line-height: 45px;">
+        <div class="mot-dec text-justify fs-5 mt-2 mt-lg-5" style="">
             <p class="text-justify">Je souhaite à tous les étudiants et particulièrement aux détenteurs aux candidats admis
                 à un examen quelconque béninois la bienvenue sur le site web : monattestation.dec.bj
 

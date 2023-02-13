@@ -18,7 +18,7 @@
           
           <li>
             <a href="{{ route('demande-recente') }}">
-              <i class="bi bi-circle"></i><span>Demandes payées</span>
+              <i class="bi bi-circle"></i><span>Demandes récentes payées</span>
             </a>
           </li>
           
@@ -33,11 +33,7 @@
               <i class="bi bi-circle"></i><span>Demandes non payées</span>
             </a>
           </li>
-          <li>
-            <a href="{{ route('demande-generee') }}">
-              <i class="bi bi-circle"></i><span>Attestatio</span>
-            </a>
-          </li>
+        
 
           
           <li>

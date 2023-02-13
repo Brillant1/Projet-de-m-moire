@@ -10,19 +10,16 @@
                     <h1 style="font-size: 1.2rem;">Liste des demandes</h1>
                     <ol class="breadcrumb mt-1 mb-0">
                         <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Dashboard</a></li> &nbsp; /
-                        <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Demandes</a></li> &nbsp; /
-
-                        <li class="breadcrumb-item active">Liste des demandes</li>
-                        </li>
+                        <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Liste des demandes</a></li> &nbsp;
                     </ol>
                 </div>
-                <div class="text-center d-flex justify-content-between mt-2">
+                {{-- <div class="text-center d-flex justify-content-between mt-2">
 
                     <a class="btn bg-favorite-color py-2 fw-bold text-white d-flex justify-content-between align-items-center"
                         href="#">Ajouter un
                         nouveau</a>
 
-                </div>
+                </div> --}}
             </div>
         </nav>
     </div>
@@ -52,26 +49,7 @@
 
         </div>
 
-        <style>
-            .advanced-search-form {
-                display: flex;
-                align-items: center;
-                justify-content: start;
-            }
-
-            .advanced-search-form>div {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .form-control:focus {
-                box-shadow: none;
-            }
-
-            /* .advanced-search-form-child-div{
-                            display: flex;
-                        } */
-        </style>
+    
 
         <div class="shadow p-5 bg-white" style="border-radius: 10px;">
 
@@ -97,14 +75,27 @@
                             @endforeach
                         </select>
                     </div>
+                    @php
+                        $centres= App\Models\Centre::all();
+                    @endphp
                     <div class="ms-3 col-2">
-                        <label class="control-label" for="serie">Série</label>
-                        <select class="form-control form-select" name="serie_id" id="serie">
-                            @foreach ($series as $serie)
-                                <option value="{{ $serie }}">{{ $serie }}</option>
+                        <label class="control-label" for="commune">Centre</label>
+                        <select class="form-control form-select" name="commune_id" id="commune">
+                            @foreach ($centres as $centre)
+                                <option value="{{ $centre->nom }}">{{ $centre->nom }}</option>
                             @endforeach
                         </select>
                     </div>
+                    <div class="ms-3 col-2">
+                        <label class="control-label" for="serie">Série</label>
+                        <select class="form-control form-select" name="serie_id" id="serie">
+                            <option value="">Choisissez la série</option>
+                            <option value="Mod.Court">Mod.Court</option>
+                            <option value="Mod.Long">Mod.Long</option>
+                            <option value="CAP">CAP</option>
+                        </select>
+                    </div>
+
                     <div class="ms-3">
                         <label for="">Année</label>
                         <input type="number" class="form-control" id="annee" name="annee" value="{{ @old('annee') }}">
@@ -117,29 +108,29 @@
                 </form>
             </div>
 
-            <div class="table-responsive container-fluid">
-                <table class="table border-collapse" id="demandeTable">
+            <div class="table-responsive container-fluid ">
+                <table class="table border-collapse table-responsive datatable" id="demandeTable">
                     <thead>
                         <tr class=" ">
-                            <th class="">Photo</th>
+                            <th class="">Date</th>
                             <th class=" ">Nom</th>
-                            <th class=" ">Prénom</th>
                             <th class=" ">N° Table</th>
                             <th class="">Centre</th>
                             <th>Commune</th>
                             <th>Année</th>
+                            <th>Statut</th>
                             <th class="">Action</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr class="" id="">
-                            <th class=""></th>
+                            <th class="">Date</th>
                             <th class=" ">Nom</th>
-                            <th class=" ">Prénom</th>
                             <th class=" ">N° Table</th>
                             <th class="">Centre</th>
                             <th>Commune</th>
                             <th>Année</th>
+                            <th>Statut</th>
                             <th class=""></th>
                         </tr>
                     </tfoot>
@@ -147,19 +138,17 @@
 
                         @foreach ($demandes as $demande)
                       
-
                         @php
-                       
-                        $centres = App\Models\Centre::where('id',$demande->centre)->get();    
-                        $communes = App\Models\Commune::where('id',$demande->commune)->get();    
-
+                            $centres = App\Models\Centre::where('id',$demande->centre)->get();    
+                            $communes = App\Models\Commune::where('id',$demande->commune)->get();    
                         @endphp
                             <tr class="">
-                                <td class=" "><img src="{{ asset('storage/photo_candidat_demande/' . $demande->photo) }}" alt=""width="60" height="60" style="object-fit: cover;"></td>                    
-                                <td class="">{{ $demande->nom }}</td>
-                                <td class="">{{ $demande->prenom }}</td>
-                                <td class=" ">{{ $demande->numero_table }}</td>
+                                <td class="">{{ $demande->created_at->format('d-m-Y') }}  à  {{ $demande->created_at->format('H:i') }}</td>
 
+                                {{-- <td>{{ $demande->created_at->format('m-d-Y') }} à {{ $demande->created_at()->format('H:i') }}</td> --}}
+                                {{-- <td class=" "><img src="{{ asset('storage/photo_candidat_demande/' . $demande->photo) }}" alt=""width="60" height="60" style="object-fit: cover;"></td>                     --}}
+                                <td class="">{{ $demande->nom.' '.$demande->prenom }}</td>
+                                <td class=" ">{{ $demande->numero_table }}</td>
                                 <td class=" ">
                                     @foreach ($centres as $centre)
                                        {{ $centre->nom }}
@@ -172,6 +161,17 @@
                                 </td>
                               
                                 <td>{{ $demande->annee_obtention }}</td>
+                                <td  style="color:#CA8B11">
+                                    @if($demande->statut_demande=="non_valider")
+                                        En attente
+                                    @elseif($demande->statut_demande=="generer")
+                                        Générée
+                                    @elseif($demande->statut_demande=="rejeter")
+                                        Rejetée
+                                    @else
+                                        Validée
+                                    @endif
+                                </td>
                                 <td class="">
                                     <div class="d-flex justify-content-evenly w-100">
 

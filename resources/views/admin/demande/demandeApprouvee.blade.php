@@ -9,7 +9,7 @@
                         <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Dashboard</a></li> &nbsp; /
                         <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Demandes</a></li> &nbsp; /
     
-                        <li class="breadcrumb-item active">Liste des demandes approuvées</li>
+                        <li class="breadcrumb-item active">Demandes approuvées</li>
                         </li>
                     </ol>
                 </div>

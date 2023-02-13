@@ -46,42 +46,57 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('examens', ExamenController::class);
     Route::resource('colleges', CollegeController::class);
 
-Route::get('demande/create', [App\Http\Controllers\DemandeController::class, 'index'])->name('before-demande');
-Route::post('demande/create', [App\Http\Controllers\DemandeController::class, 'beforeDemande']);
- 
+    Route::get('demande/create', [App\Http\Controllers\DemandeController::class, 'index'])->name('before-demande');
+    Route::post('demande/create', [App\Http\Controllers\DemandeController::class, 'beforeDemande']);
+    
+    Route::post('changeStateExamen/{examen}', [ExamenController::class, 'changeStateExamen'])->name('changeStateExamen');
+
+    Route::resource('demandes', App\Http\Controllers\DemandeController::class)->except(['store','create'])->middleware(['auth']);
+
+    Route::post('validationDemande', [App\Http\Controllers\DemandeController::class, 'store'])->name('validationDemande');
+
+    Route::post('attestation-eleve', [GererDemandeController::class, 'attestation'])->name('attestation-eleve');
+
+
+    Route::get('changeToPayState/{demande}', [App\Http\Controllers\DemandeController::class, 'changeToPayState'])->name('changeToPayState');
+    Route::post('changeStateToGenerer/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'pdf2'])->name('changeStateToGenerer');
+
+    Route::resource('alertes', AlerteController::class);
+    //Route::post('storeDemande', [App\Http\Controllers\DemandeController::class,'storeDemande'])->name('storeDemande');
+    Route::get('listeDemande', [App\Http\Controllers\Admin\GererDemandeController::class, 'listeDemande'])->name('listeDemande');
+    Route::post('demandes/liste', [App\Http\Controllers\Admin\GererDemandeController::class,'dynamicSearchAllDemande'])->name('demandes-liste');
+
+    Route::get('demandeRecente', [App\Http\Controllers\DemandeController::class, 'demandeRecente'])->name('demande-recente');
+    Route::get('demandeApprouvee', [App\Http\Controllers\DemandeController::class, 'demandeApprouvee'])->name('demande-approuvee');
+    Route::get('demandeGeneree', [App\Http\Controllers\DemandeController::class, 'demandeGeneree'])->name('demande-generee');
+    Route::get('attestationGeneree', [GererDemandeController::class, 'attestationAll'])->name('attestation-all');
+    Route::get('demandeNonPayee', [App\Http\Controllers\DemandeController::class, 'demandeNonPayee'])->name('demande-non-payee');
+
+    Route::get('singleDemande/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'singleDemande'])->name('singleDemande');
+    Route::post('changeState/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'changeState'])->name('changeState');
+    Route::get('demandeUser', [App\Http\Controllers\DemandeController::class, 'demandeUser'])->name('demandeUser')->middleware(['auth']);
+    Route::post('demandes.tempStore', [App\Http\Controllers\DemandeController::class, 'tempStore'])->name('demandes.tempStore');
+    Route::get('demandes.pdf/{id}', [App\Http\Controllers\DemandeController::class, 'pdf'])->name('demandes.pdf');
+    Route::get('attestation/{demande}', [GererDemandeController::class, 'pdf2'])->name('attestation');
+    Route::post('alertInvalidDemande', [AlerteController::class, 'alertInvalidDemande'])->name('alertInvalidDemande');
+
+    Route::get('dowloadUserFile/{lien}', [GererDemandeController::class, 'dowloadUserFile'])->name('dowload');
+    Route::get('downloadReleve/{id}', [App\Http\Controllers\DemandeController::class, 'download_releve'])->name('download-releve');
+    Route::get('downloadActe/{id}', [App\Http\Controllers\DemandeController::class, 'download_acte'])->name('download-acte');
+    Route::get('downloadACni/{id}', [App\Http\Controllers\DemandeController::class, 'download_cni'])->name('download-cni');
+
+    // Route pour changer les communes en fonction du département
+    Route::post('/communesOfDepartement', [App\Http\Controllers\DemandeController::class, 'communesOfDepartement' ])->name('communes-of-departement');
+    Route::post('/centreOfCommune', [App\Http\Controllers\DemandeController::class, 'centreOfCommune' ])->name('centre-of-commune');
+
+    Route::get('paiement', function () {
+        return view('front.paiement');
+    });
+    
+
 });
 
-Route::post('changeStateExamen/{examen}', [ExamenController::class, 'changeStateExamen'])->name('changeStateExamen');
 
-Route::resource('demandes', App\Http\Controllers\DemandeController::class)->except(['store','create'])->middleware(['auth']);
-
-Route::post('validationDemande', [App\Http\Controllers\DemandeController::class, 'store'])->name('validationDemande');
-
-Route::post('attestation-eleve', [GererDemandeController::class, 'attestation'])->name('attestation-eleve');
-
-
-Route::get('changeToPayState/{demande}', [App\Http\Controllers\DemandeController::class, 'changeToPayState'])->name('changeToPayState');
-Route::post('changeStateToGenerer/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'pdf2'])->name('changeStateToGenerer');
-
-Route::resource('alertes', AlerteController::class);
-//Route::post('storeDemande', [App\Http\Controllers\DemandeController::class,'storeDemande'])->name('storeDemande');
-Route::get('listeDemande', [App\Http\Controllers\Admin\GererDemandeController::class, 'listeDemande'])->name('listeDemande');
-Route::post('demandes/liste', [App\Http\Controllers\Admin\GererDemandeController::class,'dynamicSearchAllDemande'])->name('demandes-liste');
-
-Route::get('demandeRecente', [App\Http\Controllers\DemandeController::class, 'demandeRecente'])->name('demande-recente');
-Route::get('demandeApprouvee', [App\Http\Controllers\DemandeController::class, 'demandeApprouvee'])->name('demande-approuvee');
-Route::get('demandeGeneree', [App\Http\Controllers\DemandeController::class, 'demandeGeneree'])->name('demande-generee');
-Route::get('attestationGeneree', [GererDemandeController::class, 'attestationAll'])->name('attestation-all');
-Route::get('demandeNonPayee', [App\Http\Controllers\DemandeController::class, 'demandeNonPayee'])->name('demande-non-payee');
-
-Route::get('singleDemande/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'singleDemande'])->name('singleDemande');
-Route::post('changeState/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'changeState'])->name('changeState');
-Route::get('demandeUser', [App\Http\Controllers\DemandeController::class, 'demandeUser'])->name('demandeUser')->middleware(['auth']);
-Route::post('demandes.tempStore', [App\Http\Controllers\DemandeController::class, 'tempStore'])->name('demandes.tempStore');
-Route::get('demandes.pdf', [App\Http\Controllers\DemandeController::class, 'pdf'])->name('demandes.pdf');
-Route::get('attestation/{demande}', [GererDemandeController::class, 'pdf2'])->name('attestation');
-
-Route::post('alertInvalidDemande', [AlerteController::class, 'alertInvalidDemande'])->name('alertInvalidDemande');
 
 Route::get('contact',[ContactController::class, 'create'])->name('contact-create');
 Route::post('contacts/store',[ContactController::class ,'store'])->name('contactstore');
@@ -89,15 +104,9 @@ Route::post('contacts/store',[ContactController::class ,'store'])->name('contact
 Route::get('accueil', [HomeController::class,'index'])->name('accueil');
 Route::get('/', [HomeController::class,'redirectIndex']);
 
-Route::get('dowloadUserFile/{lien}', [GererDemandeController::class, 'dowloadUserFile'])->name('dowload');
-Route::get('downloadReleve/{id}', [App\Http\Controllers\DemandeController::class, 'download_releve'])->name('download-releve');
-Route::get('downloadActe/{id}', [App\Http\Controllers\DemandeController::class, 'download_acte'])->name('download-acte');
-Route::get('downloadACni/{id}', [App\Http\Controllers\DemandeController::class, 'download_cni'])->name('download-cni');
-//Route::get('downloadAttestation/{id}', [App\Http\Controllers\DemandeController::class, 'download_attestation'])->name('download-attestation');
 
-// Route pour changer les communes en fonction du département
-Route::post('/communesOfDepartement', [App\Http\Controllers\DemandeController::class, 'communesOfDepartement' ])->name('communes-of-departement');
-Route::post('/centreOfCommune', [App\Http\Controllers\DemandeController::class, 'centreOfCommune' ])->name('centre-of-commune');
+Route::get('downloadAttestation/{id}', [App\Http\Controllers\DemandeController::class, 'download_attestation'])->name('download-attestation');
+
 
 
 //Route::get('downloadAttestation/{id}', [HomeController::class, 'download_attestation'])->name('download-attestation');
@@ -139,9 +148,6 @@ Route::get('aide', function () {
     return view('front.demandeRule');
 })->name('aide');
 
-Route::get('paiement', function () {
-    return view('front.paiement');
-});
 
 Route::get('serviceDec', function () {
     return view('front.service');

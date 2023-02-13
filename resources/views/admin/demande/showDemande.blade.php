@@ -1,14 +1,31 @@
 @extends('admin.layouts.template')
 @section('content')
     <div class="pagetitle">
-        <h1 class="mt-2">Dashboard</h1>
+        {{-- <h1 class="mt-2">Dashboard</h1> --}}
         <nav class="">
-            <ol class="breadcrumb">
+            <div class="d-flex justify-content-between align-items-center bg-white px-3 py-4">
+                <div class="">
+                    <h1 style="font-size: 1.2rem;">Liste des demandes récentes payées</h1>
+                    <ol class="breadcrumb mt-1 mb-0">
+                        <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Dashbord</a></li> &nbsp; /
+                        <li class="breadcrumb-item"><a href="{{ route('listeDemande') }}">Demandes</a></li> &nbsp; /
+                        <li class="breadcrumb-item active">Detail de la demande</li>
+                    </ol>
+                </div>
+                <div class="text-center d-flex justify-content-between mt-2">
+    
+                    {{-- <a class="btn bg-favorite-color py-2 fw-bold text-white d-flex justify-content-between align-items-center"
+                        href="#">Ajouter un
+                        nouveau</a> --}}
+    
+                </div>
+            </div>
+            {{-- <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Demandes</a></li> &nbsp; /
                 <li class="breadcrumb-item"><a href="{{ route('listeDemande') }}">Listes des demandes</a></li> &nbsp; /
                 <li class="breadcrumb-item active">Demande payé</li>
                 </li>
-            </ol>
+            </ol> --}}
         </nav>
     </div>
 
@@ -30,13 +47,14 @@
             @endif
 
             <div class="text-center mb-4 d-flex justify-content-between">
-                <a class="btn btn-secondary py-2 fw-bold text-white d-flex justify-content-between align-items-center"
+                <a class="btn btn-secondary btn-sm py-2 fw-bold text-white d-flex justify-content-between align-items-center"
                 href=" {{ URL::previous() }}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
                     <path d="M3.86 8.753l5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
-                  </svg>&nbsp;
+                  </svg>
                 Retour</a>
                 <div>
+                   
                     @if ($demande->statut_demande == 'valider')
                         <button type="button" class="border-0 bg-none btn btn-lg btn-success px-2 py-1 me-3"
                             data-bs-toggle="modal" data-bs-target="{{ '#genererModalDemande' . $demande->id }}"> Générer attestation
@@ -44,18 +62,18 @@
                     @endif
 
                     @if ($demande->statut_demande == 'non_valider' && $demande->statut_payement == 'payer')
-                        <button type="button" class="border-0 bg-none btn btn-lg btn-success px-3 py-1 me-3"
-                            data-bs-toggle="modal" data-bs-target="{{ '#validModal' . $demande->id  }}"> Approuvée
+                        <button type="button" class="border-0 bg-none btn btn-lg btn-success btn-valide px-3 py-1 me-3 "
+                            data-bs-toggle="modal" data-bs-target="{{ '#validModal' . $demande->id  }}"> Valider
                         </button>
 
-                        <button type="button" class="border-0 bg-none btn btn-lg btn-danger px-3 py-1"
-                            data-bs-toggle="modal" data-bs-target="{{ '#invalidModal' . $demande->id }}"> Alerter
+                        <button type="button" class="border-0 bg-none btn btn-lg btn-danger btn-unvalide px-3 py-1 "
+                            data-bs-toggle="modal" data-bs-target="{{ '#invalidModal' . $demande->id }}"> Invalider
                         </button>
                     @endif
 
                     @if ($demande->statut_demande == 'non_valider' && $demande->statut_payement == 'non_payer')
                         <button type="button" class="border-0 bg-none btn btn-lg btn-danger px-3 py-1"
-                            data-bs-toggle="modal" data-bs-target="{{ '#invalidModal' . $demande->id }}"> Alerter
+                            data-bs-toggle="modal" data-bs-target="{{ '#invalidModal' . $demande->id }}"> Invalider
                         </button>
                     @endif
 
@@ -148,7 +166,7 @@
             {{-- Main content info de la demande --}}
             <div class="d-flex justify-content-center flex-column align-items-center">
                
-                {{-- <img src="{{ asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="700"> --}}
+                <img src="{{ asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="700">
             
             
                 <div class="container mt-2">
@@ -367,12 +385,12 @@
                     @endif
 
                     @if ($demande->statut_demande == 'non_valider' && $demande->statut_payement == 'payer')
-                        <button type="button" class="border-0 bg-none btn btn-lg btn-success px-3 py-1 me-3"
-                            data-bs-toggle="modal" data-bs-target="{{ '#validModal' . $demande->id }}"> Approuvée
+                        <button type="button" class="border-0 bg-none btn btn-lg btn-success btn-valide px-3 py-1 me-3 "
+                            data-bs-toggle="modal" data-bs-target="{{ '#validModal' . $demande->id }}"> Valider
                         </button>
 
-                        <button type="button" class="border-0 bg-none btn btn-lg btn-danger px-3 py-1"
-                            data-bs-toggle="modal" data-bs-target="{{ '#invalidModal' . $demande->id }}"> Alerter
+                        <button type="button" class="border-0 bg-none btn btn-lg btn-danger btn-unvalide px-3 py-1"
+                            data-bs-toggle="modal" data-bs-target="{{ '#invalidModal' . $demande->id }}"> Invalider
                         </button>
                     @endif
 
@@ -386,64 +404,7 @@
 
                     
                 </div>
-                {{-- modal to alert user about invalid demand --}}
-                <div class="modal fade" id="{{ 'invalidModal' . $demande->id }}" tabindex="-1">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header d-flex  flex-column-reverse bg-favorite-color text-white">
-                                <h5 class="modal-title pb-1">Informez {{ $demande->nom . ' ' . $demande->prenom }} de
-                                    tout ce qui concerne sa demande.
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                    id="btn-close"></button>
-                            </div>
-                            <form action="{{ route('alertInvalidDemande', ['demande' => $demande->id]) }}"
-                                method="POST">
-                                @csrf
-                                <div class="modal-body">
-                                    <div class="form-group">
-
-                                        <div class="mb-3">
-                                            <label for="nom" class="form-label px-2">Nom et Prénoms</label>
-                                            <input type="text" class="form-control" name="nom" value="Admin"
-                                                id="nom" required>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="sujet" class=" px-2">Sujet du message</label>
-                                            <select class="form-select  px-2" aria-label="Default select example"
-                                                id="sujet" name="sujet" required>
-                                                <option value="">Sélectionnez</option>
-                                                <option value="Infos">Infos</option>
-                                                <option value="Infos">Note</option>
-                                                <option value="Infos">Rejet de demande</option>
-
-                                            </select>
-                                        </div>
-
-
-
-
-                                        <label for="exampleFormControlTextarea1">Message
-                                            {{ $demande->nom . ' ' . $demande->prenom }}</label>
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="message"
-                                            style="height: 150px;"></textarea>
-                                        <input type="hidden" name=" demande_id" value="{{ $demande->id }}" required>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-
-                                    @csrf
-                                    <button type="button" class="btn btn-secondary"
-                                        data-dismiss="modal">Annuler</button>
-                                    <input type="submit" class="btn btn-success" value="Envoyer">
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-                {{-- end modal --}}
+                
 
                 {{-- Modal to approuve demande --}}
                 <div class="modal fade" id="{{ 'validModal' .$demande->id }}" tabindex="-1" role="dialog"
@@ -513,9 +474,114 @@
                 </div>
                 {{-- end modal to send attestation to user through email --}}
 
+                {{-- modal to alert user about invalid demand --}}
+                <div class="modal fade alertDemandeurModal" id="{{ 'invalidModal' . $demande->id }}" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header favorite-color">
+                                <h5 class="pb-1 modal-title text-dark">Informer {{ $demande->nom.' '.$demande->prenom }} des raisons du rejet de la demande.
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                    id="btn-close"></button>
+                            </div>
+                            <form action=""
+                                method="POST" class="alertDemande">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <div class="mb-3">
+                                            <label for="nom" class="form-label px-2">Nom et Prénoms</label>
+                                            <input type="text" class="form-control nom" name="nom" value="Admin"
+                                                id="nom" required>
+                                        </div>
 
+                                        <div class="mb-3">
+                                            <label for="sujet" class=" px-2">Sujet du message</label>
+                                            <select class="form-select sujet px-2" aria-label="Default select example"
+                                                id="sujet" name="sujet" required>
+                                                <option value=""></option>
+                                                <option value="Rejet de demande">Informations incorrectes</option>
+                                                <option value="Payement non effectué">Payement non effectué</option>
+                                                <option value="Autres">Autres raisons</option>
+                                            </select>
+                                        </div>
+
+
+
+                                        <label for="exampleFormControlTextarea1">Message
+                                            {{ $demande->nom . ' ' . $demande->prenom }}</label>
+                                        <textarea class="form-control message" id="exampleFormControlTextarea1" rows="3" name="message"
+                                            style="height: 150px;" ></textarea>
+                                        <input type="hidden" name="demande_id" value="{{ $demande->id }}" class="demande_id" required>
+
+                                        <div class="alert alert-success py-3 mt-2 d-none msg-success">
+                                            Demande invalidée avec succès et demandeur alerté
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+
+                                    @csrf
+                                    <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Annuler</button>
+                                    <button type="button"  class="btn btn-success" id="sendAlert">Envoyer</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                {{-- end modal --}}
             </div>
         </div>
 
     </div>
+
+    <script>
+        
+        $(document).ready(function() {
+            
+            $('#sendAlert').click(function() {
+                
+                
+                if( $('.alertDemande .nom').val() == "" || $('.alertDemande .sujet').val() == "" || $('textarea.message').val() == "" ){
+                    alert('Veuillez remplir tous les champs');
+                }else{
+                    $('.alertDemande').submit();
+                }
+            });
+      
+
+            $('.alertDemande').submit(function(e) {
+                e.preventDefault();
+                let nom = $('.alertDemande .nom').val();
+                let sujet = $('.alertDemande .sujet').val();
+                let message = $('.alertDemande .message').val();
+                let id = $('.alertDemande .demande_id').val();
+                let successMessage = "";
+
+                $.ajax({
+                    type: "POST",
+                    url: '{!! URL::to('alertInvalidDemande') !!}',
+                    data:{
+                        'nom':nom,
+                        'sujet':sujet,
+                        'message':message,
+                        'demande_id':id,
+                        _token :"{{ csrf_token() }}"
+
+                    },
+                    success:function (data){
+                        successMessage = "Demande invalidée avec succès et demandeur alerté.";
+                        $('.msg-success').removeClass('d-none');
+                        setTimeout(() => {
+                            $('.alertDemandeurModal').modal('hide');
+                        }, 3000);
+                   
+                    }
+                })
+            })
+        });
+
+    </script>
 @endsection

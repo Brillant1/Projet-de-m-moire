@@ -1,13 +1,13 @@
-<footer class="  m-0mt-5 " style="margin-top: 100px;">
+<footer class="m-0 mt-5 " style="margin-top: 100px;">
     <section class="py-3 section-footer d-flex justify-content-center" style="background-color: #1117AB;">
         <div class="container-fluid  text-md-start mt-2" style="padding-left: 50px;">
             <div class="row mt-3" id="footer-mobile">
                 <div class="col-md-5 col-lg-4 col-xl-3 mx-auto mb-4 ">
                     <a href=" {{ route('accueil') }} "><img src="{{ asset('admin/img/logoDec.png') }}" alt="logo DEC"
                             width="310px"></a>
-                    <h5 class="text-white mt-3 font-bold">
+                    <h6 class="text-white mt-3 font-bold">
                         DIRECTION DES EXAMENS ET CONCOURS <br>
-                    </h5>
+                    </h6>
                     <p class="text-spacifique-color">Rép. du Bénin </p>
                 </div>
 

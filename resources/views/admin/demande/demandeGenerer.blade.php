@@ -7,9 +7,9 @@
                     <h1 style="font-size: 1.2rem;">Liste des demandes générées</h1>
                     <ol class="breadcrumb mt-1 mb-0">
                         <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Dashboard</a></li> &nbsp; /
-                        <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Demandes générées</a></li> &nbsp; /
+                        <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Demandes générées</a></li> &nbsp; 
     
-                        <li class="breadcrumb-item active">Liste des demandes génées</li>
+               
                         </li>
                     </ol>
                 </div>

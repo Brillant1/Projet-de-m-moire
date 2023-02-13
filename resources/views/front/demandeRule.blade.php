@@ -4,11 +4,12 @@
     <div id="carouselExampleIndicators" class="carousel slide container-fluid p-0 m-0 position-relative"
     data-bs-ride="carousel">
 
-    <div class="d-flex justify-content-center flex-column"
-        style=" z-index: 99 ;position: absolute; top: 0px; background: rgba(3, 36, 151, 0.71); width: 100% ; height: 300px;">
-        <h3 class="text-white ms-5 fw-bold text-center" style="line-height:50px;">
-            Formulaire de demande d'attestation des examens au Bénin.
-            <br> Nous protégeons toutes vos informations personnelles.
+    <div class="d-flex justify-content-center align-items-center flex-column position-absolute top-0"
+        style=" z-index: 99 ; background: rgba(3, 36, 151, 0.71); width: 100% ; height: 300px;">
+        <h3 class="text-white ms-5 fw-bold text-center text-instruction">
+            
+                 Instructions à suivre et conditions à remplir pour faire sa demande
+           
         </h3>
     </div>
     <div class="carousel-inner" style="height:300px;">
@@ -21,10 +22,10 @@
 
 </section>
 <section class="" style="background-color: rgb(216, 209, 209)">
-    <div class="container-fluid w-sm-75 p-4 text-center text-sm-md-start text-disponible">
-        <h2 class=" h3 text-uppercase font-bold mb-3 mt-5 h3-step-inscription favorite-color">Les étapes et conditions requises pour la demande d'une attestation.</h2>
+    <div class="container-fluid w-sm-75 p-4 text-start text-lg-center text-sm-md-start text-disponible">
+        <p class="text-uppercase mb-3 mt-5 h3-step-inscription favorite-color">Les étapes et conditions requises pour la demande d'une attestation.</p>
     </div>
-    <div class="container-fluid d-flex justify-content-center align-items-center">
+    <div class="container-fluid d-flex justify-content-center align-items-center ">
         <div class="row mt-5" id="main-step-div">
             <div class="col-lg-6 d-flex mb-5 justify-content-between step-register-container">
                 <div>
@@ -81,7 +82,7 @@
     </div> --}}
 
     <div class="d-flex justify-content-center align-center w-100 mt-4 fs-6" >
-        <a href="{{ route('before-demande') }}" class="rounded mt-4 fw-bold bg-success text-white favorite-color px-4 py-3 me-3 text-center" id="inscription-link">Fais une demande</a>
+        <a href="{{ route('before-demande') }}" class="rounded mt-4 fw-bold bg-success text-white favorite-color px-4 py-3 me-3 text-center" id="inscription-link">Faire une demande</a>
     </div>
 </section>
 @endsection

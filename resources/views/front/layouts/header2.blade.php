@@ -24,7 +24,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button> --}}
 
-        <button class="border-0 mx-5 mobile-toggle mobile-toggle-square"type="button" data-bs-toggle="offcanvas"
+        <button class="border-0 mx-0 mx-md-3 mobile-toggle mobile-toggle-square"type="button" data-bs-toggle="offcanvas"
             data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
             <i>
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#ff8000"
@@ -74,7 +74,7 @@
                     
                     </li>
 
-                    <li>
+                    {{-- <li>
                         <a href="#">DEC
 
                         <div class="d-flex flex-column ms-2 my-3">
@@ -91,7 +91,7 @@
                         </div>
                          </a>
                        
-                    </li>
+                    </li> --}}
                     <li><a href="{{ route('aide') }}">Aide</a></li>
                     <li><a href="{{ route('contact-create') }}">Contact</a></li>
                     @guest               
@@ -137,7 +137,7 @@
 
                 
                 {{-- DEC link --}}
-                <li class="nav-item dropdown dropdown-etablissement li-web-only">
+                {{-- <li class="nav-item dropdown dropdown-etablissement li-web-only">
                     <a class="nav-link dropdown-toggle  py-4 {{ Route::is(['mot-dec', 'service-dec']) ? 'active' : ' ' }}"
                         href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown"
                         aria-expanded="true">
@@ -152,7 +152,7 @@
                                 href="{{ route('service-dec') }}  {{ Route::is('service-dec') ? 'active' : ' ' }} ">Services
                                 de la DEC</a></li>
                     </ul>
-                </li>
+                </li> --}}
                 {{--end DEC link --}}
 
                 <li class="nav-item">
@@ -168,9 +168,9 @@
 
             <ul class=" authButton mt-3" id="ul2">
                 @guest
-                    <li class="nav-link loginButton fw-bold rounded-pill" id="loginButton">
+                    <li class="nav-link loginButton fw-bold rounded-pill d-flex justify-content-center align-items-center" id="loginButton">
                         <a href="{{ route('login') }}" style="color: #1117AB"
-                            class="mt-1 w-100 h-100 text-white  text-center">CONNEXION</a>
+                            class="mt-1 w-100 h-100 text-white d-flex justify-content-center align-items-center">CONNEXION</a>
                     </li>
                     <li class="nav-link rounded-pill registerButton" id="registerButton"><a href="{{ route('register') }}"
                             class="pt-1">INSCRIPTION</a></li>

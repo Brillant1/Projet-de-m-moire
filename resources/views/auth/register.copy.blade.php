@@ -13,37 +13,71 @@
         background-size : 100%;
         width: 100%;  
     }
-    .login-main-div-next{
-        width: 60%;
-        margin-bottom : 75px; 
-        margin-top :50px;
+    .p-DEC-login{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 24px;
+        display: flex;
+        color: #1117AB;
     }
+    .welcome-back{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 32px;
+        line-height: 39px;margin-top: 15px; 
+    }
+    .p-login{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 24px;
+    }
+    .p-DEC-login {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 24px;
+        display: flex;
+        color: #1117AB;
+    }
+
+
     @media screen and (max-width: 1360px) {
             .login-main-div-next {
                 width: 80%;
-                margin-top: 60px;
+                margin-top: 50px;
+            }
+        }
+        @media screen and (max-width: 991px) {
+            .login-main-div-next {
+            margin-bottom: 100px;
+            width: 90%;
+            margin-top: 50px;
             }
         }
         @media screen and (max-width: 991px) {
             .login-main-div-next {
             margin-bottom: 100px;
             width: 100%;
-            margin-top: 60px;
+            margin-top: 40px;
             }
         }
     
 </style>
     <div class="container-fluid d-flex justify-content-center mt-0 login-main-div " >
-        <div class="row shadow ps-3 login-main-div-next bg-white">
+        <div class="row shadow ps-3  bg-white login-main-div-next">
 
 
             <!-- Validation Errors -->
             <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
             
-            <div class="col-12 col-md-6  " style="margin-right:0">
+            <div class="col-12 col-md-6 login-main-div-first-column">
                 <div class="">
-                    <div class=" d-flex align-items-center  ">
+                    <div class=" d-flex align-items-center justify-content-md-center">
                         <i>
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#1117AB"
                                 class="bi bi-layers-fill" viewBox="0 0 16 16">
@@ -53,19 +87,13 @@
                                     d="M2.125 8.567l-1.86.992a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882l-1.86-.992-5.17 2.756a1.5 1.5 0 0 1-1.41 0l-5.17-2.756z" />
                             </svg>
                         </i>
-                        <p style="font-family: 'Inter';
-                                            font-style: normal;
-                                            font-weight: 700;
-                                            font-size: 24px;
-                                            display: flex;
-                                            
-                                            color: #1117AB;" class="ms-4 mt-3">DEC - BENIN</p>
+                        <p style=" p-DEC-login " class="ms-4 mt-3">DEC - BENIN</p>
                     </div>
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
-                        <h1 class="welcome-back" >Bienvenue !</h1>
-                        <p class="p-login">Créer un compte pour faciliter votre demande</p>
+                        <h1 class="text-md-center welcome-back">Bienvenue !</h1>
+                        <p class="text-md-center p-login">Créer un compte pour faciliter votre demande</p>
                         <!-- Name -->
                         <div class="mt-4 form-group ">
                             {{-- <x-label for="name" :value="__('Name')" /> --}}
@@ -109,7 +137,7 @@
                             </div>
                             <div class="d-flex justify-content-between mt-5">
                                 <p>Vous aviez déjà un compte ?</p>
-                                <a href="{{ route('login') }}" class="text-primary">Se connecter <span>
+                                <a href="{{ route('login') }}" class="text-primary  ">Se connecter <span>
                                         <i>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                 fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
@@ -125,7 +153,7 @@
                 </div>
             </div>
 
-            <div class="col-12 col-md-6 d-none d-md-block bg-image-register pe-0 me-0 ">
+            <div class="col-6 bg-image-register pe-0 me-0 col-6 col-md-12 d-sm-none d-md-block  ">
                 <div class="w-100 h-100 " style="background: rgba(3, 36, 151, 0.71);">
 
                 </div>

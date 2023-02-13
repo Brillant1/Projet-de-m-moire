@@ -26,25 +26,49 @@
 
             line-height: 50px;
         }
+        .carousel-inner, .carousel-inner>div, .texte-demande{
+            height:250px;
+        }
+        .texte-demande{
+            z-index: 99 ;
+            position: absolute; 
+            top: 0px; 
+            background: rgba(3, 36, 151, 0.71); 
+            width: 100% ; 
+        }
+        .texte-demande> h3{
+            line-height:50px;
+        }
+        @media screen and (max-width:767px){
+            .texte-demande> h3{
+                line-height:35px;
+                margin-top: 70px !important;
+                font-size: 18px;
+            } 
+            .carousel-inner,.carousel-inner>div,.texte-demande{
+                height:300px;
+                font-size: 16px;
+            }
+        }
     </style>
 
-    <div id="carouselExampleIndicators" class="carousel slide container-fluid p-0 m-0 position-relative"
+    <div id="carouselExampleIndicators" class="carousel slide container-fluid p-lg-0 position-relative"
         data-bs-ride="carousel">
 
-        <div class="d-flex justify-content-center flex-column"
-            style=" z-index: 99 ;position: absolute; top: 0px; background: rgba(3, 36, 151, 0.71); width: 100% ; height: 250px;">
-            <h3 class="text-white ms-5 fw-bold" style="line-height:50px;">
-                FAITES ICI LA DEMANDE DE VOTRE ATTESTATION EN TROIS ETAPES
+        <div class="d-flex justify-content-center flex-column texte-demande">
+           
+            <h3 class="text-white text-center ms-0 ms-lg-5 fw-bold">
+                FAITES LA DEMANDE DE VOTRE ATTESTATION EN TROIS ETAPES
             </h3>
         </div>
-        <div class="carousel-inner" style="height:250px;">
-            <div class="carousel-item active" style="height:250px;">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
                 <img src="{{ asset('img/etu1.png') }}" class="d-block w-100" alt="...">
             </div>
         </div>
     </div>
 
-    <div class=" container demande-section-2">
+    <div class=" container-fluid container-lg demande-section-2">
         <div class="demande-section-2-1">
             <div class="info-form mt-5">
          
@@ -53,8 +77,8 @@
                         <span class="text-center text-danger">Super ! Vous pouvez continuer maintenant</span>
                     </div>
                 @endif
-                <h2 class="text-center ">Veillez remplir en suivant rigoureusement les règles données, le formulaire
-                    suivant pour votre demande</h2>
+                <h3 class="text-center ">Veillez remplir en suivant rigoureusement les règles données, le formulaire
+                    suivant pour votre demande</h3>
                 <p class="text-center text-danger">Tous les champs sont obligatoires *</p>
             </div>
             <div class="form-content mt-5">
@@ -133,6 +157,12 @@
                             counter-increment: step;
                             content: counter(step);
                         }
+                        @media screen and (max-width:768px) {
+                            .progressbar-item {
+                                width: 50px;
+                                height: 50px;
+                            }
+                        }
                     </style>
                     <div class="progressbar d-flex justify-content-between mb-5 mt-5">
                         <div class="progress" id="progress">
@@ -152,7 +182,7 @@
                         <p class="favorite-color fw-bold fs-4">Vos informations personnelles</p>
 
                         <div class="row mb-3 mt-4">
-                            <div class="form-group col-md-4 p-2">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2">
                            
                                 <label for="nom" class="control-label label-color">Nom (en intégralité)
                                      &nbsp; <span class="text-danger">*</span></label>
@@ -164,7 +194,7 @@
                                 @endif
                             </div>
 
-                            <div class="form-group col-md-4 p-2">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2">
 
                                 <label for="prenom" class="control-label label-color">Prénoms(dans l'ordre selon l'acte) &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 " type="text" name="prenom"
@@ -175,7 +205,7 @@
                                 @endif
                             </div>
 
-                            <div class="form-group col-md-4 p-2">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2">
                                 <label for="date_naissance" class="control-label label-color">Date de naissance  &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 input-mask" max="01-01-2010" type="date" name="date_naissance"
                                     value=" @if(!is_null($candidat)) {{ $candidat[0]->date_naissance }}  @endif" id="date_naissance"
@@ -186,13 +216,8 @@
                                     <span class="text-danger">{{ $errors->first('date_naissance') }}</span>
                                 @endif
                             </div>
-
-                        </div>
-                       
-                        <div class="row mb-3">
-                           
-
-                            <div class="form-group col-md-4 p-2">
+                      
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2">
                                 <label for="email" class="control-label label-color">Adresse mail &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 " type="email" name="email" id="email"
                                     value="@if(!is_null($candidat)) {{ $candidat[0]->email }} @else {{ old('email') }}  @endif " placeholder="exemple@gmail.com">
@@ -202,7 +227,7 @@
                                 @endif
                             </div>
 
-                            <div class="form-group col-md-4 p-2">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2">
                                 <label for="contact" class="control-label label-color">Contact (renseignez un numéro
                                     joignable) &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 contact" type="number" name="contact" id="contact"
@@ -213,7 +238,7 @@
                                 @endif
                             </div>
 
-                            <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="sexe">Sexe &nbsp; <span
                                         class="text-danger">*</span></label>
                                 <select class="form-control border-1 form-select" name="sexe">
@@ -229,11 +254,9 @@
 
                             </div>
 
-                        </div>
+                        
 
-                        <div class="row mb-3">
-
-                            <div class="form-group col-md-4 p-2">
+                            <div class="form-group  col-12 col-lg-4 p-2">
                                 <label for="ville_naissance" class="control-label label-color">Ville de
                                     naissance &nbsp; <span class="text-danger">*</span></label>
 
@@ -245,7 +268,7 @@
                                     <span class="text-danger">{{ $errors->first('vile_naissance') }}</span>
                                 @endif
                             </div>
-                            <div class="form-group col-md-8 p-2">
+                            <div class="form-group col-12 col-lg-8 p-2">
                                 <label for="photo" class="control-label label-color">Photo claire jusqu'au ventre munie
                                     de votre
                                     carte d'identité en main (png, jpg ou jpeg) &nbsp; <span
@@ -260,10 +283,9 @@
                             </div>
 
                         </div>
-                        <div class="d-flex justify-content-end ">
-
+                        <div class="d-flex justify-content-center justify-content-lg-end ">
                             <button type="button"
-                                class="btn btn-next next1 text-white fw-bold p-2 text-center col-2 mt-5 mb-5 rounded bg-success"
+                                class="btn btn-next next1 text-white fw-bold p-2 text-center col-3 mt-5 mb-5 rounded bg-success"
                                 id="next1">
                                 Suivant
                                 &nbsp; &nbsp;
@@ -286,7 +308,7 @@
                         <p class="favorite-color fw-bold fs-4 pt-5">Les informations relatives au diplôme à demander</p>
 
                         <div class="row mb-3 mt-4">
-                            <div class="form-group col-md-4 p-2">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2">
                                 <label for="numero_table" class="control-label label-color">Votre
                                     
                                     numero de table &nbsp; <span class="text-danger">*</span></label>
@@ -300,7 +322,7 @@
                                 @endif
                             </div>
 
-                            <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="centre">Série de l'examen &nbsp; <span
                                         class="text-danger">*</span></label>
                                 <select class="form-control border-1 form-select" name="serie" id="serie">
@@ -317,13 +339,13 @@
 
                             </div>
 
-                            {{-- <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
+                            {{-- <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="serie">Type de l'examen &nbsp; <span
                                         class="text-danger">*</span></label>
                                 <input type="text" value="BEPC" class="form-control border-1 ">
                             </div> --}}
 
-                            <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="mention">Mention obtenu pour
                                     l'examen &nbsp;( <span class="text-danger">optionnel</span> )</label>
                                 <select class="form-control border-1 form-select" name="mention">
@@ -339,7 +361,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="departement">Département de
                                     avez
                                     composé &nbsp; <span class="text-danger">*</span></label>
@@ -354,7 +376,7 @@
 
                           
                             </div>
-                            <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="commune">Commune où vous avez
                                     composé &nbsp; <span class="text-danger">*</span></label>
                                 <select class="form-control form-select border-1 form-select" name="commune" id="commune">
@@ -367,7 +389,7 @@
                                 </select>
 
                             </div>
-                            <div class="form-group col-md-4 p-2" style="padding:10px 0 10px 0;">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="centre">Centre dans lequel vous avez
                                     composé &nbsp; <span class="text-danger">*</span></label>
                                 <select class="form-control border-1 form-select" name="centre" id="centre">
@@ -385,13 +407,13 @@
 
                         <div class="row mb-3">
 
-                            <div class="form-group col-md-4 p-2">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="etablissement">Établissement fréquenté &nbsp; <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control border-1 etablissement" id="etablissement" name="etablissement">
                                 <span class="text-danger" id="etablissementError"> </span>
                             </div>
 
-                            <div class="form-group col-md-4 p-2">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label for="annee_obtention" class="control-label label-color">Année
                                     d'obtention du diplôme  &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control yearpicker  border-1 annee" type="number" min="2012" name="annee_obtention" length="4"
@@ -403,7 +425,7 @@
                                 @endif
                             </div>
 
-                            <div class="form-group col-md-4 p-2">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="jury">Jury de l'examen &nbsp; (<span class="text-danger">optionnel</span>)</label>
                                 <input type="text" class="form-control border-1 jury" id="jury" name="jury" minlength="3" maxlength="4">
                             </div>          
@@ -425,9 +447,9 @@
                             </div>
                         </div>
 
-                        <div class="d-flex dis justify-content-end mb-5">
+                        <div class="d-flex justify-content-center justify-content-lg-end mb-5">
                             <button id="prev1"
-                                class="text-white btn btn-prev fw-bold p-2 me-3 text-center col-2 mt-5 mb-5 rounded bg-danger">
+                                class="text-white btn btn-prev fw-bold p-2 me-3 text-center col-3 mt-5 mb-5 rounded bg-danger">
                                 <i>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                         fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
@@ -439,7 +461,7 @@
                                 Précédent
                             </button>
                             <button type="button"
-                                class="text-white fw-bold btn btn-next p-2 ms-3 text-center col-2 mt-5 mb-5 rounded btn btn-success"
+                                class="text-white fw-bold btn btn-next p-2 ms-3 text-center col-3 mt-5 mb-5 rounded btn btn-success"
                                 id="next2">
                                 Suivant
                                 &nbsp; &nbsp;
@@ -485,9 +507,9 @@
                                 @endif
                             </div>
                         </div>
-
-
-                            <div class="form-group col-md-4 p-2">
+                        
+                        <div class="row mb-3">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2">
                                 <label for="nom_pere" class="control-label label-color">Noms et prénoms exactes du
                                     père &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 " value="{{ old('nom_pere') }}" type="text"
@@ -498,7 +520,7 @@
                                     <span class="text-danger">{{ $errors->first('nom_pere') }}</span>
                                 @endif
                             </div>
-                            <div class="form-group col-md-4 p-2">
+                            <div class="form-group col-12 col-md-6 col-lg-4 p-2">
                                 <label for="nom_mere" class="control-label label-color">Noms et prénoms exactes de la
                                     mère &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 " type="text" name="nom_mere" id="nom_mere"
@@ -509,7 +531,7 @@
                                     <span class="text-danger">{{ $errors->first('nom_mere') }}</span>
                                 @endif
                             </div>
-                            <div class="form-group col-md-4 p-2">
+                            <div class="form-group col-12 col-lg-4 p-2">
                                 <label for="contact_parent" class="control-label label-color">Renseignez un numéro
                                     joignable
                                     d'un de vos parents &nbsp; <span class="text-danger">*</span></label>
@@ -525,7 +547,7 @@
                         </div>
 
                         <button
-                            class="text-white btn btn-prev fw-bold p-2 me-3 text-center col-2 mt-5 mb-5 rounded bg-danger"
+                            class="text-white btn btn-prev fw-bold p-2 me-3 text-center col-3 mt-5 mb-5 rounded bg-danger"
                             id="prev2">
                             <i>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
@@ -537,7 +559,7 @@
                             &nbsp; &nbsp;
                             Précédent
                         </button>
-                        <div class="mb-5">
+                        <div class="mb-5 d-flex justify-content-center justify-content-lg-start">
                             {{-- <input type="checkbox" name="valide" id="valide" required>
                             <label for="valide" class="text-danger ps-2"> Je certifie exactes et justes toutes les informations
                                 renseignées</label> <br> --}}

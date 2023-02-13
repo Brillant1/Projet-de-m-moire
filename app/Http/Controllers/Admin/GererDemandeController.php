@@ -87,8 +87,6 @@ class GererDemandeController extends Controller
         $output = $dompdf->output();
         $fileName = $demande->nom.'_'.$demande->prenom.'_'.$demande->numero_table.'.pdf';
         file_put_contents($fileName, $output);
-        //return response()->download($fileName);
-       
        
         Mail::send('emails.attestation', $data, function ($message) use ($data, $output, $fileName) {
         $message->to("esaietchagnonsi@gmail.com")
@@ -100,7 +98,6 @@ class GererDemandeController extends Controller
 
         $pdf_url = Storage::url('attestation' . '/' . $fileName);
          
-        //$dompdf->save('app/public/attestation'.$fileName);     
         $demande->statut_demande = "generer";
         $demande->attestation = $pdf_url;
         $code = strtotime($demande->created_at);
@@ -109,7 +106,8 @@ class GererDemandeController extends Controller
         $demande->code = $code;
         $demande->save();
         $demandes = Demande::orderBy('created_at', 'DESC')->get();
-        return redirect()->route('listeDemande', ['demandes' => $demandes])->with('generateMessage', 'Attestation générée et envoyée au mail du demandeur avec succès !');
+        //return back()->with('generateMessage', 'Attestation générée et envoyée au mail du demandeur avec succès !');
+        return redirect()->route('demande-recente', ['demandes' => $demandes])->with('generateMessage', 'Attestation générée et envoyée au mail du demandeur avec succès !');
     }
 
 
@@ -140,25 +138,41 @@ class GererDemandeController extends Controller
     public function dynamicSearchAllDemande(Request $request)
     {
 
-        $departement = $request->departement_id;
-        $commune = $request->commune_id;
-        $serie = $request->serie;
-        $annee = $request->annee;
-
-      
-
-        $demandes = Demande::where('departement', $departement)
-            ->orWhere('commune', $commune)
-            ->orWhere('serie', $serie)
-            ->orwhere('annee_obtention', $annee)
-        ->get();
+        // $departement = $request->departement;
+        // $commune = $request->commune;
+        // $serie = $request->serie;
+        // $annee = $request->annee;
+        $data = $request->all();
         
+        
+      
+        
+
+        $demande = Demande::where( function($query){
+            $query->where('statut_payement', 'payer') 
+            ->where('statut_demande', 'non_valider')
+            ->where('user_id', Auth::user()->id);
+        // })
+           
+            // ->where(function($query) use ($data){
+            //     $query->where('departement', 'LIKE', Departement::where('nom', 'LIKE', '%'.$data['departement'].'%'))->get()->pluck('id')
+            //     ->orWhere('commune',  'LIKE', Commune::where('nom', 'LIKE', '%'.$data['commune'].'%'))->get()->pluck('id')
+            //     ->orWhere('serie', 'LIKE', '%'.$data['serie'].'%')
+            //     ->orwhere('annee_obtention', '%'.$data['annee'].'%');
+            })->get();
+
+            dd($demande);
+
 
         $communes = Commune::all();
         $departements = Departement::all();
         $series = explode(';', env('SERIE'));
 
-        return view('admin.demande.listDemande', compact('demandes','communes','departements','series'));
+        return response()->json([
+            'demande'=> $demande,
+            'data'=> $data
+        ]);
+
     }
 
     public function dowloadUserFile($id){

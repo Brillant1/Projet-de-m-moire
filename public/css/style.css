@@ -141,6 +141,7 @@ body {
   background: #032497f5;
 }
 
+
 .section-title {
   color: white;
   background: rgba(3, 36, 151, 0.96);
@@ -243,8 +244,8 @@ a:hover {
 }
 
 .nav-ul1 {
-  width: 58%;
-  margin-left: 150px;
+  width: 45%;
+  margin-left: 340px;
 }
 
 #flash > div:first-child {
@@ -252,6 +253,20 @@ a:hover {
 }
 #flash > div:last-child {
   width: 85%;
+}
+.welcome-back{
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 50px;margin-top: 15px; 
+}
+.p-login{
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
 }
 
 @media screen and (max-width: 1470px) {
@@ -324,7 +339,8 @@ a:hover {
   }
 }
 
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 991px) {
+
   .offcanvas,
   .mobile-toggle {
     display: block;
@@ -332,6 +348,21 @@ a:hover {
   #flash {
     display: none;
   }
+}
+@media screen and (max-width:767px) {
+  .welcome-back{
+    font-size: 20px;
+  }
+  .p-login{
+    font-size: 16px;
+  }
+  #next1,#prev2{
+    width: 50%;
+  }
+  #next2,#prev1{
+    width: 45%;
+  }
+  
 }
 
 /* Mobile navbar */
@@ -349,6 +380,18 @@ a:hover {
   width: 100%;
   height: 100%;
   color: #032497;
+}
+@media screen and (max-width: 400px) {
+  .navbar-brand> img{
+    width: 210px !important;
+    height: 75px !important;
+  }
+}
+@media screen and (max-width: 362px) {
+  .navbar-brand> img{
+    width: 195px !important;
+    height: 65px !important;
+  }
 }
 
 /* Footer style code */
@@ -393,6 +436,12 @@ footer a {
     display: none;
   }
 }
+@media screen and (max-width: 767px) {
+    footer{
+      font-size: 15px !important;
+    }
+}
+
 @media screen and (max-width: 425px) {
   .footer-mobile {
     margin-left: 0px;
@@ -518,6 +567,24 @@ footer a {
   font-size: 16px;
   color: #fff;
 }
+/* 
+Before demande */
+
+.container-info-start{
+  width: 75%;
+}
+
+@media screen and (max-width:991px) {
+    .container-info-start{
+      width: 90%;
+    }
+}
+@media screen and (max-width:500px){
+  .container-info-start h3{
+    margin-top: 8rem !important;
+  }
+}
+
 
 /* Inscription style code  */
 .step-register-container > div:last-child {
@@ -534,6 +601,8 @@ footer a {
 #main-step-div {
   width: 80%;
 }
+
+
 #inscription-link:hover {
   background-color: #032497f5 !important;
   color: white !important;
@@ -555,10 +624,49 @@ footer a {
   font-size: 1.8rem;
   margin-top: 10px;
 }
+.contact-info{
+  line-height:50px;
+}
+.localisation-info{
+  line-height: 15px;
+}
+.localisation-info>p:first-child{
+  font-size: 1.2rem;
+}
+
+@media screen and (max-width:991px) {
+ 
+  .text-instruction{
+    margin-bottom: -4.5rem !important;
+    margin-left: 0rem !important;
+  }
+  .h3-step-inscription {
+    font-size: 1.5rem;
+    margin-top: 5px;
+  }
+  .contact-info{
+    line-height:40px;
+  }
+}
 
 @media screen and (max-width: 768px) {
+  .localisation-info{
+    line-height: 12px;
+
+  }
+  .localisation-info>p:first-child{
+    font-size: 1rem !important;
+  }
+  .contact-info{
+    line-height:30px;
+    font-size: 18px !important;
+  }
   .text-inscription {
     width: 90%;
+  }
+  .h3-step-inscription {
+    font-size: 1.2rem;
+    margin-top: 8px;
   }
 
   .container-ecole-internat .select2 {
@@ -568,6 +676,18 @@ footer a {
     width: 100%;
     padding-bottom: 5px;
   }
+
+  #main-step-div {
+    width: 100% !important;
+  }
+ 
+}
+
+@media screen  and (max-width:500px) {
+  .contact-info{
+    margin-bottom: -6.5rem !important;
+    font-size: 1rem !important;
+  }
 }
 
 /* Home page style code  */
@@ -575,7 +695,6 @@ footer a {
 .taux {
   width: 130px;
   height: 130px;
-  border-radius: 50%;
   line-height: 20px;
 }
 
@@ -613,12 +732,23 @@ footer a {
   font-size: 40px;
   line-height: 60px;
   margin-bottom: 80px;
+  width: 60%;
 }
 
 .div-bienvenue > a {
   font-family: "Inter";
   font-style: normal;
   font-weight: 700;
+}
+.h2-accueil{
+  width: 75%;
+  font-size: 1.4rem;
+}
+
+@media (max-width: 1170px) {
+  .div-bienvenue >p{
+    width: 80%;
+  }
 }
 
 @media screen and (max-width: 1024px) {
@@ -634,12 +764,10 @@ footer a {
 
 @media screen and (max-width: 990px) {
   .div-bienvenue > p {
-    font-family: "Inter";
-    font-style: normal;
-    font-weight: 500;
     font-size: 38px;
     line-height: 50px;
     margin-bottom: 40px;
+    width: 90%;
   }
 }
 
@@ -657,43 +785,25 @@ footer a {
     top: 25px;
   }
   .div-bienvenue > p {
-    font-family: "Inter";
-    font-style: normal;
-    font-weight: 500;
-    font-size: 30px;
-    line-height: 40px;
-    margin-bottom: 0px;
+    
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 35px;
+    position:  absolute;
+    top: 270px;
   }
 
   .div-bienvenue > a {
-    margin-top: 30px;
+    /* margin-top: 30px; */
     font-weight: 550;
+    position:  absolute;
+    top: 380px;
+  }
+   .div-bienvenue{
+    top: 0px !important;
   }
 }
-@media screen and (max-width: 875px){
-  .carousel-item {
-    height: 600px;
 
-  }
-
-  .carousel-inner, .div-bienvenue{
-    height: 500px;
-  }
-
-
-  .div-bienvenue > p {
-    font-family: "Inter";
-    font-style: normal;
-    font-weight: 500;
-    font-size: 30px;
-    line-height: 40px;
-  }
-
-  .div-bienvenue > a {
-    margin-top: 30px;
-    font-weight: 550;
-  }
-}
 
 @media screen and (max-width: 768px) {
 
@@ -701,7 +811,10 @@ footer a {
     height: 620px;
 
   }
-
+  .h2-accueil{
+    width: 90%;
+    font-size: 1rem !important;
+  }
   .carousel-inner, .div-bienvenue{
     height: 500px;
   }
@@ -711,37 +824,22 @@ footer a {
   }
 
   .div-bienvenue > p {
-    font-family: "Inter";
-    font-style: normal;
-    font-weight: 500;
-    font-size: 30px;
-    line-height: 40px;
-    margin-bottom: 0px;
+    position:  absolute;
+    top:230px;
   }
 
   .div-bienvenue > a {
-    margin-top: 30px;
-    font-weight: 550;
+    position:  absolute;
+    top: 350px;
   }
 
 }
 
-@media screen and (max-width:690px){
-    
-}
 
 @media screen and (max-width: 650px) {
 
   .carousel-item>img {
     height: 700px;
-  }
-
-  .div-bienvenue > p {
-    font-family: "Inter";
-    font-style: normal;
-    font-weight: 500;
-    font-size: 30px;
-    line-height: 50px;
   }
 
   .carousel-item {
@@ -755,9 +853,46 @@ footer a {
 
   .div-bienvenue{
     top: 25px;
-    border: 1px solid red;
   }
-  
+
+  .div-bienvenue > p {
+    position:  absolute;
+    top: 200px;
+    width: 98%;
+  }
+
+  .div-bienvenue > a {
+    position:  absolute;
+    top: 340px;
+    font-size: 18px !important;
+    padding: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .div-bienvenue > p {
+    position:  absolute;
+    top: 200px;
+    width: 98%;
+    font-size: 20px !important;
+  }
+
+  .div-bienvenue > a {
+    position:  absolute;
+    top: 330px;
+  }
+  .p-taux{
+    text-align: center !important;
+  }
+}
+@media screen and (max-width: 500px) {
+  .p-taux{
+    text-align: center !important;
+    font-size: 1.2rem !important;
+  }
+  .div-bienvenue > p {
+    line-height: 25px;
+  }
 }
 
 .btn-pay:hover{
@@ -765,4 +900,102 @@ footer a {
   color: white !important;
   border: 1px solid white !important;
 }
+.advanced-search-form {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.advanced-search-form>div {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+.container-exam{
+  width: 80%;
+}
+.main-exam-container{
+  width: 50%;
+}
+
+.mot-dec{
+  width: 75%;
+  line-height: 45px;
+}
+.taux>span{
+  font-size: 1.4rem;
+}
+@media screen and (max-width:1125px) {
+  .main-exam-container{
+    width: 65%;
+  }
+}
+@media screen and (max-width: 991px){
+  .container-exam{
+    width: 70%;
+  }
+  .main-exam-container{
+    width: 75%;
+  }
+  .mot-dec{
+    width: 80%;
+    line-height: 38px;
+  }
+  .taux {
+    width: 100px !important;
+    height: 100px !important;
+  }
+  .taux > p {
+    font-size: 18px !important;
+    line-height: 25px;
+    margin-top: 15px;
+  }
+  .taux > span{
+    font-size: 1.3rem;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .container-exam{
+    width: 90%;
+  }
+  .mot-dec{
+    width: 90%;
+    line-height: 30px;
+    font-size: 1rem !important;
+  }
+
+  .taux>span{
+    font-size: 1.2rem;
+  }
+  .taux > p {
+    font-size: 16px !important;
+  }
+}
+@media screen and (max-width:320px) {
+  .main-exam-container{
+    width: 100%;
+  }
+}
+
+.demande-attente-table thead > tr:first-child{
+  display: none !important;
+}
+.filterfooter{
+   display: table-header-group;
+}
+.demande-attente-table tfoot input{
+  box-sizing: border-box;
+  border: 1px solid #0d6efd;
+  width: 200px;
+  background: #FBFBFF;
+  border-radius: 2px;
+  padding: 5px 0px 5px 5px;
+}
+
+
 

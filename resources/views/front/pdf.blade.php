@@ -103,9 +103,8 @@
                 <tr>
                   <td colspan="2" align="left" style="padding: 25px 0;">N° 16 / 0019 / 22 / MESTFP / SIS / SDADC</td>
                   <td align="left" colspan="3" style="padding: 25px 0; width:50%;">Identifiant: {{ $demande->code }}</td>
-                  
                 </tr>
-                <tr >
+                <tr>
                     <td colspan="5" style="font-size: 20px;" class="mot-dg" align="center">
                       Le Directeur des Examens et Concours, soussigné, atteste que:
                     </td>
@@ -157,9 +156,13 @@
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="5" align="left">
+                  <td align="left">
                     <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('admin/img/timbre-removebg-preview.png'))) }}" height="60" >
-                   
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td align="right">
+                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('admin/img/signateureDEC-removebg-preview.png'))) }}" height="60" >
                   </td>
                 </tr>
                 <tr class="tr" >
@@ -167,7 +170,7 @@
                 </tr>
                 <tr>
                   <td colspan="5" align="left">
-                    <p >Il n'est délivré qu'une seule attestation. Elle sera obligatoirement rendu au moment de la remise de diplôme. Toute rature, surchage ou photocopie 
+                    <p align="left">Il n'est délivré qu'une seule attestation. Elle sera obligatoirement rendu au moment de la remise de diplôme. Toute rature, surchage ou photocopie 
                       non certifiée conforme annule la validité de cette attestation.</p>
                   </td>
                 </tr>

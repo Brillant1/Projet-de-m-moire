@@ -2,8 +2,8 @@
 @section('content')
     <div class="d-flex justify-content-center align-items-center flex-column">
         
-        <div class=" w-75">
-            <h3 class="mt-5 text-center favorite-color">Bienvenu, fournissez nous ces informations pour continuer</h3>
+        <div class="container-info-start">
+            <h3 class="mt-5 text-center favorite-color">Bienvenue, fournissez nous ces informations pour continuer</h3>
             <a href="{{ URL::previous() }}" class="cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#F58000" class="bi bi-arrow-left" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
@@ -14,7 +14,7 @@
                 <span>{{ session('errorMessage') }}</span>
             </div>
             @endif
-            <form action="{{ route('before-demande') }}" method="POST" class="shadow p-5 rounded mt-4" style="">
+            <form action="{{ route('before-demande') }}" method="POST" class="shadow p-3 p-lg-5 rounded mt-4" style="">
                 @csrf
                 <div class="form-group mb-3">
                     <label for="nom"> Nom</label>

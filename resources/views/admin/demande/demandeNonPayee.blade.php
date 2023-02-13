@@ -7,10 +7,10 @@
                     <h1 style="font-size: 1.2rem;">Liste des demandes non payées</h1>
                     <ol class="breadcrumb mt-1 mb-0">
                         <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Dashboard</a></li> &nbsp; /
-                        <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Demandes non payées</a></li> &nbsp; /
+                        <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Demandes non payées</a></li> &nbsp; 
     
-                        <li class="breadcrumb-item active">Liste des demandes non payées</li>
-                        </li>
+                        {{-- <li class="breadcrumb-item active">Liste des demandes non payées</li>
+                        </li> --}}
                     </ol>
                 </div>
                 <div class="text-center d-flex justify-content-between mt-2">

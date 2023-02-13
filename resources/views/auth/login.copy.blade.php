@@ -9,6 +9,12 @@
             width: 100%;
         }
 
+        .bg-image-login {
+            background-image: url('{{  asset('img/Authentication-rafiki.png') }}');
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
         .login-main-div-next {
             margin-bottom: 100px;
             width: 55%;
@@ -27,6 +33,21 @@
         .login-main-div-first-column {
             margin-right: 0
         }
+        .welcome-back{
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 28px;
+            line-height: 50px;
+            margin-top: 15px; 
+        }
+        .p-login{
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 24px;
+        }
 
         @media screen and (max-width: 1360px) {
             .login-main-div-next {
@@ -37,8 +58,15 @@
         @media screen and (max-width: 991px) {
             .login-main-div-next {
             margin-bottom: 100px;
-            width: 100%;
+            width: 90%;
             margin-top: 50px;
+            }
+        }
+        @media screen and (max-width: 991px) {
+            .login-main-div-next {
+            margin-bottom: 100px;
+            width: 100%;
+            margin-top: 40px;
             }
         }
         
@@ -61,7 +89,7 @@
                     @endif
 
 
-                    <div class=" d-flex align-items-center  ">
+                    <div class=" d-flex align-items-center justify-content-lg-start justify-content-sm-center">
                         <i>
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#1117AB"
                                 class="bi bi-layers-fill" viewBox="0 0 16 16">
@@ -71,21 +99,15 @@
                                     d="M2.125 8.567l-1.86.992a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882l-1.86-.992-5.17 2.756a1.5 1.5 0 0 1-1.41 0l-5.17-2.756z" />
                             </svg>
                         </i>
-                        <p class="p-DEC-login ms-4 mt-3">DEC - BENIN</p>
+                        <p class="p-DEC-login ms-4 mt-3  ">DEC - BENIN</p>
                     </div>
-                    <style>
-                        .bg-image-login {
-                            background-image: url('img/Authentication-rafiki.png');
-                            background-size: 100%;
-                            background-repeat: no-repeat;
-                        }
-                    </style>
+                  
 
                     <form method="POST" action="{{ route('login') }}" style="width: 95%;">
                         @csrf
-                        <h1 class=" welcome-back">
+                        <h1 class=" welcome-back text-lg-start  text-sm-center">
                             Bon retour parmi nous !</h1>
-                        <p class="p-login">
+                        <p class="p-login text-lg-start text-sm-center">
                             Connectez-vous avec votre email et votre mot de passe</p>
 
                         <!-- Email Address -->
@@ -115,7 +137,7 @@
                                 <span class="ml-2 text-sm text-gray-600">{{ __('Se souvenir de moi') }}</span>
                             </label>
                             @if (Route::has('password.request'))
-                                <a class="underline text-sm text-gray-600 hover:text-gray-900 forgot-password"
+                                <a class="underline text-sm text-gray-600 hover:text-gray-900"
                                     href="{{ route('password.request') }}">
                                     {{ __('Mot de passe oublié?') }}
                                 </a>
@@ -130,7 +152,7 @@
                         </div>
                         <div class="d-flex justify-content-between mt-4">
                             <p>Vous n'avez pas de compte ?</p>
-                            <a href="{{ route('register') }}" class="text-primary sign-up">Inscrivez-vous <span>
+                            <a href="{{ route('register') }}" class="text-primary">Inscrivez-vous <span>
                                     <i>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                             fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
@@ -145,7 +167,7 @@
                 </div>
             </div>
 
-            <div class=" col-12 col-md-6 bg-image-login d-none d-md-block pe-0 me-0 ">
+            <div class="col-6 col-md-12 bg-image-login pe-0 me-0">
                 <div class="w-100 h-100 " style="background: rgba(3, 36, 151, 0.71);">
                     
                 </div>
