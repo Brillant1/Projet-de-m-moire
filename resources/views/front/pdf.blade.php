@@ -12,6 +12,9 @@
         }
         body {
             margin: 0px;
+            padding: 0;
+            background:#73c3c8;
+            width: 100%;
         }
         * {
             font-family:  Arial, sans-serif;
@@ -25,6 +28,8 @@
         }
         table {
           width: 100%;
+          padding: 0;
+          margin: 0;
         }
         table tr{
             padding: 7px 2px;

@@ -75,15 +75,15 @@ class DemandeController extends Controller
 
         //$demandes = Demande::where(['user_id' => Auth::user()->id])->orderBy('created_at', 'DESC')->get();
 
-        $demandeNonValides = Demande::orderBy('created_at','DESC')->where(
+        $demandeNonValides = Demande::orderBy('created_at', 'DESC')->where(
             [
                 'user_id' => Auth::user()->id,
                 'statut_demande' => "non_valider",
                 'statut_payement' => "payer"
             ]
-        )->get();
+        )->get()->reverse();
 
-        $demandeValides = Demande::orderBy('created_at','DESC')->where(
+        $demandeValides = Demande::orderBy('updated_at','DESC')->where(
             [
                 'user_id' => Auth::user()->id,
                 'statut_demande' => "valider"
@@ -97,7 +97,7 @@ class DemandeController extends Controller
                 'statut_payement' => "non_payer"
             ]
         )->get();
-        $demandeGenerers = Demande::orderBy('created_at','DESC')->where(
+        $demandeGenerers = Demande::orderBy('updated_at','DESC')->where(
             [
                 'user_id' => Auth::user()->id,
                 'statut_demande'=> "generer",
@@ -114,15 +114,17 @@ class DemandeController extends Controller
         )->get();
 
 
-        $demandeAll = Demande::orderBy('created_at','DESC')->where(
+        $demandeImpayes = Demande::orderBy('created_at','DESC')->where(
             [
                 'user_id' => Auth::user()->id,
+                'statut_demande' => "non_valider",
+                'statut_payement' => "non_payer"
             ]
         )->get();
 
 
 
-        return view('front.demande.suivie', compact( 'demandeNonValides','demandeRejetes','demandeAll', 'demandeValides', 'demandeNonPayers','demandeGenerers'));
+        return view('front.demande.suivie', compact( 'demandeNonValides','demandeRejetes','demandeImpayes', 'demandeValides', 'demandeNonPayers','demandeGenerers'));
     }
 
     /**
@@ -408,7 +410,7 @@ class DemandeController extends Controller
 
     public function demandeApprouvee()
     {
-        $demandes = Demande::where('statut_demande', 'valider')->orderBy('created_at', 'DESC')->get();
+        $demandes = Demande::where('statut_demande', 'valider')->orderBy('updated_at', 'DESC')->get();
         return view('admin.demande.demandeApprouvee', compact('demandes'));
     }
 
@@ -448,10 +450,27 @@ class DemandeController extends Controller
         $cni_path = 'storage/'.$demande->cni;
         return response()->download($cni_path);
     }
-    public function download_attestation($id){
+
+    public function download_attestation(Request $request){
+        $demande = Demande::find($request->demande_id);
+        $code = "";
+        $id = $request->demande_id;
+        
+        if($request->code == $demande->code){
+            $code = 200;
+            $message="Téléchargement réussi";
+
+        }
+        else{
+            $code = 500;
+            $message = "Identifiant incorrect, réessayez";
+        }
+        return response()->json(['code'=> $code, 'message'=> $message, 'id'=> $id]);
+    }
+
+    public function downloadDocument($id){
         $demande = Demande::find($id);
-        $cni_path = 'storage/'.$demande->cni;
-        return response()->download($cni_path);
+        return response()->download(substr( $demande->attestation, 1));    
     }
     
 }

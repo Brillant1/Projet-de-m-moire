@@ -95,7 +95,7 @@
 
                         <div class="form-group col-md-4 p-2">
                             <label for="date_naissance" class="control-label label-color">Date de naissance  &nbsp; <span class="text-danger">*</span></label>
-                            <input class="form-control border-1  " type="date" name="date_naissance" id="date_naissance" value="{{ $demande->date_naisance }}" required>
+                            <input class="form-control border-1 " type="date" name="date_naissance" id="date_naissance" value="{{ $demande->date_naisance }}" required>
 
                             @if ($errors->has('date_naissance'))
                                 <span class="text-danger">{{ $errors->first('date_naissance') }}</span>

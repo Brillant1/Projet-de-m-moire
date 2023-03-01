@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('centres', CentreController::class);
     Route::resource('communes', CommuneController::class);
     Route::resource('departements', DepartementController::class);
+    //Route::put('update-departement',[ DepartementController::class, 'update_departement'])->name('update-departement');
     Route::resource('candidats', CandidatController::class);
     Route::resource('alertes', AlerteController::class);
     Route::resource('flashInfos', FlashInfoController::class);
@@ -74,6 +75,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('singleDemande/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'singleDemande'])->name('singleDemande');
     Route::post('changeState/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'changeState'])->name('changeState');
+    Route::post('restaureDemande', [App\Http\Controllers\Admin\GererDemandeController::class, 'restaureDemande'])->name('restaureDemande');
     Route::get('demandeUser', [App\Http\Controllers\DemandeController::class, 'demandeUser'])->name('demandeUser')->middleware(['auth']);
     Route::post('demandes.tempStore', [App\Http\Controllers\DemandeController::class, 'tempStore'])->name('demandes.tempStore');
     Route::get('demandes.pdf/{id}', [App\Http\Controllers\DemandeController::class, 'pdf'])->name('demandes.pdf');
@@ -105,11 +107,9 @@ Route::get('accueil', [HomeController::class,'index'])->name('accueil');
 Route::get('/', [HomeController::class,'redirectIndex']);
 
 
-Route::get('downloadAttestation/{id}', [App\Http\Controllers\DemandeController::class, 'download_attestation'])->name('download-attestation');
+Route::get('downloadAttestation', [App\Http\Controllers\DemandeController::class, 'download_attestation'])->name('download-attestation');
 
-
-
-//Route::get('downloadAttestation/{id}', [HomeController::class, 'download_attestation'])->name('download-attestation');
+Route::get('downloadDocument/{id}', [App\Http\Controllers\DemandeController::class, 'downloadDocument'])->name('downloadDocument');
 
 
 Route::get('actualites', function () {

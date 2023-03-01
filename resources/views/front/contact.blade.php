@@ -88,7 +88,7 @@
                     <div class="col-12">
                         <label for="message">Votre message<span class="text-danger fw-bold">*</span></label>
                         <textarea name="message" id="message" cols="30" rows="10" class="border border-1 form-control"
-                            name="message" required></textarea>
+                             required></textarea>
                         @if ($errors->has('message'))
                             <span class="text-danger">{{ $errors->first('message') }}</span>
                         @endif

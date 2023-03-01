@@ -178,6 +178,7 @@
                         </div>
                     </div>
                     {{-- form section 1 --}}
+
                     <div class="form-section form-section1 form-section-active mb-5" id="form-section1">
                         <p class="favorite-color fw-bold fs-4">Vos informations personnelles</p>
 
@@ -187,7 +188,7 @@
                                 <label for="nom" class="control-label label-color">Nom (en intégralité)
                                      &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 py-1" type="text" name="nom" id="nom"
-                                    value=" @if(!is_null($candidat)) {{ $candidat[0]->nom}}  @endif ">
+                                    value=" @if(!is_null($candidat)) {{ $candidat[0]->nom}}  @endif " readonly>
                                 <span class="text-danger" id="nomError"> </span>
                                 @if ($errors->has('nom'))
                                     <span class="text-danger">{{ $errors->first('nom') }}</span>
@@ -198,7 +199,7 @@
 
                                 <label for="prenom" class="control-label label-color">Prénoms(dans l'ordre selon l'acte) &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 " type="text" name="prenom"
-                                    value=" @if(!is_null($candidat)) {{ $candidat[0]->prenom }}  @endif" id="prenom">
+                                    value=" @if(!is_null($candidat)) {{ $candidat[0]->prenom }}  @endif" id="prenom" readonly>
                                 <span class="text-danger" id="prenomError"> </span>
                                 @if ($errors->has('prenom'))
                                     <span class="text-danger">{{ $errors->first('prenom') }}</span>
@@ -208,7 +209,7 @@
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2">
                                 <label for="date_naissance" class="control-label label-color">Date de naissance  &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 input-mask" max="01-01-2010" type="date" name="date_naissance"
-                                    value=" @if(!is_null($candidat)) {{ $candidat[0]->date_naissance }}  @endif" id="date_naissance"
+                                    value="" id="date_naissance"
                                     data-inputmask=" 'mask':'99/9999' " im-insert="true" >
                                 <span class="text-danger" id="date_naissanceError"> </span>
 
@@ -218,7 +219,7 @@
                             </div>
                       
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2">
-                                <label for="email" class="control-label label-color">Adresse mail &nbsp; <span class="text-danger">*</span></label>
+                                <label for="email" class="control-label label-color">Renseignez une adresse mail valide &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 " type="email" name="email" id="email"
                                     value="@if(!is_null($candidat)) {{ $candidat[0]->email }} @else {{ old('email') }}  @endif " placeholder="exemple@gmail.com">
                                 <span class="text-danger" id="emailError"> </span>
@@ -242,19 +243,14 @@
                                 <label class="control-label label-color" for="sexe">Sexe &nbsp; <span
                                         class="text-danger">*</span></label>
                                 <select class="form-control border-1 form-select" name="sexe">
-                                    <option value="Masculin">Masculin</option>
-                                    <option value="Féminin">Féminin</option>
-                                    <option value="Autres">Autres</option>
-                                    {{-- @foreach ($sexes as $sexe)
-                                        <option value="{{ $sexe }}" @if(!is_null($candidat)) @if($candidat[0]->sexe==$sexe) selected @endif @endif>
-                                       {{ $sexe }}</option>
-                                    @endforeach --}}
-
+                                    <option value="Masculin" @if(!is_null($candidat))  @if($candidat[0]->sexe=="Masculin") selected @endif @endif>Masculin</option>
+                                    <option value="Féminin"@if(!is_null($candidat)) @if($candidat[0]->sexe=="Féminin") selected @endif @endif>Féminin</option>
+                                    <option value="Autres"@if(!is_null($candidat)) @if($candidat[0]->sexe=="Autres") selected @endif @endif>Autres</option>
                                 </select>
 
                             </div>
 
-                        
+    
 
                             <div class="form-group  col-12 col-lg-4 p-2">
                                 <label for="ville_naissance" class="control-label label-color">Ville de
@@ -306,13 +302,13 @@
 
                     <div class="form-section form-section2" id="form-section2">
                         <p class="favorite-color fw-bold fs-4 pt-5">Les informations relatives au diplôme à demander</p>
-
+                       
                         <div class="row mb-3 mt-4">
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2">
                                 <label for="numero_table" class="control-label label-color">Votre
                                     
                                     numero de table &nbsp; <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="numero_table" id="numero_table" value=" @if(!is_null($candidat)) {{ $candidat[0]->numero_table }}  @endif " placeholder="" >
+                                    <input type="text" class="form-control" name="numero_table" id="numero_table" value=" @if(!is_null($candidat)) {{ $candidat[0]->numero_table }}  @endif " placeholder="" readonly>
                                 {{-- <input class="form-control border-1 "  type="text" name="numero_table" id="numero_table" value="{{ @if(!is_null($candidat)) {{ $candidat[0]->numero_table }} @endif }}" placeholder="Exemple : 528-AB7-88" > --}}
                                     
                                 <span class="text-danger" id="numero_tableError"> </span>
@@ -404,7 +400,7 @@
                         </div>
 
 
-
+                        
                         <div class="row mb-3">
 
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
@@ -416,8 +412,8 @@
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label for="annee_obtention" class="control-label label-color">Année
                                     d'obtention du diplôme  &nbsp; <span class="text-danger">*</span></label>
-                                <input class="form-control yearpicker  border-1 annee" type="number" min="2012" name="annee_obtention" length="4"
-                                    id="annee_obtention" value="{{ old('annee_obtention') }}" >
+                                <input class="form-control yearpicker  border-1 annee" type="text" name="annee_obtention" readonly
+                                    id="annee_obtention" value=" @if(!is_null($candidat)) {{ $candidat[0]->annee_obtention }}  @endif">
                                 <span class="text-danger" id="annee_obtentionError"> </span>
 
                                 @if ($errors->has('annee_obtention'))
@@ -575,7 +571,7 @@
     </div>
 
     <div class="modal rounded fade alert-payement" data-bs-backdrop="static" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-top">
           <div class="modal-content">
             <div class="modal-header">
               {{-- <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5> --}}

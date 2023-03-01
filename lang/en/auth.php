@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => ' Désolé, ces identifiants ne correspondent à aucun',
+    'failed' => ' Désolé, ces identifiants ne correspondent à aucun compte',
     'password' => 'Username ou mot de passe incorrect.',
     'throttle' => 'Trop de tentives de connexion. Veillez réessayer dans :seconds secondes.',
 

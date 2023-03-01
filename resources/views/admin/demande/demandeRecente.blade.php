@@ -118,19 +118,7 @@
                             <th>Année</th>
                             <th class=" text-center">Action</th>
                         </tr>
-                    {{-- </thead>
-                    <tfoot class="">
-                        <tr class="" style="display:  table-header-group;" id="demandepayeefooter">
-                            <th class="datefoot">Date</th>
-                            <th class="nomfoot ">Nom et Prénoms</th>
-                            <th class="numerofoot ">N° Table</th>
-                            <th class="communefoot">Commune</th>
-                            <th class="centrefoot ">Centre</th>
-                            <th class="diplomefoot">Diplôme</th>
-                            
-                            <th class=" ">Action</th>
-                        </tr>
-                    </tfoot> --}}
+                   
                     <tbody>
 
                         @foreach ($demandes as $demande)
@@ -200,7 +188,9 @@
                 let serie = $('.advanced-search-form #serie').val();
                 let annee = $('.advanced-search-form #annee').val();
                 
+                
                 let data = $('.advanced-search-form').serialize();
+                console.log(data);
                 let table_content = '';
                 if(departement =='' && commune=='' && centre=='' && serie=='' && annee=='') {
                     alert('Opps, Vous n\'avez défini aucune valeur');
@@ -211,8 +201,9 @@
                         data: data,
                       
                         success: function(data){
+                            
                             $('#payeDemandeTable tbody').html('');
-                            let demande = data.demande;
+                            let demande = data;
                             console.log(demande);
                             for(let i=0;i< demande.length;i++){
                                 table_content += '<tr> <td>'+demande[i].created_at+'</td> <td>'+demande[i].nom+' '+ demande[i].prenom+'</td> <td>'+demande[i].numero_table +'</td><td>'+demande[i].commune +'</td> <td>'+demande[i].centre +'</td> <td>'+demande[i].annee_obtention +'</td> <td>  <div class="d-flex justify-content-evenly w-100"> <a href="/singleDemande/'+demande[i].id+'" title="Consulter"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16"> <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" /> <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" /> </svg> </a> </div> </td>  </tr>' ;

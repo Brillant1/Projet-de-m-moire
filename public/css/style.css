@@ -148,7 +148,7 @@ body {
   border-radius: 10px;
 }
 .row-info > p:last-child {
-  width: 40%;
+  width: 50%;
   color: #cd101b;
 }
 .row-info > p:first-child {
@@ -988,7 +988,7 @@ Before demande */
 .filterfooter{
    display: table-header-group;
 }
-.demande-attente-table tfoot input{
+table tfoot input{
   box-sizing: border-box;
   border: 1px solid #0d6efd;
   width: 200px;

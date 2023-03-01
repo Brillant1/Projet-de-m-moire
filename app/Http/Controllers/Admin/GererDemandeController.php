@@ -47,7 +47,14 @@ class GererDemandeController extends Controller
     public function singleDemande(Demande $demande)
     {
 
-        $candidatAdmis = Candidat::where('numero_table', $demande->numero_table)->get();
+        $candidatAdmis = Candidat::where(
+            [
+                'numero_table'=> $demande->numero_table,
+                'nom' => $demande->nom,
+                'prenom' => $demande->prenom,
+                'annee_obtention' => $demande->annee_obtention
+            ]
+        )->get();
 
         $sujets = explode(';', env('SUJET'));
 
@@ -73,6 +80,25 @@ class GererDemandeController extends Controller
         }
     }
 
+    public function restaureDemande(Request $request){
+        
+        //$demande = Demande::where('id', $request->demande_id)->get();
+        
+        
+        $demande= Demande::where('id',$request->demande_id)->update(['statut_demande'=> 'non_valider']);
+           
+           
+            return response()->json([
+                'code'=>200,
+                'message'=>'Demande restaurée avec succès',
+                'demande'=> $demande
+            ]);
+            //return redirect(route('singleDemande', $demande))->with('restaureMessage','Demande restaurée avec succès');
+            //return back()->with('restaureMessage', "Demande restaurée avec succès");
+            //header("Refresh:0");
+       
+    }
+
 
     public function pdf2(Demande $demande)
     {
@@ -80,10 +106,21 @@ class GererDemandeController extends Controller
         $data['id'] = $demande->id;
         $data['prenom'] = $demande->prenom;
 
-        $html = view('front.pdf', ['data'=>$data]); 
+
+
+        $hex_color = "#73c3c8";
+        $html = '<html><head><style>html,body{background-color:'.$hex_color.';}</style></head><body>';
+        $html .= view('front.pdf',  ['data'=>$data])->render();
+        $html .= '</body></html>';
+
+        //$html = view('front.pdf', ['data'=>$data]); 
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4','paysage');
         $dompdf->render();
+        
+        
+       
+
         $output = $dompdf->output();
         $fileName = $demande->nom.'_'.$demande->prenom.'_'.$demande->numero_table.'.pdf';
         file_put_contents($fileName, $output);
@@ -118,12 +155,12 @@ class GererDemandeController extends Controller
             $pdf = App::make('dompdf.wrapper');
             $pdf->PDF::loadView('emails.attestation', compact('demande'));
 
-            Mail::send('emails.attestation', $demande, function ($message) use ($demande, $pdf) {
+            // Mail::send('emails.attestation', $demande, function ($message) use ($demande, $pdf) {
 
-                $message->to("esaietchagnonsi@gmail.com", $demande->nom)
-                    ->subject($demande->prenom)
-                    ->attachData($pdf->output(), "attestation_BEPC.pdf");
-                }); 
+            //     $message->to("esaietchagnonsi@gmail.com", $demande->nom)
+            //         ->subject($demande->prenom)
+            //         ->attachData($pdf->output(), "attestation_BEPC.pdf");
+            //     }); 
 
             $demande->statut_demande = "generer";
             $demande->save();
@@ -143,27 +180,31 @@ class GererDemandeController extends Controller
         // $serie = $request->serie;
         // $annee = $request->annee;
         $data = $request->all();
-        
-        
+       
       
         
+        $query = Demande::where(['statut_payement' =>'payer', 'statut_demande' => 'non_valider']);
+        if(!empty($data['departement'])){
+            $query->where('departement', 'LIKE', Departement::where('nom', 'LIKE', '%'.$data['departement'].'%')->pluck('id'));
+        }
+        if(!empty($data['commune'])){
+            $query->where('commune',  'LIKE', Commune::where('nom', 'LIKE', '%'.$data['commune'].'%')->pluck('id'));
+        }
+        if(!empty(['annee'])){
+            $query->where('annee_obtention',$data['annee']);
+        }
+        if(!empty($data['serie'])){
+            $query->where('serie', $data['serie']);
+        }
+        if(!empty($data['centre'])){
+            $query->where('centre', $data['centre']);
+        }
 
-        $demande = Demande::where( function($query){
-            $query->where('statut_payement', 'payer') 
-            ->where('statut_demande', 'non_valider')
-            ->where('user_id', Auth::user()->id);
-        // })
-           
-            // ->where(function($query) use ($data){
-            //     $query->where('departement', 'LIKE', Departement::where('nom', 'LIKE', '%'.$data['departement'].'%'))->get()->pluck('id')
-            //     ->orWhere('commune',  'LIKE', Commune::where('nom', 'LIKE', '%'.$data['commune'].'%'))->get()->pluck('id')
-            //     ->orWhere('serie', 'LIKE', '%'.$data['serie'].'%')
-            //     ->orwhere('annee_obtention', '%'.$data['annee'].'%');
-            })->get();
+      
 
-            dd($demande);
-
-
+        
+       $demande = $query->get();
+      
         $communes = Commune::all();
         $departements = Departement::all();
         $series = explode(';', env('SERIE'));

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Departement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\DepartementRequest;
 
 class DepartementController extends Controller
@@ -15,7 +16,9 @@ class DepartementController extends Controller
      */
     public function index()
     {
-        $departements = Departement::all();
+        $departements = $departements = DB::table('departements')
+        ->orderBy('created_at', 'desc')
+        ->get();
         return view('admin.departement.listDepartement', compact('departements'));
     }
 
@@ -37,13 +40,30 @@ class DepartementController extends Controller
      */
     public function store(DepartementRequest $request)
     {
+        
+       $existeDepartement = Departement::where('nom', $request->nom)->orWhere('reference', $request->reference)->get();
+       if(Departement::where('nom', $request->nom)->exists()){
+        return response()->json('returnMessage', 'Ce département existe déja');
+       }else if(Departement::where('reference', $request->reference)->exists()) {
+        return response()->json('returnMessage', 'Cette référence existe déja pour un département');
+       }
+       else{
+
+       
        $departement= [
             'nom'=> $request->nom,
             'reference'=>$request->reference,
        ];
 
-       Departement::create($departement);
-       return back()->with('addedMessage',' Département ajouté avec succès.');
+       $departement = Departement::create($departement);
+       return response()->json(
+        [
+            'returnMessage'=>' Département ajouté avec succès',
+            'departement' => $departement
+            
+        ]);
+    }
+    
     }
 
     /**
@@ -75,11 +95,22 @@ class DepartementController extends Controller
      * @param  \App\Models\Departement  $departement
      * @return \Illuminate\Http\Response
      */
-    public function update(DepartementRequest $request, Departement $departement)
+    public function update(Request $request, $id)
     {
-        $departement->update($request->all());
-        // $departements = Departement::all();
-        return redirect()->route('departements.index')->with('updatedMessage', 'Département modifé avec succès!');
+        $departement = Departement::find($id);
+       
+        $departement->update([
+            'nom'=> $request->nom,
+            'reference' => $request->reference
+        ]);
+        
+
+ 
+        
+        return response()->json([
+            'updatedMessage'=>'Département modifé avec succès!',
+            'departement' => $departement
+        ]);
     }
 
     /**

@@ -2,6 +2,7 @@
 @section('content')
     <div class="pagetitle">
         {{-- <h1 class="mt-2">Dashboard</h1> --}}
+        
         <nav class="">
             <div class="d-flex justify-content-between align-items-center bg-white px-3 py-4">
                 <div class="">
@@ -46,43 +47,56 @@
                
             @endif
 
-            <div class="text-center mb-4 d-flex justify-content-between">
-                <a class="btn btn-secondary btn-sm py-2 fw-bold text-white d-flex justify-content-between align-items-center"
-                href=" {{ URL::previous() }}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
-                    <path d="M3.86 8.753l5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
-                  </svg>
-                Retour</a>
-                <div>
+                <div class="text-center mb-4 row justify-content-between">
                    
-                    @if ($demande->statut_demande == 'valider')
-                        <button type="button" class="border-0 bg-none btn btn-lg btn-success px-2 py-1 me-3"
-                            data-bs-toggle="modal" data-bs-target="{{ '#genererModalDemande' . $demande->id }}"> Générer attestation
-                        </button>
-                    @endif
+                    <div class="col-4 text-start">
+                        <a class="btn btn-secondary btn-sm py-2 fw-bold text-white"
+                        href=" {{ URL::previous() }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                            <path d="M3.86 8.753l5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                        </svg>
+                        Retour</a>
+                        
+                    </div>
+                    <div class="col-8 d-flex align-items-center justify-content-end">
+                    
+                        @if ($demande->statut_demande == 'valider')
+                            <button type="button" class="border-0 bg-none btn btn-lg btn-success px-2 py-1 me-3"
+                                data-bs-toggle="modal" data-bs-target="{{ '#genererModalDemande' . $demande->id }}"> Générer attestation
+                            </button>
+                        @endif
 
-                    @if ($demande->statut_demande == 'non_valider' && $demande->statut_payement == 'payer')
-                        <button type="button" class="border-0 bg-none btn btn-lg btn-success btn-valide px-3 py-1 me-3 "
-                            data-bs-toggle="modal" data-bs-target="{{ '#validModal' . $demande->id  }}"> Valider
-                        </button>
+                        @if ($demande->statut_demande == 'non_valider' && $demande->statut_payement == 'payer')
+                            <button type="button" class="border-0 bg-none btn btn-lg btn-success btn-valide px-3 py-1 me-3 "
+                                data-bs-toggle="modal" data-bs-target="{{ '#validModal' . $demande->id  }}"> Valider
+                            </button>
 
-                        <button type="button" class="border-0 bg-none btn btn-lg btn-danger btn-unvalide px-3 py-1 "
-                            data-bs-toggle="modal" data-bs-target="{{ '#invalidModal' . $demande->id }}"> Invalider
-                        </button>
-                    @endif
+                            <button type="button" class="border-0 bg-none btn btn-lg btn-danger btn-unvalide px-3 py-1 "
+                                data-bs-toggle="modal" data-bs-target="{{ '#invalidModal' . $demande->id }}"> Invalider
+                            </button>
+                        @endif
+                        @if ($demande->statut_demande == 'rejeter' && $demande->statut_payement == 'payer')
+                            <div class="d-flex align-items-center justify-content-end">
+                                <button type="button" class="border-0 bg-none btn btn-lg btn-warning text-white btn-valide px-3 py-0 me-3 rounded-pill"
+                                data-bs-toggle="modal" >  Cette demande est rejetée. Vous pouvez la restaurer
+                                </button>
+                                <button type="button" class="border-0 bg-none btn btn-lg btn-success btn-valide px-3 py-1 me-3"
+                                    data-bs-toggle="modal" data-bs-target="{{ '#restaureModal' . $demande->id  }}"> Restaurer
+                                </button>
+                            </div>
+                        @endif
 
-                    @if ($demande->statut_demande == 'non_valider' && $demande->statut_payement == 'non_payer')
-                        <button type="button" class="border-0 bg-none btn btn-lg btn-danger px-3 py-1"
-                            data-bs-toggle="modal" data-bs-target="{{ '#invalidModal' . $demande->id }}"> Invalider
-                        </button>
-                    @endif
+                        @if ($demande->statut_demande == 'non_valider' && $demande->statut_payement == 'non_payer')
+                            <button type="button" class="border-0 bg-none btn btn-lg btn-danger px-3 py-1"
+                                data-bs-toggle="modal" data-bs-target="{{ '#invalidModal' . $demande->id }}"> Invalider
+                            </button>
+                        @endif
 
-                    @if($demande->statut_demande=='generer')
-                        <p class="text-danger fw-bold">Demande déjà validée</p>
-                    @endif
+                        @if($demande->statut_demande=='generer')
+                            <p class="text-danger fw-bold">Demande déjà validée</p>
+                        @endif
+                    </div>
                 </div>
-
-            </div>
             
             @if (session('changeStateMessage'))
                 <div class="alert alert-success alert-dismissible fade show text-center container-fluid  my-2 d-flex justify-content-between">
@@ -153,20 +167,22 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </p>
                 @else
+                    @if($demande->statut_demande!='valider')
                     <div class="alert alert-success fs-6 mt-5  alert-dismissible fade show" role="alert">
                         <span class="text-danger">Note:</span> {{$demande->prenom}} 
                             a payé pour cette demande le {{ $demande->updated_at->format('d-m-Y') }}. Solde délivré du compte de Esaie TCHAGNONSI. ID de la transaction : {{ $demande->kkiapayPayement_id }}  
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                        
-                    </div>              
+                    </div>  
+                    @endif            
                 @endif
             </div>
 
 
             {{-- Main content info de la demande --}}
-            <div class="d-flex justify-content-center flex-column align-items-center">
+            <div class="d-flex justify-content-center flex-column align-items-center mt-0">
                
-                <img src="{{ asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="700">
+                {{-- <img src="{{ asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="700"> --}}
             
             
                 <div class="container mt-2">
@@ -241,6 +257,7 @@
                     <div class=" row-info container-fluid  d-flex justify-content-between">
 
                         <p>Commune :</p>
+                       
 
                         <p>
                             {{-- @php
@@ -260,7 +277,7 @@
 
                     <div class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
                         <p>Numero de table:</p>
-                        <p>{{ $demande->annee_obtention }}</p>
+                        <p>{{ $demande->numero_table }}</p>
 
                     </div>
 
@@ -278,11 +295,9 @@
                     <div class="row-info container-fluid  d-flex justify-content-between">
                         <p>Jury d'examen :</p>
                         <p>{{ $demande->jury }}</p>
+                        
                     </div>
-                    <div class="row-info container-fluid  d-flex justify-content-between">
-                        <p>Numero de référence :</p>
-                        <p>{{ $demande->numero_reference }}</p>
-                    </div>
+                  
                 </div>
 
                 <div class="container mb-3">
@@ -351,7 +366,7 @@
              {{--End Main content info de la demande --}}
 
             <p class="mt-5 ms-3 fs-5 text-dark text-start">
-                @if (count($candidatAdmis) > 0)
+                @if (!is_null($candidatAdmis))
                     @foreach ($candidatAdmis as $candidatAdmis)
                       <span class="text-danger">Note:</span>  Le candidat <strong>
                             {{ $candidatAdmis->nom }}
@@ -385,13 +400,15 @@
                     @endif
 
                     @if ($demande->statut_demande == 'non_valider' && $demande->statut_payement == 'payer')
-                        <button type="button" class="border-0 bg-none btn btn-lg btn-success btn-valide px-3 py-1 me-3 "
-                            data-bs-toggle="modal" data-bs-target="{{ '#validModal' . $demande->id }}"> Valider
-                        </button>
+                       
+                            <button type="button" class="border-0 bg-none btn btn-lg btn-success btn-valide px-3 py-1 me-3 "
+                                data-bs-toggle="modal" data-bs-target="{{ '#validModal' . $demande->id }}"> Valider
+                            </button>
 
-                        <button type="button" class="border-0 bg-none btn btn-lg btn-danger btn-unvalide px-3 py-1"
-                            data-bs-toggle="modal" data-bs-target="{{ '#invalidModal' . $demande->id }}"> Invalider
-                        </button>
+                            <button type="button" class="border-0 bg-none btn btn-lg btn-danger btn-unvalide px-3 py-1"
+                                data-bs-toggle="modal" data-bs-target="{{ '#invalidModal' . $demande->id }}"> Invalider
+                            </button>
+                        
                     @endif
 
                     @if ($demande->statut_demande == 'non_valider' && $demande->statut_payement == 'non_payer')
@@ -409,18 +426,18 @@
                 {{-- Modal to approuve demande --}}
                 <div class="modal fade" id="{{ 'validModal' .$demande->id }}" tabindex="-1" role="dialog"
                     aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-dialog modal-dialog-top" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Confirmer
-                                    <strong class="text-danger">l'approbation</strong> de la demande
+                                    <strong class="">l'approbation</strong> de la demande
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                Voulez-vous vraiment <strong class="text-danger">approuver</strong> cette demande de:
-                                <span class="text-danger"> {{ $demande->nom }} {{ $demande->prenom }} ?</span>
+                                Voulez-vous vraiment <strong class=" favorite-color">approuver</strong> cette demande de:
+                                <span class=" favorite-color fw-bold"> {{ $demande->nom }} {{ $demande->prenom }} ?</span>
                             </div>
 
                             <div class="modal-footer">
@@ -439,10 +456,46 @@
                 </div>
                 {{-- end modal active demande --}}
 
+                 {{-- Modal to restaure demande --}}
+                 <div class="modal fade restaureModal" id="{{ 'restaureModal' .$demande->id }}" tabindex="-1" role="dialog"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-top" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Confirmer
+                                    <strong class="">la restauration</strong> de la demande
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Voulez-vous vraiment <strong class=" favorite-color">restaurer</strong> cette demande de:
+                                <span class=" favorite-color fw-bold"> {{ $demande->nom }} {{ $demande->prenom }} ?</span>
+                            </div>
+
+                            <div class="modal-footer">
+                                <form method="POST" class="restaure-demande-form" action="{{ route('restaureDemande', ['demande' => $demande->id]) }}">
+
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <input type="hidden" class="demande_id" value="{{ $demande->id }}">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Annuler</button>
+                                    <input type="submit" class="btn btn-danger" value="Confirmer">
+                                </form>
+
+                            </div>
+                            <div class="alert alert-success mb-3 py-1 alert-dismissible msg-restaure-success fade show" style="display:none;">
+                                <h6 class=" text-center"> Demande restaurée avec succès </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- end modal restaure demande --}}
+
                 {{-- Modal to send attestation to user through email --}}
                 <div class="modal fade" id="{{ 'genererModalDemande' . $demande->id  }}" tabindex="-1"
                     role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-dialog modal-dialog-top" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Confirmer
@@ -453,7 +506,7 @@
                             </div>
                             <div class="modal-body">
                                 L'attestation une fois générée sera directement envoyée au mail du demandeur:
-                                <span class="text-danger"> {{ $demande->nom }} {{ $demande->prenom }} Êtes-vous sûr
+                                <span class=" favorite-color"> {{ $demande->nom }} {{ $demande->prenom }} Êtes-vous sûr
                                     de le faire ?</span>
                             </div>
 
@@ -520,7 +573,6 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-
                                     @csrf
                                     <button type="button" class="btn btn-secondary"
                                         data-dismiss="modal">Annuler</button>
@@ -574,12 +626,48 @@
                     success:function (data){
                         successMessage = "Demande invalidée avec succès et demandeur alerté.";
                         $('.msg-success').removeClass('d-none');
+                        
                         setTimeout(() => {
                             $('.alertDemandeurModal').modal('hide');
+                        }, 2000);
+
+                        setTimeout(() => {
+                            window.location.reload();
                         }, 3000);
-                   
                     }
                 })
+            });
+            $('.restaure-demande-form').submit(function(e){
+                e.preventDefault();
+                let id = $('.restaure-demande-form .demande_id').val();
+                let = successMessage="";
+                
+                $.ajax({
+                    type: "POST",
+                    url: '{!! URL::to('restaureDemande') !!}', 
+                    data: {
+                        'demande_id':id,
+                        _token :"{{ csrf_token() }}"
+
+                    },
+                    success:function (data){
+                        console.log(data);
+                        setTimeout(() => {
+                            $('.restaureModal').modal('hide');
+                        }, 3000);
+                        successMessage = "Demande restaurée avec succès.";
+                        $('.msg-restaure-success').css('display','block');
+                        $('.msg-restaure-success h6').text(successMessage);
+
+                        $(".msg-restaure-success").delay(4000).slideUp(200, function() {
+                            $(this).css('display', 'none');
+                        });
+                        setTimeout(() => {
+                        window.location.reload();
+                        }, 3000);
+                    }
+                })
+
             })
         });
 

@@ -102,7 +102,6 @@
 
                         <div class="flex items-center justify-end mt-4 form-group">
                             
-
                             <div class="form-group mt-5">
                                 <input class="w-100 p-2  text-white fw-bold fs-5 bg-success rounded border-0" type="submit"
                                     name="submit" id="submit" value="Inscription">
