@@ -51,7 +51,7 @@
 
     
 
-        <div class="shadow p-5 bg-white" style="border-radius: 10px;">
+        <div class="shadow p-2 pt-4  bg-white" style="border-radius: 10px;">
 
             <div class="advanced-search container-fluid mb-5">
                 <p class="fw-bold">Recherche avancée ...</p>

@@ -47,7 +47,7 @@
 
         </div>
 
-        <div class="shadow p-5 mt-3 bg-white" style="border-radius: 10px;">
+        <div class="shadow p-2 pt-4 mt-3 bg-white" style="border-radius: 10px;">
             <div class=" table-responsive container-fluid">
                 <table class="table datatable  table-striped border-collapse">
                     <thead>

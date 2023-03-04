@@ -96,15 +96,16 @@
                                             value="{{ $candidat->contact }}" name="contact" id="contact">
                                         </div>
 
-                                        <div class="form-group col-md-6 p-2" style="padding:10px 0 10px 0;">
-                                            <label class="control-label" for="sexe">Sexe</label>
-                                            <select class="form-control border-2 form-select" style="height: 50px;"
-                                                name="sexe" id="sexe_id">
-                                                @foreach ($sexes as $sexe)
-                                                    <option value="{{ $sexe }}" @if ( old('sexe_id', $candidat->sexe) == $sexe) selected @endif >{{ $sexe }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                                        
+                                            <div class="form-group col-md-6 p-2" style="padding:10px 0 10px 0;">
+                                                <label class="control-label label-color" for="sexe">Sexe &nbsp; <span class="text-danger">*</span></label>
+                                                        
+                                                <select class="form-control border-1 form-select" required name="sexe">
+                                                    <option value="Masculin" @if(!is_null($candidat))  @if($candidat->sexe=="Masculin") selected @endif @endif>Masculin</option>
+                                                    <option value="Féminin"@if(!is_null($candidat)) @if($candidat->sexe=="Féminin") selected @endif @endif>Féminin</option>
+                                                    <option value="Autres"@if(!is_null($candidat)) @if($candidat->sexe=="Autres") selected @endif @endif>Autres</option>
+                                                </select>
+                                            </div>
 
                                     </div>
 
@@ -145,15 +146,21 @@
                                             </select>
                                         </div>
 
+                                        
                                         <div class="form-group col-md-6 p-2" style="padding:10px 0 10px 0;">
-                                            <label class="control-label" for="centre">Série du candidat</label>
-                                            <select class="form-control border-2 form-select" style="height: 50px;"
-                                                name="serie" id="serie_id">
-                                                @foreach ($series as $serie)
-                                                    <option value="{{ $serie }}"  @if ( old('sexe_id', $candidat->serie) == $serie) selected @endif >{{ $serie }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                                                <label class="control-label label-color" for="centre">Série de l'examen &nbsp; <span
+                                                        class="text-danger">*</span></label>
+                                                <select class="form-control border-1 form-select"  required name="serie" id="serie_id">
+                                                    <option value="">Choisissez la série</option>
+                                                    <option value="Mod.Court" @if(!is_null($candidat))  @if($candidat->serie=="Mod.Court") selected @endif @endif>Mod.Court</option>
+                                                    <option value="Mod.Long" @if(!is_null($candidat))  @if($candidat->serie=="Mod.Long") selected @endif @endif>Mod.Long</option>
+                                                    <option value="Technique" @if(!is_null($candidat))  @if($candidat->serie=="Technique") selected @endif @endif>Technique</option>
+                                                   
+                
+                                                </select>
+                                                <span class="text-danger" id="serieError"> </span>
+                
+                                            </div>
 
                                     </div>
 

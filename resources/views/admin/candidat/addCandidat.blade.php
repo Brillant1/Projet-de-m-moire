@@ -86,13 +86,13 @@
                                     <div class="row mb-3">
                                         <p class=" favorite-color fw-bold fs-5 text-start py-2">Informations personnelles du candidat</p>
                                         <div class="form-group col-md-6 p-2">
-                                            <label for="nom" class="control-label ">Nom du candidat</label>
+                                            <label for="nom" class="control-label ">Nom du candidat</label> &nbsp; <span class="text-danger">*</span>
                                             <input class="form-control border-2 " type="text"
                                                 placeholder="Tapez le nom du centre" name="nom" id="nom" required>
                                         </div>
 
                                         <div class="form-group col-md-6 p-2">
-                                            <label for="prenom" class="control-label ">Prénom du candidat</label>
+                                            <label for="prenom" class="control-label ">Prénom du candidat</label> &nbsp; <span class="text-danger">*</span>
                                             <input class="form-control border-2 " type="text"
                                                 placeholder="Tapez le prenom du centre" name="prenom" id="prenom" required>
                                         </div>
@@ -101,25 +101,26 @@
 
                                     <div class="row mb-3">
                                         <div class="form-group col-md-6 p-2">
-                                            <label for="contact" class="control-label ">Contact du candidat</label>
+                                            <label for="contact" class="control-label ">Contact du candidat</label> &nbsp; <span class="text-danger">*</span>
                                             <input class="form-control border-2 " type="number"
                                                 placeholder="Tapez le contact du candidat" name="contact" id="contact" required>
                                         </div>
 
                                         <div class="form-group col-md-6 p-2" style="padding:10px 0 10px 0;">
-                                            <label class="control-label" for="sexe">Sexe</label>
-                                            <select class="form-control border-2 form-select" style="height: 50px;"
-                                                name="sexe">
-                                                @foreach ($sexes as $sexe)
-                                                    <option value="{{ $sexe }}">{{ $sexe }}</option>
-                                                @endforeach
+                                            <label class="control-label label-color" for="sexe">Sexe &nbsp; <span class="text-danger">*</span></label>
+                                                    
+                                            <select class="form-control border-2 form-select" name="sexe">
+                                                <option value="Masculin">Masculin</option>
+                                                <option value="Féminin">Féminin</option>
+                                                <option value="Autres">Autres</option>
                                             </select>
+            
                                         </div>
 
                                     </div>
                                     <div class="row mb-3">
                                         <div class="form-group col-md-6 p-2">
-                                            <label for="photo" class="control-label ">Photo du candidat</label>
+                                            <label for="photo" class="control-label ">Photo du candidat</label> &nbsp; <span class="text-danger">*</span>
                                             <input class="form-control border-2 " type="file" name="photo" id="photo" required>
                                         </div>
                                         <div class="form-group col-md-6 p-2">
@@ -133,10 +134,11 @@
                                     <div class="row mb-3">
                                         <p class=" favorite-color fw-bold fs-5 text-start py-2 mt-5">Informations relatives à l'examen</p>
                                         <div class="form-group col-md-6 p-2" style="padding:10px 0 10px 0;">
-                                            <label class="control-label" for="departement">Departement où le candidat a
-                                                composé</label>
+                                            <label class="control-label" for="departement">Département où le candidat a
+                                                composé</label> &nbsp; <span class="text-danger">*</span>
                                             <select class="form-control border-2 form-select" style="height: 50px;"
                                                 name="departement_id" id="departement_id" required>
+                                                <option value=" "> Sélectionnez le département</option>
                                                 @foreach ($departements as $departement)
                                                     <option value="{{ $departement->id }}"> {{ $departement->nom }} </option>
                                                 @endforeach
@@ -144,12 +146,12 @@
                                         </div>
                                         <div class="form-group col-md-6 p-2" style="padding:10px 0 10px 0;">
                                             <label class="control-label" for="commune">Commune où le candidat a
-                                                composé</label>
+                                                composé</label> &nbsp; <span class="text-danger">*</span>
                                             <select class="form-control border-2 form-select" style="height: 50px;"
-                                                name="commune_id" id="commune" required>
-                                                @foreach ($communes as $commune)
+                                                name="commune_id" id="commune_id" required>
+                                                {{-- @foreach ($communes as $commune)
                                                     <option value="{{ $commune->id }}">{{ $commune->nom }}</option>
-                                                @endforeach
+                                                @endforeach --}}
                                             </select>
                                         </div>
                                     </div>
@@ -159,23 +161,28 @@
                                     <div class="row mb-3">
                                         <div class="form-group col-md-6 p-2" style="padding:10px 0 10px 0;">
                                             <label class="control-label" for="centre">Centre où le candidat a
-                                                composé</label>
+                                                composé</label> &nbsp; <span class="text-danger">*</span>
                                             <select class="form-control border-2 form-select" style="height: 50px;"
-                                                name="centre_id" id="centre">
-                                                @foreach ($centres as $centre)
+                                                name="centre_id" id="centre_id">
+                                                {{-- @foreach ($centres as $centre)
                                                     <option value="{{ $centre->id }}">{{ $centre->nom }}</option>
-                                                @endforeach
+                                                @endforeach --}}
                                             </select>
                                         </div>
 
                                         <div class="form-group col-md-6 p-2" style="padding:10px 0 10px 0;">
-                                            <label class="control-label" for="centre">Série du candidat</label>
-                                            <select class="form-control border-2 form-select" style="height: 50px;"
-                                                name="serie" id="serie">
-                                                @foreach ($series as $serie)
-                                                    <option value="{{ $serie }}">{{ $serie }}</option>
-                                                @endforeach
+                                            <label class="control-label label-color" for="centre">Série de l'examen &nbsp; <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-control border-2 form-select" name="serie" id="serie">
+                                                <option value="">Choisissez la série</option>
+                                                <option value="Mod.Court">Mod.Court</option>
+                                                <option value="Mod.Long">Mod.Long</option>
+                                                <option value="CAP">CAP</option>
+                                               
+            
                                             </select>
+                                            <span class="text-danger" id="serieError"> </span>
+            
                                         </div>
 
                                     </div>
@@ -185,7 +192,7 @@
 
                                         <div class="form-group col p-2">
                                             <label for="numero_table" class="control-label "> Numero de table du
-                                                candidat</label>
+                                                candidat</label> &nbsp; <span class="text-danger">*</span>
                                             <input class="form-control border-2 " type="text"
                                                 placeholder="Tapez le numero de table du candidat" name="numero_table"
                                                 id="numero_table" required>
@@ -193,7 +200,7 @@
 
                                         <div class="form-group col p-2">
                                             <label for="annee_obtention" class="control-label "> Année d'obtention du
-                                                diplôme</label>
+                                                diplôme</label> &nbsp; <span class="text-danger">*</span>
                                             <input class="form-control border-2 annee_obtention" type="number"
                                                 placeholder="L'année où le candidat a eu le diplôme" name="annee_obtention"
                                                 id="annee_obtention" required>
@@ -219,7 +226,7 @@
 
                                     <div class="row mb-3">
                                         <div class="form-group col-md-6 p-2">
-                                            <label for="reference" class="control-label ">Référence du candidat</label>
+                                            <label for="reference" class="control-label ">Référence du candidat</label>&nbsp; <span class="text-danger">*</span>
                                             <input class="form-control border-2 " type="text"
                                                 placeholder="Tapez la référence du candidat" name="numero_reference"
                                                 id="reference" required>
@@ -239,9 +246,11 @@
 
 
 
-                                    <div class="d-flex justify-content-center">
+                                    <div class="d-flex justify-content-center"> 
+                                        <input type="reset" value="Annuler" id="send"
+                                            class="btn btn-danger fw-bold px-5 mt-4 me-2">
                                         <input type="submit" name="send" value="Enrégistrer" id="send"
-                                            class="btn btn-success fw-bold px-5 mt-4">
+                                            class="btn btn-success fw-bold px-5 mt-4 ms-2">
 
                                     </div>
                                 </form>
@@ -259,7 +268,69 @@
         </div>
     </section>
     <script>
+
+
         $('document').ready(function(){
+
+            $('#departement_id').on('change', function() {
+                let id = $(this).val();
+                let commune = document.getElementById('commune_id');
+                var communeList = " ";
+                
+                $.ajax({
+                    type: 'POST',
+                    url: '{!! URL::to('communesOfDepartement') !!}',
+                    data: {
+                        'id': id,
+                        _token :"{{ csrf_token() }}"
+                    },                                        
+                    success: function(data) {
+                        console.log(data);
+                        communeList += '<option value=" "> Choisissez la commune </option>';
+
+                        for(let i = 0; i < data.length; i++){
+                            communeList += '<option value="'+ data[i].id + '">' + data[i].nom + '</option>';
+                        }
+                        console.log(communeList);
+                        $('#commune_id').html('');
+                        $('#commune_id').append(communeList);
+                    },
+                    error: function(e) {
+                        console.log(e);
+                    }
+                })
+            });
+
+
+            $('#commune_id').on('change', function() {
+                let id = $(this).val();
+                let centre = document.getElementById('centre_id');
+                var centreList = " ";
+                
+                $.ajax({
+                    type: 'POST',
+                    url: '{!! URL::to('centreOfCommune') !!}',
+                    data: {
+                        'id': id,
+                        _token :"{{ csrf_token() }}"
+                    },                                        
+                    success: function(data) {
+                        console.log(data);
+                        centreList += '<option value=" "> Choisissez le centre </option>';
+
+                        for(let i = 0; i < data.length; i++){
+                            centreList += '<option value="'+ data[i].id + '">' + data[i].nom + '</option>';
+                        }
+                        $('#centre_id').html('');
+                        $('#centre_id').append(centreList);
+                    },
+                    error: function(e) {
+                        console.log(e);
+                    }
+                })
+            });
+
+
             $('.annee_obtention').yearpicker(); 
         })
          

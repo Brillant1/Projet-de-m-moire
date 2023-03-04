@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ContactMail;
+use App\Models\ContactMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -32,6 +33,8 @@ class ContactController extends Controller
             'objet' => $request->objet,
             'message' => $request->message
         ];
+
+        ContactMessage::create($detailMessage);
 
 
         Mail::to('esaietchagnonsi@gmail.com')->send(new ContactMail($detailMessage));

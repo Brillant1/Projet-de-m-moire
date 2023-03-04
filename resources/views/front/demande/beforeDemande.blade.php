@@ -1,5 +1,6 @@
 @extends('front.layouts.template')
 @section('content')
+    <link rel="stylesheet" href="{{asset('css/yearpicker.css')}}">
     <div class="d-flex justify-content-center align-items-center flex-column">
         
         <div class="container-info-start">
@@ -39,7 +40,7 @@
                 </div>
                 <div class="form-group mb-3 mt-4 ">
                     <label for="annee"> Année où vous avez eu le diplôme</label>
-                    <input type="number" placeholder="Anné du diplôme" min="2012" max="2022"  maxlength="4" name="annee" class="form-control mt-1" id="annee" required>
+                    <input type="number" placeholder="Anné du diplôme" min="2012" max="2022"  maxlength="4" name="annee" class="form-control mt-1 annee" id="annee" required>
                     @if ($errors->has('annee'))
                         <span class="text-danger">{{ $errors->first('annee') }}</span>
                     @endif
@@ -50,4 +51,9 @@
             </form>
         </div>
     </div>
+    <script>
+        $('document').ready(function() {
+            $('.annee').yearpicker();
+        });
+    </script>
 @endsection

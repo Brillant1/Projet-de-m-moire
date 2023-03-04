@@ -1048,13 +1048,12 @@
                                         </tfoot>
                                         <tbody>
                                             
-                                            
+                                                
                                                 @forelse($demandeGenerers as $demandeGenerer)
                                                   
-                                                    <tr class="">
+                                                    <tr class="" demande_id="{{ $demandeGenerer->id }}">
                                                         <td class="py-3">
                                                             {{ $demandeGenerer->updated_at->format('d-m-Y') }} à {{ $demandeGenerer->updated_at->format('H:i:s') }}
-                                                            
                                                         </td>
                                                         <td class="py-3">
                                                             {{ $demandeGenerer->created_at->format('d-m-Y') }} à {{ $demandeGenerer->created_at->format('H:i:s') }}
@@ -1074,7 +1073,7 @@
 
                                                                 
 
-                                                                <a href="#" title="Téléchagement" class=" text-white bg-success rounded btn btn-sm d-flex justify-content-center align-items-center" data-bs-toggle="modal"
+                                                                <a href="#" title="Téléchager" class=" text-white bg-success rounded btn btn-sm d-flex justify-content-center align-items-center" data-bs-toggle="modal"
                                                                 
                                                                     data-bs-target="{{ '#downloadModal' . $demandeGenerer->id }}">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
@@ -1112,7 +1111,7 @@
                                                                         <div class="modal-footer">
                                                                             <button type="button" class="btn btn-secondary"
                                                                                 data-dismiss="modal">Annuler</button>
-                                                                            <button type="submit"  class="btn btn-success" id="downloadAtt">Télécharger</button>
+                                                                            <button type="submit"  class="btn btn-success" demande_id = "{{ $demandeGenerer->id }}" id="downloadAtt">Télécharger</button>
                                                                         </div>
                                                                         <div class="alert py-3 text-center downloadMessage" style="display:none;">
                                                                             
@@ -1400,20 +1399,18 @@
                     $(this).html('<input type="text" placeholder="Entrer ' + title + '" />');
             });
 
-            // $('#downloadAtt').click(function(){
-            //     console.log('Download')
-            //     $('.download-form').submit();
-            // });
+
 
             $('.download-form').submit(function(e){
+
                 e.preventDefault();
 
-                // let annee = $('.download-form .annee').val();
-                let code = $('.download-form input[name="code"]').val();
-                let id = $('.download-form input[name="demande_id"]').val();
-                let errorMessage ="";
+                let code = $(this).find('input.code').val();
 
-                
+                 
+
+                let id = $(this).parents('tr').attr('demande_id');
+                let errorMessage ="";
 
                 $.ajax({
                     type:"GET",
@@ -1425,6 +1422,7 @@
                     },
                     success : function (data){
                         console.log(data);
+
                         if(data.code ==500){
 
                             $('.downloadMessage').addClass('alert-danger');

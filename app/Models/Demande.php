@@ -47,4 +47,8 @@ class Demande extends Model
         return $this->hasMany(Alerte::class);
     }
 
+    public function attestation(){
+        return $this->belongsTo(Attestation::class);
+    }
+
 }

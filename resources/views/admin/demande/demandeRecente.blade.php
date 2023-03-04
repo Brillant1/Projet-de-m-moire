@@ -48,10 +48,10 @@
 
         </div>
 
-        <div class="shadow p-5 bg-white" style="border-radius: 10px;">
+        <div class="shadow p-2 pt-4  bg-white" style="border-radius: 10px;">
 
 
-            <div class="advanced-search container-fluid mb-5">
+            {{-- <div class="advanced-search container-fluid mb-5">
                 <p class="fw-bold">Recherche avancée ...</p>
                 <form action="#" method="POST" class="advanced-search-form mt-3">
                     @csrf
@@ -103,11 +103,30 @@
                         <input class="btn btn-success search-button  px-4" type="button" value="Rechercher ...">
                     </div>
                 </form>
+            </div> --}}
+
+            <div class="container-fluid d-flex justify-content-between mb-3">
+                <div>
+                    <form action="">
+
+                        <div class="input-group border border-1 rounded">
+                            <input class="form-control border-0 rounded search-table " type="text"
+                                placeholder="Rechercher ..." id="example-search-input">
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <button class=" btn btn-sm fw-bold filterAttente p-2 text-white" style="background-color:  rgba(3, 36, 151, 0.71) !important;">Filtrer &nbsp;
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+                            <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+                          </svg>
+
+                    </button>
+                   
+                </div>
             </div>
-
-
             <div class="table-responsive container-fluid">
-                <table class="table table-striped border-collapse table-bordered datatable" id="payeDemandeTable">
+                <table class="table table-striped border-collapse table-bordered" id="payeDemandeTable">
                     <thead>
                         <tr class="">
                             <th>Date</th>
@@ -118,10 +137,25 @@
                             <th>Année</th>
                             <th class=" text-center">Action</th>
                         </tr>
+                    </thead>
+                    <tfoot class=" d-none bg-white" id="demandepayeefooter">
+                        <tr class="" >
+                            <th class="datefoot">Date</th>
+                            <th class="nomfoot ">Nom et Prénoms</th>
+                            <th class="numerofoot ">N° Table</th>
+                            <th class="communefoot">Commune</th>
+                            <th class="centrefoot ">Centre</th>
+                            <th class="diplomefoot">Diplôme</th>
+                            
+                            <th class=" "></th>
+                        </tr>
+                    </tfoot>
                    
                     <tbody>
 
-                        @foreach ($demandes as $demande)
+                        @forelse ( $demandes as $demande )
+                            
+                       
                         
                         @php
                         $centres = App\Models\Centre::where('id',$demande->centre)->get();   
@@ -164,7 +198,9 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                            @empty
+                            
+                            @endforelse
                     </tbody>
                 </table>
             </div>
@@ -174,11 +210,7 @@
     <script>
         $(document).ready(function () {
 
-            $('#payeDemandeTable tfoot .nomfoot,#payeDemandeTable tfoot .datefoot, #payeDemandeTable tfoot .numerofoot, #payeDemandeTable tfoot .communefoot,  #payeDemandeTable tfoot .centrefoot,  #payeDemandeTable tfoot .diplomefoot')
-                .each(function() {
-                var title = $(this).text();
-                $(this).html('<input type="text" placeholder="Entrer ' + title + '" />');
-            });
+            
 
             $('.search-button').click(function(e) {
                 e.preventDefault();
@@ -222,25 +254,55 @@
 
             })
 
-        // var demandePayeeTable = $('#payeDemandeTable').DataTable({
-        //     "initComplete": function() {
-        //             this.api().columns().every(function(column) {
-        //                 var that = this;
-        //                 $('input', this.footer()).on('keyup change clear', function() {
 
-        //                     if (that.search() !== this.value) {
-        //                         that.search(this.value).draw();
-        //                     }
-        //                 });
-        //             })
-        //         },
-        //     "language": {
-        //             "info": "_END_ sur _TOTAL_ entrées",
-        //             "infoEmpty": "_END_ sur _TOTAL_ entrées",
-        //             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-        //         },
-        //     order: [[0, 'desc']],
-        // });
+
+            $('#payeDemandeTable tfoot .nomfoot,#payeDemandeTable tfoot .datefoot, #payeDemandeTable tfoot .numerofoot, #payeDemandeTable tfoot .communefoot,  #payeDemandeTable tfoot .centrefoot,  #payeDemandeTable tfoot .diplomefoot')
+                .each(function() {
+                var title = $(this).text();
+                $(this).html('<input type="text" placeholder="Entrer ' + title + '" />');
+            });
+
+            var demandePayeeTable = $('#payeDemandeTable').DataTable({
+            "initComplete": function() {
+                    this.api().columns().every(function(column) {
+                        var that = this;
+                        $('input', this.footer()).on('keyup change clear', function() {
+
+                            if (that.search() !== this.value) {
+                                that.search(this.value).draw();
+                            }
+                        });
+                    })
+                },
+                "bFilter": true,
+                "bLengthChange": false,
+                "pageLength": 20,
+                "sDom": 't<"pager"ip><"clear">',
+            
+                "language": {
+                    "info": "_END_ sur _TOTAL_ entrées",
+                    "infoEmpty": "_END_ sur _TOTAL_ entrées",
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                },
+                order: [[0, 'desc']],
+            });
+
+
+            let j=0;
+            $('.filterAttente').click(function () {
+                if(j==0){
+                    $('#demandepayeefooter').removeClass('d-none');
+                    $('#demandepayeefooter').addClass('filterfooter');
+                    j++;
+                }else{
+                    $('#demandepayeefooter').removeClass('filterfooter');
+                    $('#demandepayeefooter').addClass('d-none');
+                    j--;
+                }
+            });
+            $('#example-search-input').keyup(function () {
+                demandePayeeTable.search($(this).val()).draw();
+            });
     });
     </script>
     

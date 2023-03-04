@@ -1091,7 +1091,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 70px !important;
 }
 
-#sampleTable th, #payeDemandeTable th {
+#sampleTable thead th, #payeDemandeTable thead th, #allAttestattiontable thead th {
   background:  rgba(3, 36, 151, 0.96);
   color: white;
 }

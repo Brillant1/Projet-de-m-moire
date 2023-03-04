@@ -8,7 +8,6 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
   @include('admin.layouts.css')
-
   <script src="{{ asset('admin/js/jquery.min.js') }}"></script>
 </head>
 

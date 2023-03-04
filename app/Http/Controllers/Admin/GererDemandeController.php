@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Mail\AttestationMail;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
+use App\Models\Attestation;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -105,6 +106,7 @@ class GererDemandeController extends Controller
         $dompdf = new Dompdf();
         $data['id'] = $demande->id;
         $data['prenom'] = $demande->prenom;
+        $data['email'] = $demande->email;
 
 
 
@@ -118,16 +120,13 @@ class GererDemandeController extends Controller
         $dompdf->setPaper('A4','paysage');
         $dompdf->render();
         
-        
-       
-
         $output = $dompdf->output();
         $fileName = $demande->nom.'_'.$demande->prenom.'_'.$demande->numero_table.'.pdf';
         file_put_contents($fileName, $output);
        
         Mail::send('emails.attestation', $data, function ($message) use ($data, $output, $fileName) {
-        $message->to("esaietchagnonsi@gmail.com")
-            ->subject( $data['prenom'])
+        $message->to($data['email'])
+            ->subject('DEC-BENIN -'. $data['prenom'])
             ->attachData($output, $fileName);
         });
 
@@ -143,6 +142,11 @@ class GererDemandeController extends Controller
         $demande->code = $code;
         $demande->save();
         $demandes = Demande::orderBy('created_at', 'DESC')->get();
+
+        Attestation::create([
+            'nom' => $pdf_url,
+            'demande_id'=> $demande->id
+        ]);
         //return back()->with('generateMessage', 'Attestation générée et envoyée au mail du demandeur avec succès !');
         return redirect()->route('demande-recente', ['demandes' => $demandes])->with('generateMessage', 'Attestation générée et envoyée au mail du demandeur avec succès !');
     }
@@ -223,8 +227,5 @@ class GererDemandeController extends Controller
         return response()->download(public_path($lien));
     }
 
-    public function attestationAll( Demande $demande){
-
-    }
 
 }

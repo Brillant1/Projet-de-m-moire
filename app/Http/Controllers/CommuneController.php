@@ -16,7 +16,7 @@ class CommuneController extends Controller
      */
     public function index()
     {
-        $communes = Commune::with('departement')->get();
+        $communes = Commune::with('departement')->orderBy('departement_id')->get();
         return view('admin.commune.listCommune', compact('communes'));
     }
 

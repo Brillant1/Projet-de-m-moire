@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\Admin\ExamenController;
 use App\Http\Controllers\Admin\DemandeController;
 use App\Http\Controllers\Admin\GererDemandeController;
+use App\Http\Controllers\AttestationController;
 use App\Http\Controllers\DemandeController as ControllersDemandeController;
 
 /*
@@ -37,6 +39,7 @@ Route::get('/dashboard', function () {
 require __DIR__ . '/auth.php';
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin');
     Route::resource('centres', CentreController::class);
     Route::resource('communes', CommuneController::class);
     Route::resource('departements', DepartementController::class);
@@ -70,7 +73,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('demandeRecente', [App\Http\Controllers\DemandeController::class, 'demandeRecente'])->name('demande-recente');
     Route::get('demandeApprouvee', [App\Http\Controllers\DemandeController::class, 'demandeApprouvee'])->name('demande-approuvee');
     Route::get('demandeGeneree', [App\Http\Controllers\DemandeController::class, 'demandeGeneree'])->name('demande-generee');
-    Route::get('attestationGeneree', [GererDemandeController::class, 'attestationAll'])->name('attestation-all');
+    Route::get('attestations', [AttestationController::class, 'all_attestation'])->name('attestation-all');
     Route::get('demandeNonPayee', [App\Http\Controllers\DemandeController::class, 'demandeNonPayee'])->name('demande-non-payee');
 
     Route::get('singleDemande/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'singleDemande'])->name('singleDemande');
@@ -108,6 +111,10 @@ Route::get('/', [HomeController::class,'redirectIndex']);
 
 
 Route::get('downloadAttestation', [App\Http\Controllers\DemandeController::class, 'download_attestation'])->name('download-attestation');
+
+// Route::get('downloadCandidateAttestation/{id}', [App\Http\Controllers\AttestationController::class, 'download_attestation'])->name('download-candidate-attestation');
+
+
 
 Route::get('downloadDocument/{id}', [App\Http\Controllers\DemandeController::class, 'downloadDocument'])->name('downloadDocument');
 

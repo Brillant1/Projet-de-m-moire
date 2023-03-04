@@ -108,18 +108,45 @@
 
                         .progressbar {
                             counter-reset: step;
+                            width: 100%;
                         }
                         .progressbar::before,
                         .progress {
                             content: "";
                             position: absolute;
                             margin-top: 47px;
-                            width: 70%;
+                            /* width: 70%; */
+                            width: 1250px;
                             height: 4px;
                             background-color: #cdcdcd;
                             transform: translateY(-50%);
                             z-index: -100;
                      
+                        }
+
+                        @media screen and (max-width:1399px) {
+                            .progressbar::before,
+                            .progress {
+                                width: 1100px;
+                            }
+                        }
+                        @media screen and (max-width:1199px) {
+                            .progressbar::before,
+                            .progress {
+                                width: 900px;
+                            }
+                        }
+                        @media screen and (max-width:920px) {
+                            .progressbar::before,
+                            .progress {
+                                width: 850px;
+                            }
+                        }
+                        @media screen and (max-width:875px) {
+                            .progressbar::before,
+                            .progress {
+                                width: 92%;
+                            }
                         }
 
                         .progress {
@@ -326,9 +353,7 @@
                                     <option value="Mod.Court">Mod.Court</option>
                                     <option value="Mod.Long">Mod.Long</option>
                                     <option value="CAP">CAP</option>
-                                    {{-- @foreach ($series as $serie)
-                                        <option value="{{ $serie }}">{{ $serie }}</option>
-                                    @endforeach --}}
+                                   
 
                                 </select>
                                 <span class="text-danger" id="serieError"> </span>
@@ -377,7 +402,7 @@
                                     composé &nbsp; <span class="text-danger">*</span></label>
                                 <select class="form-control form-select border-1 form-select" name="commune" id="commune">
 
-                                    
+                                    <option value=" ">Choisissez la commune</option>
                                     {{-- @foreach ($communes as $commune)
                                         <option value="{{ $commune->nom }}">{{ $commune->nom }}</option>
                                     @endforeach --}}
@@ -389,6 +414,7 @@
                                 <label class="control-label label-color" for="centre">Centre dans lequel vous avez
                                     composé &nbsp; <span class="text-danger">*</span></label>
                                 <select class="form-control border-1 form-select" name="centre" id="centre">
+                                    <option value=" ">Choisissez le centre</option>
                                     {{-- @foreach ($centres as $centre)
                                         <option value="{{ $centre->nom }}">{{ $centre->nom }}</option>
                                     @endforeach --}}
@@ -412,7 +438,7 @@
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label for="annee_obtention" class="control-label label-color">Année
                                     d'obtention du diplôme  &nbsp; <span class="text-danger">*</span></label>
-                                <input class="form-control yearpicker  border-1 annee" type="text" name="annee_obtention" readonly
+                                <input class="form-control  border-1 annee" type="text" name="annee_obtention" readonly
                                     id="annee_obtention" value=" @if(!is_null($candidat)) {{ $candidat[0]->annee_obtention }}  @endif">
                                 <span class="text-danger" id="annee_obtentionError"> </span>
 
@@ -592,13 +618,19 @@
       </div>
 
     {{-- <script src="https://cdn.kkiapay.me/k.js"></script> --}}
+ 
     <script>
-        //   $(".yearpicker").yearpicker();
+        $('document').ready(function() {
+            $('.annee').yearpicker();
+        })
     </script>
+  
 
     <script>
       
         $('document').ready(function() {
+
+           
      
 
             $('#next1').click(function(e) {
@@ -766,6 +798,7 @@
                     },                                        
                     success: function(data) {
                         console.log(data);
+                        communeList += '<option value=" "> Choisissez la commune </option>';
                         for(let i = 0; i < data.length; i++){
                             communeList += '<option value="'+ data[i].id + '">' + data[i].nom + '</option>';
                         }
@@ -793,7 +826,9 @@
                     },                                        
                     success: function(data) {
                         console.log(data);
+                        centreList += '<option value=" "> Choisissez le centre </option>';
                         for(let i = 0; i < data.length; i++){
+                            
                             centreList += '<option value="'+ data[i].id + '">' + data[i].nom + '</option>';
                         }
                         $('#centre').html('');

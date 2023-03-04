@@ -11,7 +11,9 @@
 </head>
 <body>
     <div class="divTab">
-        Bonjour, votre attetation a été émise. <br> Recevez en pièce jointe le fichier pdf de votre attestation. <br> Merci d'avoir utilisé notre service
+        Bonjour ! 
+        Votre demande d'attestation a bien été reçu Ceci est le code référence de votre de votre demande <br>
+        {{ $data['code_demande'] }}
     </div>
 </body>
 </html>

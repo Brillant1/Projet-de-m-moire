@@ -337,11 +337,11 @@
                         </div>
                     </div>
                     <div class=" mt-5 mb-5">
-                        <input type="checkbox" name="valide" id="valide">
+                        {{-- <input type="checkbox" name="valide" id="valide">
                         <span class="text-danger ps-2"> Je certifie exacte et juste toutes les informations
-                            renseignées</span> <br>
-                        <input type="reset" value="Annuler" class="mt-5 btn btn-md btn-danger px-5 me-4">
-                        <input type="submit" value="Soumettre la demande" class="mt-5 btn btn-md btn-success px-5">
+                            renseignées</span> <br> --}}
+                        {{-- <input type="reset" value="Annuler" class="mt-5 btn btn-md btn-danger px-5 me-4"> --}}
+                        <input type="submit" value="Enrégistrer les modifications" class="mt-5 btn btn-md btn-success px-5">
                     </div>
                 </form>
             </div>

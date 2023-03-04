@@ -3,7 +3,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="index.html">
+        <a class="nav-link " href="{{ route('admin') }}">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -47,16 +47,16 @@
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#attestations-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Attestations</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link"  href="{{ route('attestation-all') }}">
+          <i class="bi bi-menu-button-wide"></i><span>Attestations</span>{{-- <iclass="bibi-chevron-downms-auto"></i> --}}
         </a>
-        <ul id="attestations-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        {{-- <ul id="attestations-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
             <a href="{{ route('attestation-all') }}">
               <i class="bi bi-circle"></i><span>Attestations générées</span>
             </a>
           </li>
-        </ul>
+        </ul> --}}
       </li>
 
       

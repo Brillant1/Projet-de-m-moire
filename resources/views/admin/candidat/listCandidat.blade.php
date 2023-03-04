@@ -49,39 +49,44 @@
     }
         </style>
 
-        <div class="shadow p-5" style="border-radius: 10px;">
+        <div class="shadow p-2 pt-4" style="border-radius: 10px;">
             <div class="table-responsive container-fluid">
                 <table class="table datatable table-striped border-collapse table-bordered  display" id="candidatTable">
                     <thead>
                         <tr class=" ">
-                            <th class="">Photo</th>
+                            {{-- <th class=" ">Photo</th> --}}
+
                             <th class=" ">Nom</th>
                             <th class=" ">N° Table</th>
-                            {{-- <th class="">N° Référence</th> --}}
                             <th class="">Centre</th>
                             <th class=" ">Commune</th>
-                            {{-- <th class="">Département</th> --}}
                             <th class=" ">Année</th>
                             <th class="">Série</th>
                             <th class="">Action</th>
                         </tr>
 
-                        <style>
-
-                        </style>
                     </thead>
+                    {{-- <tfoot>
+                        <tr class=" ">
+                            <th class=" ">Nom</th>
+                            <th class=" ">N° Table</th>
+                            <th class="">Centre</th>
+                            <th class=" ">Commune</th>
+                            <th class=" ">Année</th>
+                            <th class="">Série</th>
+                            <th class="">Action</th>
+                        </tr>
+                    </tfoot> --}}
                     <tbody>
 
                         @foreach ($candidats as $candidat)
                             <tr class="   ">
-                                <td class=" "><img src="{{ 'storage/' . $candidat->photo }}" width="60"
-                                        height="60" alt=""></td>
+                                {{-- <td class=" "><img src="{{ 'storage/' . $candidat->photo }}" width="60"
+                                        height="60" alt=""></td> --}}
                                 <td class="">{{ $candidat->nom . ' ' . $candidat->prenom }}</td>
                                 <td class=" ">{{ $candidat->numero_table }}</td>
-                                {{-- <td class=" ">{{ $candidat->numero_reference }}</td> --}}
                                 <td class=" ">{{ $candidat->centre->nom }}</td>
                                 <td class=" ">{{ $candidat->centre->commune->nom }}</td>
-                                {{-- <td class=" ">{{ $candidat->centre->commune->departement->nom }}</td> --}}
                                 <td class=" ">{{ $candidat->annee_obtention }}</td>
                                 <td class="">{{ $candidat->serie }}</td>
                                 <td class="">
@@ -296,20 +301,7 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    <tfoot>
-                        <tr class=" ">
-                            <th class="">Photo</th>
-                            <th class=" ">Nom</th>
-                            <th class=" ">N° Table</th>
-                            {{-- <th class="">N° Référence</th> --}}
-                            <th class="">Centre</th>
-                            <th class=" ">Commune</th>
-                            {{-- <th class="">Département</th> --}}
-                            <th class=" ">Année</th>
-                            <th class="">Série</th>
-                            <th class="">Action</th>
-                        </tr>
-                    </tfoot>
+                    
                 </table>
             </div>
         </div>
@@ -320,15 +312,14 @@
         
         $(document).ready(function () {
     // Setup - add a text input to each footer cell
-    $('#candidatTable thead tr th').each(function () {
-        var title = $(this).text();
-        $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-    });
+    // $('#candidatTable thead tr th').each(function () {
+    //     var title = $(this).text();
+    //     $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+    // });
  
     // DataTable
     var table = $('#candidatTable').DataTable({
         initComplete: function () {
-            // Apply the search
             this.api()
                 .columns()
                 .every(function () {

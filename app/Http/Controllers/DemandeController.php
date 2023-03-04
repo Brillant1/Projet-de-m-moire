@@ -13,12 +13,13 @@ use Barryvdh\DomPDF\PDF;
 use App\Mail\DemandeMail;
 use App\Models\Departement;
 use Illuminate\Http\Request;
+use App\Mail\CodeDemandeMail;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\DemandeRequest;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -387,11 +388,34 @@ class DemandeController extends Controller
             $demande->statut_payement = "payer";
             $demande->kkiapayPayement_id =  $transaction_id;
             
+            $code_reference = strtotime(now());
+            $code_reference = bcrypt($code_reference);
+            $code_reference = '@#DEC'.substr($code_reference, strlen($code_reference)-15).'#@';
+            $demande->demande_reference_code = $code_reference;
+            
+
             $demande->save();
+
+            $data = [
+                'email'=> $demande->email,
+                'code_demande' => $code_reference
+            ];
+
+            Mail::to('esaietchagnonsi@gmail.com')->send(new CodeDemandeMail($data));
+
+
+
+            // Mail::send('emails.demandeCode', $data, function ($message) use ($data) {
+            // $message->to($data['email'])
+            //     ->subject($data['code_demande']);
+            // });
+
+
+
             // Session::flash('paymentSuccessMessage', 'Transaction réussie,
             //         restez en écoute des nouvelles concernant votre demande');
             return redirect()->route('demandeUser', ['demandes' => $demandes, 'demandeNonValides' => $demandeNonValides, 'demandeValides' => $demandeValides])->with('paymentSuccessMessage', 'Transaction réussie et demande prise en compte,
-                    restez à écoute des nouvelles concernant votre demande');
+                    le code de référence de votre demande vous est envoyé par mail');
         } else {
             return back()->with('paymentFailMessage', 'La transaction a échoué');
         }
@@ -452,18 +476,26 @@ class DemandeController extends Controller
     }
 
     public function download_attestation(Request $request){
+        
         $demande = Demande::find($request->demande_id);
         $code = "";
         $id = $request->demande_id;
+        $message = "";
         
-        if($request->code == $demande->code){
-            $code = 200;
-            $message="Téléchargement réussi";
-
+        
+        if(!is_null($request->code)){
+            if($request->code == $demande->demande_reference_code){
+                $code = 200;
+                $message="Téléchargement réussi";
+            }
+            else{
+                $code = 500;
+                $message = "Identifiant incorrect, réessayez";
+            }
         }
         else{
             $code = 500;
-            $message = "Identifiant incorrect, réessayez";
+            $message = "Le code est obligatoire";
         }
         return response()->json(['code'=> $code, 'message'=> $message, 'id'=> $id]);
     }

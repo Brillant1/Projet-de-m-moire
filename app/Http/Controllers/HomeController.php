@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+
+    
     public function index(){
         $examen = Examen::where('status','active')->first(); 
         return view('front.accueil', compact('examen'));
