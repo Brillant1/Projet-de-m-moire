@@ -12,7 +12,7 @@
 <body>
     <div class="divTab">
         Bonjour ! 
-        Votre demande d'attestation a bien été reçu Ceci est le code référence de votre de votre demande <br>
+        Votre demande d'attestation a bien été reçu. <br> Ceci est le code de référence de votre demande <br>
         {{ $data['code_demande'] }}
     </div>
 </body>
