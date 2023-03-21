@@ -11,9 +11,8 @@
             margin: 0px;
         }
         body {
-            margin: 0px;
-            padding: 0;
-            background:#73c3c8;
+            margin: 0px !important;
+            padding: 0 !important;
             width: 100%;
         }
         * {
@@ -28,8 +27,8 @@
         }
         table {
           width: 100%;
-          padding: 0;
-          margin: 0;
+          padding: 0 !important;
+          margin: 0 !important;
         }
         table tr{
             padding: 7px 2px;
@@ -55,6 +54,9 @@
         .tr td:last-child{
           width: 50%;
          
+        }
+        .main{
+          padding: 0 !important;
         }
 
     </style>
@@ -100,14 +102,15 @@
                 </tr>
                 @php
                   $demande = App\Models\Demande::find($data['id']);
+                 
                   $date_generate = $demande->updated_at;
-                  
-                  $centre = App\Models\Centre::find($demande->centre);
+                  $candidat = App\Models\Candidat::where('numero_table', $demande->numero_table)->get();
+                 
                   $departement = App\Models\Departement::find($demande->departement);
                 @endphp
                 <tr>
                   <td colspan="2" align="left" style="padding: 25px 0;">N° 16 / 0019 / 22 / MESTFP / SIS / SDADC</td>
-                  <td align="left" colspan="3" style="padding: 25px 0; width:50%;">Identifiant: {{ $demande->code }}</td>
+                  <td align="left" colspan="3" style="padding: 25px 0; width:60%;">Identifiant: <span style=" font-weight: bold;"> {{ $demande->code }}</span></td>
                 </tr>
                 <tr>
                     <td colspan="5" style="font-size: 20px;" class="mot-dg" align="center">
@@ -115,21 +118,19 @@
                     </td>
                 </tr>
                 <tr>
-                  <td colspan="3" align="left" style=" border-radius:3px;padding-left:10px;"><span>M.  </span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ $demande->nom.''.$demande->prenom }}</span></td> 
-                  <td colspan="1" align="right" style=" border-radius:3px;"><span>Né le</span> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ date('m-d-Y', strtotime($demande->date_naissance)) }}</span></td>
+                  <td colspan="3" align="left" style=" border-radius:3px;padding-left:10px;"><span>M.  </span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ $demande->nom.' '.$demande->prenom }}</span></td> 
+                  <td colspan="1" align="right" style=" border-radius:3px;"><span>Né le</span> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ date('d-m-Y', strtotime($demande->date_naissance)) }}</span></td>
                 </tr>
                
                 <tr>
-                  <td colspan="2" style=" border-radius:3px;padding-left:10px;"><span>à</span> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ $demande->ville_naissance }} </span></td> 
-                  <td colspan="2" align="right" style=" border-radius:3px;"><span>Département</span> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ $departement->nom }}</span></td>
+                  <td colspan="2" style=" border-radius:3px;padding-left:10px;"><span>à</span> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OUESSE </span></td> 
+                  <td colspan="2" align="right" style=" border-radius:3px;"><span>Département</span> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ $demande->departement }}</span></td>
                 </tr>
                 <tr>
                   <td colspan="5" align="center">
-                
                      <p style="font-size: 18px; font-weight:bold;"> a subi avec succès l'examen du
                       Brevet d'Etude du Premier Cycle (BEPC)</p>
                   </td> 
-                  
                 </tr>
                 <tr>
                   <td colspan="2" align="left" style=" border-radius:3px;padding-left:10px;"><span>Série  </span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ $demande->serie }}</span></td> 
@@ -138,8 +139,15 @@
                 </tr>
                
                 <tr>
-                  <td colspan="1" align="left" style=" border-radius:3px;padding-left:10px;"><span>Centre de</span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ $centre->nom }}</span></td> 
-                  <td colspan="3" align="right" style=" border-radius:3px;"><span>A fréquenter</span> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ $demande->etablissement }}</span></td>
+                  <td colspan="1" align="left" style=" border-radius:3px;padding-left:10px;"><span>Centre de</span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    {{ $demande->centre }}
+                    {{-- @php
+                      $centre = App\Models\Centre::find($demande->centre);
+                      
+                    @endphp
+                    {{ $centre->nom }} --}}
+                  </span></td> 
+                  <td colspan="3" align="right" style=" border-radius:3px;"><span>A fréquenter</span> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ $demande?->etablissement }}</span></td>
                   
                 </tr>
                 <tr>

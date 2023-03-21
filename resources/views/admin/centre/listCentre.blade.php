@@ -57,12 +57,12 @@
                     <thead>
                         <tr class="">
                             <th class=" ">Centre</th>
-                            <th class=" ">Référence</th>
+                            {{-- <th class=" ">Référence</th> --}}
                             <th class="">Commune</th>
                             <th class="">Département</th>
                             <th class=" ">Directeur</th>
-                            <th class="">Nombre composé</th>
-                            <th class=" ">Nombre d'admis</th>
+                            {{-- <th class="">Nombre composé</th>
+                            <th class=" ">Nombre d'admis</th> --}}
                             <th class=" ">Action</th>
                         </tr>
 
@@ -74,12 +74,12 @@
                             <tr class="">
 
                                 <td class=" px-4">{{ $centre->nom }}</td>
-                                <td class=" px-4">{{ $centre->reference }}</td>
+                                {{-- <td class=" px-4">{{ $centre->reference }}</td> --}}
                                 <td class=" px-4">{{ $centre->commune->nom }}</td>
                                 <td class=" px-4">{{ $centre->commune->departement->nom }}</td>
                                 <td class=" px-4">{{ $centre->directeur}}</td>
-                                <td class=" px-4">{{ $centre->nombre_candidat}}</td>
-                                <td class=" px-4">{{ $centre->nombre_candidat_admis}}</td>
+                                {{-- <td class=" px-4">{{ $centre->nombre_candidat}}</td>
+                                <td class=" px-4">{{ $centre->nombre_candidat_admis}}</td> --}}
 
                                 <td class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex justify-content-evenly w-100">

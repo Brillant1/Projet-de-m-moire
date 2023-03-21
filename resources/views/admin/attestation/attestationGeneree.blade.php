@@ -49,7 +49,7 @@
             <table class="table table-striped border-collapse table-bordered" id="allAttestattiontable">
                 <thead>
                     <tr class="">
-                        <th>Date</th>
+                        <th>Date d'émission</th>
                         <th class=" ">Nom</th>
                         <th class=" ">N° Table</th>
                         <th class="">Centre</th>
@@ -77,8 +77,11 @@
                             
                        
                             @php
+
                                 $demande = App\Models\Demande::find($attestation->demande_id);
-                                $centre = App\Models\Centre::find($demande->centre);
+                                
+                                
+                                
                             @endphp
                         
                             <tr class="">
@@ -87,7 +90,14 @@
                                 <td class="">{{ $demande->nom.' '.$demande->prenom  }}</td>
                                 <td class=" ">{{ $demande->numero_table }}</td>
                                 <td>
-                                    {{ $centre->nom }}
+                                        @php
+                                             $centre = App\Models\Centre::find($demande->centre);
+                                        @endphp
+                                        @if (!is_null($centre))
+                                            {{ $centre->nom }}
+                                        @endif
+                                       
+                                    
                                     {{-- @foreach ($commune as $commune)
                                         {{ $commune->nom }}
                                     @endforeach --}}

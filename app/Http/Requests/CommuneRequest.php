@@ -25,7 +25,7 @@ class CommuneRequest extends FormRequest
     {
         return [
             'nom'=>'required|string',
-            'reference'=>'required|string',
+            // 'reference'=>'string',
         ];
     }
 
@@ -33,7 +33,7 @@ class CommuneRequest extends FormRequest
     {
         return [
             'nom.required'=>"Nom de la commune obligatoire",
-            'reference.required'=>'Champs reference obligatoire',
+            // 'reference.required'=>'Champs reference obligatoire',
         ];
     }
 }

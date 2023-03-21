@@ -109,7 +109,7 @@
 
                             </div>
 
-                            <div class="row mb-3">
+                            {{-- <div class="row mb-3">
                                 <div class="form-group col-md-6 p-2">
                                     <label for="nombre_candidat" class="control-label">Nombre de candidat ayant composé</label>
                                     <input type="number" name="nombre_candidat"  id="nombre_candidat" class="form-control border-2"
@@ -125,7 +125,7 @@
                                     <label for="annee" class="control-label" class="text-dark">Année</label>
                                     <input type="number" name="annee" value="{{ $centre->annee }}"  id="annee" class="form-control border-2">
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="d-flex justify-content-center">
                                 <input type="submit" name="send" value="Enrégistrer les modifications" id="send" class="btn bg-favorite-color text-white fw-bold px-5 mt-4">

@@ -154,29 +154,34 @@
                     <tbody>
 
                         @forelse ( $demandes as $demande )
+
+           
                             
                        
                         
-                        @php
-                        $centres = App\Models\Centre::where('id',$demande->centre)->get();   
-                        $commune = App\Models\Commune::where('id',$demande->commune)->get();
-                             
-                        @endphp
+                     
                             <tr class="">
                                 <td class="">{{ $demande->created_at->format('d-m-Y') }}  à  {{ $demande->created_at->format('H:i') }}</td>
-                                {{-- <td class=" "><img src="{{  asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="60" height="60"
-                                    style="object-fit: cover;"></td> --}}
+                                
                                 <td class="">{{ $demande->nom.' '.$demande->prenom  }}</td>
                                 <td class=" ">{{ $demande->numero_table }}</td>
                                 <td>
-                                    @foreach ($commune as $commune)
+                                    {{ $demande->commune }}
+                                    {{-- @php
+                                        $commune = App\Models\Commune::where('id', $demande->commune)->first();
+                                    @endphp
+                                    @if(!is_null($commune))
                                         {{ $commune->nom }}
-                                    @endforeach
+                                    @endif --}}
                                 </td>
                                 <td class=" ">
-                                    @foreach ($centres as $centre)
-                                    {{ $centre->nom }}
-                                    @endforeach
+                                    {{ $demande->centre }}
+                                    {{-- @php
+                                    $centre = App\Models\Centre::where('id', $demande->centre)->first();
+                                @endphp
+                                @if(!is_null($centre))
+                                {{ $centre->nom }}
+                                @endif --}}
                                 </td>
                                 <td>
                                     {{ $demande->annee_obtention }}
@@ -185,7 +190,6 @@
                               
                                 <td class="">
                                     <div class="d-flex justify-content-evenly w-100">
-
                                         <a href="{{ route('singleDemande', ['demande' => $demande->id]) }}"
                                             title="Consulter">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"

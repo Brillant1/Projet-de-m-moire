@@ -17,29 +17,36 @@
             @endif
             <form action="{{ route('before-demande') }}" method="POST" class="shadow p-3 p-lg-5 rounded mt-4" style="">
                 @csrf
-                <div class="form-group mb-3">
-                    <label for="nom"> Nom</label>
-                    <input type="text" name="nom" class="form-control mt-1 p-2" id="nom" placeholder="Votre nom " required>
-                    @if ($errors->has('nom'))
-                        <span class="text-danger">{{ $errors->first('nom') }}</span>
+                {{-- <div class="form-group mb-3">
+                    <label for="npi"> Votre numéro NPI</label> &nbsp; <span class=" text-danger">*</span>
+                    <input type="number" name="npi" class="form-control mt-1 p-2" id="npi" placeholder="Votre npi " required>
+                    @if ($errors->has('npi'))
+                        <span class="text-danger">{{ $errors->first('npi') }}</span>
                     @endif
-                </div>
-                <div class="form-group mb-3">
+                </div> --}}
+                {{-- <div class="form-group mb-3">
                     <label for="prenom"> Prénoms (Dans l'odre)</label>
                     <input type="text" name="prenom" class="form-control mt-1 p-2" id="prenom" placeholder="Vos prénoms dans l'ordre" required>
                     @if ($errors->has('prenom'))
                         <span class="text-danger">{{ $errors->first('prenom') }}</span>
                     @endif
-                </div>
+                </div> --}}
                 <div class="form-group mb-3">
-                    <label for="numero_table"> Numero de table</label>
+                    <label for="numero_table"> Numero de table</label> &nbsp; <span class=" text-danger">*</span>
                     <input type="text" name="numero_table" class="form-control mt-1 p-2" id="numro_table" placeholder="Votre numero de table" required>
                     @if ($errors->has('numero_table'))
                         <span class="text-danger">{{ $errors->first('numero_table') }}</span>
                     @endif
                 </div>
+                <div class="form-group mb-3">
+                    <label for="note"> Note en français à l'examen </label> &nbsp; <span class=" text-danger">*</span>
+                    <input type="number" name="note" class="form-control mt-1 p-2" id="note" placeholder="Votre note " required>
+                    @if ($errors->has('note'))
+                        <span class="text-danger">{{ $errors->first('note') }}</span>
+                    @endif
+                </div>
                 <div class="form-group mb-3 mt-4 ">
-                    <label for="annee"> Année où vous avez eu le diplôme</label>
+                    <label for="annee"> Année où vous avez eu le diplôme</label> &nbsp; <span class="text-danger">*</span>
                     <input type="number" placeholder="Anné du diplôme" min="2012" max="2022"  maxlength="4" name="annee" class="form-control mt-1 annee" id="annee" required>
                     @if ($errors->has('annee'))
                         <span class="text-danger">{{ $errors->first('annee') }}</span>

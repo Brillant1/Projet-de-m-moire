@@ -74,6 +74,7 @@ class GererDemandeController extends Controller
 
         if ($demande->statut_demande == "non_valider") {
             $demande->statut_demande = "valider";
+            $demande->validated_at = now();
             $demande->save();
             return back()->with('changeStateMessage', "La demande a été approuvée avec succès");
         } else {
@@ -111,13 +112,18 @@ class GererDemandeController extends Controller
 
 
         $hex_color = "#73c3c8";
-        $html = '<html><head><style>html,body{background-color:'.$hex_color.';}</style></head><body>';
+        //$html = '<html><head><style>html,body{background-color:'.$hex_color.';}</style></head><body>';
+        $html = '<html><head><style>html,body{}</style></head><body>';
+
         $html .= view('front.pdf',  ['data'=>$data])->render();
         $html .= '</body></html>';
 
         //$html = view('front.pdf', ['data'=>$data]); 
-        $dompdf->loadHtml($html);
+        
         $dompdf->setPaper('A4','paysage');
+
+        $dompdf->loadHtml($html);
+
         $dompdf->render();
         
         $output = $dompdf->output();
@@ -135,6 +141,7 @@ class GererDemandeController extends Controller
         $pdf_url = Storage::url('attestation' . '/' . $fileName);
          
         $demande->statut_demande = "generer";
+        $demande->generated_at = now();
         $demande->attestation = $pdf_url;
         $code = strtotime($demande->created_at);
         $code = bcrypt($code);

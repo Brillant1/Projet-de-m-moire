@@ -222,7 +222,7 @@
                                 composé &nbsp; <span class="text-danger">*</span></label>
                             <select class="form-control border-1  form-select" style="height: 50px;" name="departement" id="departement_id">
                                 @foreach ($departements as $departement)
-                                    <option value="{{ $departement->id }}"  @if ( old('departement_id', $demande->departement) == $departement->nom) selected @endif >{{ $departement->nom }}</option>
+                                    <option value="{{ $departement->nom }}">{{ $departement->nom }}</option>
                                 @endforeach
                             </select>
 
@@ -337,10 +337,6 @@
                         </div>
                     </div>
                     <div class=" mt-5 mb-5">
-                        {{-- <input type="checkbox" name="valide" id="valide">
-                        <span class="text-danger ps-2"> Je certifie exacte et juste toutes les informations
-                            renseignées</span> <br> --}}
-                        {{-- <input type="reset" value="Annuler" class="mt-5 btn btn-md btn-danger px-5 me-4"> --}}
                         <input type="submit" value="Enrégistrer les modifications" class="mt-5 btn btn-md btn-success px-5">
                     </div>
                 </form>

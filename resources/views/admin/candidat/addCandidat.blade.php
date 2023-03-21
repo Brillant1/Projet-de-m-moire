@@ -120,15 +120,23 @@
                                     </div>
                                     <div class="row mb-3">
                                         <div class="form-group col-md-6 p-2">
-                                            <label for="photo" class="control-label ">Photo du candidat</label> &nbsp; <span class="text-danger">*</span>
-                                            <input class="form-control border-2 " type="file" name="photo" id="photo" required>
-                                        </div>
-                                        <div class="form-group col-md-6 p-2">
                                             <label for="date_naissance" class="control-label ">Date de naissance</label>
                                             <input class="form-control border-2 " type="date"
                                                 placeholder="Tapez la date de naissance du candidat" name="date_naissance"
                                                 id="date_naissance" required>
                                         </div>
+                                        <div class="form-group col-md-6 p-2">
+                                            <label for="lieu_naissance" class="control-label ">Lieu de naissance du candidat</label> &nbsp; <span class="text-danger">*</span>
+                                            <input class="form-control border-2 " type="text" name="lieu_naissance" id="lieu_naissance" placeholder="Lieu de naissance" required>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="form-group col-md-12 p-2">
+                                            <label for="photo" class="control-label ">Photo du candidat</label> &nbsp; <span class="text-danger">*</span>
+                                            <input class="form-control border-2 " type="file" name="photo" id="photo" required>
+                                        </div>
+                                       
                                     </div>
 
                                     <div class="row mb-3">
@@ -206,8 +214,41 @@
                                                 id="annee_obtention" required>
                                         </div>
                                     </div>
-
                                     <div class="row mb-3">
+
+                                        <div class="form-group col p-2">
+                                            <label for="npi" class="control-label "> Renseignez le numero NPI du candidat</label> &nbsp; <span class="text-danger">*</span>
+                                            <input class="form-control border-2 " type="number"
+                                                placeholder="Entrez le numero NPI du candidat" name="npi"
+                                                id="npi" required>
+                                        </div>
+
+                                        <div class="form-group col p-2">
+                                            <label for="note" class="control-label "> Renseigner la note en français du candidat</label> &nbsp; <span class="text-danger">*</span>
+                                            <input class="form-control border-2 note" type="number"
+                                                placeholder="La note en français du candidat" name="note"
+                                                id="note" required>
+                                        </div>
+                                        <div class="row mb-3">
+                                            {{-- <div class="form-group col-md-6 p-2">
+                                                <label for="reference" class="control-label ">Référence du candidat</label>&nbsp; <span class="text-danger">*</span>
+                                                <input class="form-control border-2 " type="text"
+                                                    placeholder="Tapez la référence du candidat" name="numero_reference"
+                                                    id="reference" required>
+                                            </div> --}}
+    
+                                            <div class="form-group col-md-6 p-2">
+                                                <label for="mention" class="control-label ">Mention du candidat</label> &nbsp; <span class="text-danger">*</span>
+                                                <input class="form-control border-2 " type="text"
+                                                    placeholder="Tapez la mention du candidat" name="mention"
+                                                    id="mention" required>
+                                            </div>
+    
+    
+                                        </div>
+                                    </div>
+
+                                    {{-- <div class="row mb-3">
                                         <p class=" favorite-color fw-bold fs-5 text-start py-2 mt-5">Autres informations utiles</p>
                                         <div class="form-group col p-2">
 
@@ -221,26 +262,10 @@
                                             <input class="form-control border-2 " type="text"
                                                 placeholder="Tapez le nom du mere du centre" name="mere" id="mere" required>
                                         </div>
-                                    </div>
+                                    </div> --}}
 
 
-                                    <div class="row mb-3">
-                                        <div class="form-group col-md-6 p-2">
-                                            <label for="reference" class="control-label ">Référence du candidat</label>&nbsp; <span class="text-danger">*</span>
-                                            <input class="form-control border-2 " type="text"
-                                                placeholder="Tapez la référence du candidat" name="numero_reference"
-                                                id="reference" required>
-                                        </div>
-
-                                        <div class="form-group col-md-6 p-2">
-                                            <label for="mention" class="control-label ">Mention du candidat</label>
-                                            <input class="form-control border-2 " type="text"
-                                                placeholder="Tapez la mention du candidat" name="mention"
-                                                id="mention" required>
-                                        </div>
-
-
-                                    </div>
+                                    
 
 
 

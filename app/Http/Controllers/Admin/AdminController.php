@@ -27,6 +27,7 @@ class AdminController extends Controller
         $nbr_attestation = Demande::where([
             'statut_demande'=> 'generer',
         ])->get();
-        return view('admin.dashboard', compact('messages', 'demandeAttente', 'demandeValide', 'nbr_attestation'));
+
+        return view('admin.dashboard', compact('messages', 'demandeAttente', 'demandeValide', 'nbr_attestation', 'nbr_message'));
     }
 }

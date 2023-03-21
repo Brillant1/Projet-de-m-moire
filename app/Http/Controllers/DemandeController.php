@@ -45,16 +45,15 @@ class DemandeController extends Controller
         $candidat = Candidat::where([
             'numero_table'=> $request->numero_table,
             'annee_obtention' => $request->annee,
-            'nom' => $request->nom,
-            'prenom' => $request->prenom
+         
+            'note' => $request->note
         ])->get();
 
         
     
         if(!is_null($candidat) && sizeof($candidat)==1 ){
       
-            //return redirect()->route('demandes.create')->with(['candidat'=> $candidat]);
-            //return view('front.demande.demande', compact('candidat'));
+            
         $centres = Centre::all();
         $communes = Commune::all();
         $departements = Departement::all();
@@ -82,9 +81,10 @@ class DemandeController extends Controller
                 'statut_demande' => "non_valider",
                 'statut_payement' => "payer"
             ]
-        )->get()->reverse();
+        )->get();
 
-        $demandeValides = Demande::orderBy('updated_at','DESC')->where(
+
+        $demandeValides = Demande::orderBy('updated_at','ASC')->where(
             [
                 'user_id' => Auth::user()->id,
                 'statut_demande' => "valider"
@@ -145,26 +145,26 @@ class DemandeController extends Controller
     public function store(Request $request)
     {
 
-        $filename ='';
+        //$filename ='';
         $releve ='';
 
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $extension = $file->getClientOriginalExtension();
-            $filename = $request->numero_table.'_'. time() . '_' . Auth::user()->name . '.' . $extension;
-            $file->storeAs('public/photo_candidat_demande', $filename);
-        }
+        // if ($request->hasFile('photo')) {
+        //     $file = $request->file('photo');
+        //     $extension = $file->getClientOriginalExtension();
+        //     $filename = $request->numero_table.'_'. time() . '_' . Auth::user()->name . '.' . $extension;
+        //     $file->storeAs('public/photo_candidat_demande', $filename);
+        // }
 
         if ($request->hasFile('releve')) {
             $file = $request->file('releve');
             $extension = $file->getClientOriginalExtension();
             $releve = $request->numero_table.'_'.time() . '-' . Auth::user()->name . '.' . $extension;
-            $file->storeAs('public/releve_candidat_demande', $filename);
+            $file->storeAs('public/releve_candidat_demande', $releve);
         }
         
         $releve = Storage::disk('public')->put('releve_candidat_demande', $request->releve);
-        $cni  = Storage::disk('public')->put('releve_candidat_demande', $request->cni);
-        $acte_naissance  = Storage::disk('public')->put('releve_candidat_demande', $request->acte_naissance);
+        // $cni  = Storage::disk('public')->put('releve_candidat_demande', $request->cni);
+        // $acte_naissance  = Storage::disk('public')->put('releve_candidat_demande', $request->acte_naissance);
 
         
 
@@ -175,29 +175,32 @@ class DemandeController extends Controller
             'email' => $request->email,
             'contact' => $request->contact,
             'sexe' => $request->sexe,
-            'ville_naissance' => $request->ville_naissance,
-            'photo' => $filename,
+            //'ville_naissance' => $request->ville_naissance,
+            //'photo' => $filename,
             'numero_table' => $request->numero_table,
             'serie' => $request->serie,
             'mention' => $request->mention,
             'departement' => $request->departement,
             'commune' => $request->commune,
             'centre' => $request->centre,
-            'numero_reference' => $request->numero_reference,
+            //'numero_reference' => $request->numero_reference,
             'annee_obtention' => $request->annee_obtention,
-            'nom_pere'  => $request->nom_pere,
-            'nom_mere' => $request->nom_mere,
-            'contact_parent' => $request->contact_parent,
-            'etablissement' => $request->etablissement,
-            'jury' => $request->jury,
-            'type_examen' => 'BEPC',
+            // 'nom_pere'  => $request->nom_pere,
+            // 'nom_mere' => $request->nom_mere,
+            // 'contact_parent' => $request->contact_parent,
+            // 'etablissement' => $request->etablissement,
+            //'jury' => $request->jury,
+            //'type_examen' => 'BEPC',
             'releve' => $releve,
-            'cni' => $cni,
-            'acte_naissance' => $acte_naissance,
+            // 'cni' => $cni,
+            // 'acte_naissance' => $acte_naissance,
             'user_id' => Auth()->user()->id
         ];
       
         $id = Demande::create($demandes)->id;
+        
+        // $demande = Demande::where('id', $id)->get();
+        // dd($demande);
         $email = $request->email;
         $nom = $request->nom;
         $prenom = $request->prenom;
@@ -208,7 +211,6 @@ class DemandeController extends Controller
             $demandeInfos = [
                 'nom' => $request->nom,
                 'prenom' => $request->prenom,
-                'date_naissance' => $request->date_naissance,
                 'email' => $request->email,
                 'contact' => $request->contact,
                 'numero_table' => $request->numero_table,
@@ -321,10 +323,12 @@ class DemandeController extends Controller
             'etablissement' => $request->etablissement,
             'jury' => $request->jury,
             'type_examen' => 'BEPC',
+            'etablissement' => $request->etablissement,
             'releve' => $releve,
             'cni' => $cni,
             'acte_naissance' => $acte_naissance,
-            'user_id' => Auth()->user()->id
+            'user_id' => Auth()->user()->id,
+            'updated_by_user'=> now()
         ]);
        
         $demandes = Demande::where('user_id', Auth::user()->id)->get();
@@ -348,11 +352,6 @@ class DemandeController extends Controller
 
     public function pdf(Demande $demande)
     {
-        // $recapitulatif = Demande::where([
-        //         'user_id' => Auth::user()->id,
-        //         'statut_demande' => "valider"
-        //     ])->first();
-        // $recapitulatif = Demande::find($id);
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('front.recapitulatif', compact('demande'));
         return $pdf->stream();
@@ -401,7 +400,7 @@ class DemandeController extends Controller
                 'code_demande' => $code_reference
             ];
 
-            Mail::to('esaietchagnonsi@gmail.com')->send(new CodeDemandeMail($data));
+            Mail::to($data['email'])->send(new CodeDemandeMail($data));
 
 
 
@@ -425,7 +424,7 @@ class DemandeController extends Controller
     {
         $demandes = Demande::where('statut_payement' ,'payer')
         ->where('statut_demande' ,'non_valider')
-        ->where('user_id', Auth::user()?->id)
+        // ->where('user_id', Auth::user()?->id)
         ->orderBy('created_at', 'DESC')->get();
         $departements = Departement::all();
         $communes = Commune::all();

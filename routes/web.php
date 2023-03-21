@@ -38,24 +38,24 @@ Route::get('/dashboard', function () {
 
 require __DIR__ . '/auth.php';
 
-Route::group(['middleware' => 'auth'], function () {
+//Auth::routes(['verify' => true]);
+
+Route::group(['middleware' => ['auth', 'verified', 'isAdmin'] ], function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin');
+});
+
+Route::group(['middleware' => ['auth', 'verified'] ], function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin');
     Route::resource('centres', CentreController::class);
     Route::resource('communes', CommuneController::class);
     Route::resource('departements', DepartementController::class);
-    //Route::put('update-departement',[ DepartementController::class, 'update_departement'])->name('update-departement');
     Route::resource('candidats', CandidatController::class);
     Route::resource('alertes', AlerteController::class);
     Route::resource('flashInfos', FlashInfoController::class);
     Route::resource('examens', ExamenController::class);
     Route::resource('colleges', CollegeController::class);
 
-    Route::get('demande/create', [App\Http\Controllers\DemandeController::class, 'index'])->name('before-demande');
-    Route::post('demande/create', [App\Http\Controllers\DemandeController::class, 'beforeDemande']);
-    
     Route::post('changeStateExamen/{examen}', [ExamenController::class, 'changeStateExamen'])->name('changeStateExamen');
-
-    Route::resource('demandes', App\Http\Controllers\DemandeController::class)->except(['store','create'])->middleware(['auth']);
 
     Route::post('validationDemande', [App\Http\Controllers\DemandeController::class, 'store'])->name('validationDemande');
 
@@ -79,7 +79,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('singleDemande/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'singleDemande'])->name('singleDemande');
     Route::post('changeState/{demande}', [App\Http\Controllers\Admin\GererDemandeController::class, 'changeState'])->name('changeState');
     Route::post('restaureDemande', [App\Http\Controllers\Admin\GererDemandeController::class, 'restaureDemande'])->name('restaureDemande');
-    Route::get('demandeUser', [App\Http\Controllers\DemandeController::class, 'demandeUser'])->name('demandeUser')->middleware(['auth']);
     Route::post('demandes.tempStore', [App\Http\Controllers\DemandeController::class, 'tempStore'])->name('demandes.tempStore');
     Route::get('demandes.pdf/{id}', [App\Http\Controllers\DemandeController::class, 'pdf'])->name('demandes.pdf');
     Route::get('attestation/{demande}', [GererDemandeController::class, 'pdf2'])->name('attestation');
@@ -90,16 +89,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('downloadActe/{id}', [App\Http\Controllers\DemandeController::class, 'download_acte'])->name('download-acte');
     Route::get('downloadACni/{id}', [App\Http\Controllers\DemandeController::class, 'download_cni'])->name('download-cni');
 
-    // Route pour changer les communes en fonction du département
+    Route::get('downloadAttestation', [App\Http\Controllers\DemandeController::class, 'download_attestation'])->name('download-attestation');
+
+    Route::get('demande/create', [App\Http\Controllers\DemandeController::class, 'index'])->name('before-demande');
+    Route::post('demande/create', [App\Http\Controllers\DemandeController::class, 'beforeDemande']);
+    Route::resource('demandes', App\Http\Controllers\DemandeController::class)->except(['store','create'])->middleware(['auth']);
+
     Route::post('/communesOfDepartement', [App\Http\Controllers\DemandeController::class, 'communesOfDepartement' ])->name('communes-of-departement');
     Route::post('/centreOfCommune', [App\Http\Controllers\DemandeController::class, 'centreOfCommune' ])->name('centre-of-commune');
-
+    Route::get('demandeUser', [App\Http\Controllers\DemandeController::class, 'demandeUser'])->name('demandeUser')->middleware(['auth']);
+    
     Route::get('paiement', function () {
         return view('front.paiement');
     });
-    
-
+    // Route pour changer les communes en fonction du département
 });
+
 
 
 
@@ -110,7 +115,6 @@ Route::get('accueil', [HomeController::class,'index'])->name('accueil');
 Route::get('/', [HomeController::class,'redirectIndex']);
 
 
-Route::get('downloadAttestation', [App\Http\Controllers\DemandeController::class, 'download_attestation'])->name('download-attestation');
 
 // Route::get('downloadCandidateAttestation/{id}', [App\Http\Controllers\AttestationController::class, 'download_attestation'])->name('download-candidate-attestation');
 
@@ -143,7 +147,9 @@ Route::get('emailConfirmation', function () {
     return view('AuthUser.emailConfirmation');
 })->name('emailConfirmation');
 
-
+Route::get('securite', function(){
+    return view('front.securite');
+});
 
 
 Route::get('demande/page', function(){

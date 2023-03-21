@@ -58,7 +58,7 @@
                     @endif --}}
 
                         @if (session('addedMessage'))
-                            <div class="alert alert-success py-1">
+                            <div class="alert alert-success">
                                 <h6> {{ session('addedMessage') }} </h6>
                             </div>
                         @endif
@@ -124,7 +124,7 @@
                                     </div>
 
                                     <div class="row mb-3">
-                                        <div class="form-group col-md-6 p-2">
+                                        {{-- <div class="form-group col-md-6 p-2">
                                             <label for="nombre_candidat" class="control-label">Nombre de candidat ayant
                                                 composé</label>
                                             <input type="number" name="nombre_candidat" id="nombre_candidat"
@@ -155,7 +155,7 @@
                                             @enderror
                                                 
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="d-flex justify-content-center">
                                         <input type="submit" name="send" value="Enrégistrer" id="send"

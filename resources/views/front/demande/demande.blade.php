@@ -58,7 +58,7 @@
         <div class="d-flex justify-content-center flex-column texte-demande">
            
             <h3 class="text-white text-center ms-0 ms-lg-5 fw-bold">
-                FAITES LA DEMANDE DE VOTRE ATTESTATION EN TROIS ETAPES
+                FINALISEZ AVEC VOTRE DEMANDE
             </h3>
         </div>
         <div class="carousel-inner">
@@ -77,9 +77,15 @@
                         <span class="text-center text-danger">Super ! Vous pouvez continuer maintenant</span>
                     </div>
                 @endif
-                <h3 class="text-center ">Veillez remplir en suivant rigoureusement les règles données, le formulaire
-                    suivant pour votre demande</h3>
-                <p class="text-center text-danger">Tous les champs sont obligatoires *</p>
+                <h4 class=" ">
+                    Veuillez renseigner les champs vide pour soumettre votre demande.
+                </h4>
+                <ul class="text-danger">
+                    <li>Renseignez une adresse mail valide, vous recevrez votre attestation via cette adresse</li>
+                    <li>Veuillez renseigner un numero valide possible d'être joint en cas d'urgence</li>
+                </ul>
+                
+                {{-- <p class="text-center text-danger">Tous les champs sont obligatoires *</p> --}}
             </div>
             <div class="form-content mt-5">
                 @if (session('addedMessage'))
@@ -88,9 +94,7 @@
                     </div>
                 @endif
 
-           
-
-
+                    
                 <form action="{{ route('validationDemande') }}" enctype="multipart/form-data" method="POST" id="myForm">
                     @csrf
                     <style>
@@ -236,8 +240,8 @@
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2">
                                 <label for="date_naissance" class="control-label label-color">Date de naissance  &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 input-mask" max="01-01-2010" type="date" name="date_naissance"
-                                    value="" id="date_naissance"
-                                    data-inputmask=" 'mask':'99/9999' " im-insert="true" >
+                                    value="<?php echo date('Y-m-d', strtotime($candidat[0]->date_naissance)); ?>" id="date_naissance"
+                                    readonly >
                                 <span class="text-danger" id="date_naissanceError"> </span>
 
                                 @if ($errors->has('date_naissance'))
@@ -248,18 +252,18 @@
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2">
                                 <label for="email" class="control-label label-color">Renseignez une adresse mail valide &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 " type="email" name="email" id="email"
-                                    value="@if(!is_null($candidat)) {{ $candidat[0]->email }} @else {{ old('email') }}  @endif " placeholder="exemple@gmail.com">
+                                    value="@if(!is_null($candidat)) {{ $candidat[0]->email }} @else {{ old('email') }}  @endif " placeholder="exemple@gmail.com" required>
                                 <span class="text-danger" id="emailError"> </span>
                                 @if ($errors->has('email'))
                                     <span class="text-danger">{{ $errors->first('email') }}</span>
-                                @endif
+                                @endif  
                             </div>
 
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2">
                                 <label for="contact" class="control-label label-color">Contact (renseignez un numéro
                                     joignable) &nbsp; <span class="text-danger">*</span></label>
                                 <input class="form-control border-1 contact" type="number" name="contact" id="contact"
-                                    value="{{ old('contact') }}" maxlength="8" >
+                                    value="{{ old('contact') }}" maxlength="8" required>
                                 <span class="text-danger" id="contactError"> </span>
                                 @if ($errors->has('contact'))
                                     <span class="text-danger">{{ $errors->first('contact') }}</span>
@@ -269,17 +273,20 @@
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="sexe">Sexe &nbsp; <span
                                         class="text-danger">*</span></label>
-                                <select class="form-control border-1 form-select" name="sexe">
+                                        <input type="text" class="form-control serie" name="sexe" id="sexe" value="{{ $candidat[0]->sexe }}" readonly>
+
+                                        
+                                {{-- <select class="form-control border-1 form-select" name="sexe">
                                     <option value="Masculin" @if(!is_null($candidat))  @if($candidat[0]->sexe=="Masculin") selected @endif @endif>Masculin</option>
                                     <option value="Féminin"@if(!is_null($candidat)) @if($candidat[0]->sexe=="Féminin") selected @endif @endif>Féminin</option>
                                     <option value="Autres"@if(!is_null($candidat)) @if($candidat[0]->sexe=="Autres") selected @endif @endif>Autres</option>
-                                </select>
+                                </select> --}}
 
                             </div>
 
     
 
-                            <div class="form-group  col-12 col-lg-4 p-2">
+                            {{-- <div class="form-group  col-12 col-lg-4 p-2">
                                 <label for="ville_naissance" class="control-label label-color">Ville de
                                     naissance &nbsp; <span class="text-danger">*</span></label>
 
@@ -290,8 +297,8 @@
                                 @if ($errors->has('vile_naissance'))
                                     <span class="text-danger">{{ $errors->first('vile_naissance') }}</span>
                                 @endif
-                            </div>
-                            <div class="form-group col-12 col-lg-8 p-2">
+                            </div> --}}
+                            {{-- <div class="form-group col-12 col-lg-8 p-2">
                                 <label for="photo" class="control-label label-color">Photo claire jusqu'au ventre munie
                                     de votre
                                     carte d'identité en main (png, jpg ou jpeg) &nbsp; <span
@@ -302,8 +309,7 @@
                                 @if ($errors->has('photo'))
                                     <span class="text-danger">{{ $errors->first('photo') }}</span>
                                 @endif
-
-                            </div>
+                            </div> --}}
 
                         </div>
                         <div class="d-flex justify-content-center justify-content-lg-end ">
@@ -346,16 +352,17 @@
                             </div>
 
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
-                                <label class="control-label label-color" for="centre">Série de l'examen &nbsp; <span
+                                <label class="control-label label-color" for="serie">Série de l'examen &nbsp; <span
                                         class="text-danger">*</span></label>
-                                <select class="form-control border-1 form-select" name="serie" id="serie">
+                                        <input type="text" class="form-control serie" name="serie" id="serie" value="{{ $candidat[0]->serie }}" readonly>
+                                {{-- <select class="form-control border-1 form-select" name="serie" id="serie">
                                     <option value="">Choisissez la série</option>
                                     <option value="Mod.Court">Mod.Court</option>
                                     <option value="Mod.Long">Mod.Long</option>
                                     <option value="CAP">CAP</option>
                                    
 
-                                </select>
+                                </select> --}}
                                 <span class="text-danger" id="serieError"> </span>
 
                             </div>
@@ -369,15 +376,7 @@
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="mention">Mention obtenu pour
                                     l'examen &nbsp;( <span class="text-danger">optionnel</span> )</label>
-                                <select class="form-control border-1 form-select" name="mention">
-                                    <option value="Passable">Passable</option>
-                                    <option value="A.Bien">A.Bien</option>
-                                    <option value="Bien">Bien</option>
-                                    <option value="Exellente">Exellente</option>
-                                    {{-- @foreach ($mentions as $mention)
-                                        <option value="{{ $mention }}">{{ $mention }}</option>
-                                    @endforeach --}}
-                                </select>
+                                    <input type="text" class="form-control mention" name="mention" id="mention" value="{{ $candidat[0]->mention }}" readonly>
                             </div>
                         </div>
 
@@ -386,13 +385,14 @@
                                 <label class="control-label label-color" for="departement">Département de
                                     avez
                                     composé &nbsp; <span class="text-danger">*</span></label>
-                                <select class="form-control border-1 form-select" name="departement" id="departement">
+                                    <input type="text" name="departement" id="departement" class="form-control" value="{{ $candidat[0]->centre->commune->departement['nom'] }}" readonly>
+                                {{-- <select class="form-control border-1 form-select" name="departement" id="departement">
                                     <option value="#">Sélectionner le département</option>
                                     @foreach ($departements as $departement)
                                         <option value="{{ $departement->id }}">{{ $departement->nom }}</option>
                                     @endforeach
 
-                                </select>
+                                </select> --}}
                                 <span class="text-danger" id="departementError"> </span>
 
                           
@@ -400,26 +400,26 @@
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="commune">Commune où vous avez
                                     composé &nbsp; <span class="text-danger">*</span></label>
-                                <select class="form-control form-select border-1 form-select" name="commune" id="commune">
+                                    <input type="text" name="commune" id="commune" class="form-control" value="{{ $candidat[0]->centre->commune['nom']}}" readonly>
+
+                                {{-- <select class="form-control form-select border-1 form-select" name="commune" id="commune">
 
                                     <option value=" ">Choisissez la commune</option>
-                                    {{-- @foreach ($communes as $commune)
-                                        <option value="{{ $commune->nom }}">{{ $commune->nom }}</option>
-                                    @endforeach --}}
+                                    
 
-                                </select>
+                                </select> --}}
 
                             </div>
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="centre">Centre dans lequel vous avez
                                     composé &nbsp; <span class="text-danger">*</span></label>
-                                <select class="form-control border-1 form-select" name="centre" id="centre">
-                                    <option value=" ">Choisissez le centre</option>
-                                    {{-- @foreach ($centres as $centre)
-                                        <option value="{{ $centre->nom }}">{{ $centre->nom }}</option>
-                                    @endforeach --}}
+                                    <input type="text" name="centre" id="centre" class="form-control" value="{{ $candidat[0]->centre['nom']}}" readonly>
 
-                                </select>
+                                {{-- <select class="form-control border-1 form-select" name="centre" id="centre">
+                                    <option value=" ">Choisissez le centre</option>
+                                    
+
+                                </select> --}}
 
                             </div>
 
@@ -429,11 +429,11 @@
                         
                         <div class="row mb-3">
 
-                            <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
+                            {{-- <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label class="control-label label-color" for="etablissement">Établissement fréquenté &nbsp; <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control border-1 etablissement" id="etablissement" name="etablissement">
                                 <span class="text-danger" id="etablissementError"> </span>
-                            </div>
+                            </div> --}}
 
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
                                 <label for="annee_obtention" class="control-label label-color">Année
@@ -446,18 +446,7 @@
                                     <span class="text-danger">{{ $errors->first('annee_obtention') }}</span>
                                 @endif
                             </div>
-
-                            <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
-                                <label class="control-label label-color" for="jury">Jury de l'examen &nbsp; (<span class="text-danger">optionnel</span>)</label>
-                                <input type="text" class="form-control border-1 jury" id="jury" name="jury" minlength="3" maxlength="4">
-                            </div>          
-                        </div>
-
-                      
-
-                        {{-- Releve de note --}}
-                        <div class="row mb-3">
-                            <div class="form-group col p-2">
+                            <div class="form-group col-12 col-md-6 col-lg-8 p-2">
                                 <label for="cni" class="control-label label-color">Relevé de note (maximum 10 MB)&nbsp; <span
                                         class="text-danger">*</span></label>
                                 <input type="file" class="form-control border-1" accept=".pdf, .docx" name="releve" id="releve"
@@ -467,6 +456,18 @@
                                     <span class="text-danger">{{ $errors->first('releve') }}</span>
                                 @endif
                             </div>
+
+                            {{-- <div class="form-group col-12 col-md-6 col-lg-4 p-2" style="padding:10px 0 10px 0;">
+                                <label class="control-label label-color" for="jury">Jury de l'examen &nbsp; (<span class="text-danger">optionnel</span>)</label>
+                                <input type="text" class="form-control border-1 jury" id="jury" name="jury" minlength="3" maxlength="4">
+                            </div>           --}}
+                        </div>
+
+                      
+
+                        {{-- Releve de note --}}
+                        <div class="row mb-3">
+                            
                         </div>
 
                         <div class="d-flex justify-content-center justify-content-lg-end mb-5">
@@ -482,28 +483,39 @@
                                 &nbsp; &nbsp;
                                 Précédent
                             </button>
-                            <button type="button"
-                                class="text-white fw-bold btn btn-next p-2 ms-3 text-center col-3 mt-5 mb-5 rounded btn btn-success"
-                                id="next2">
-                                Suivant
-                                &nbsp; &nbsp;
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                    fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
-                                </svg>
-                            </button>
+                                <button type="button"
+                                    class="text-white fw-bold btn btn-next p-2 ms-3 text-center col-3 mt-5 mb-5 rounded btn btn-success"
+                                    id="sendDemande">
+                                    <span>Soumettre et payer</span>
+                                    &nbsp; &nbsp;
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-joystick" viewBox="0 0 16 16">
+                                        <path d="M10 2a2 2 0 0 1-1.5 1.937v5.087c.863.083 1.5.377 1.5.726 0 .414-.895.75-2 .75s-2-.336-2-.75c0-.35.637-.643 1.5-.726V3.937A2 2 0 1 1 10 2z"/>
+                                        <path d="M0 9.665v1.717a1 1 0 0 0 .553.894l6.553 3.277a2 2 0 0 0 1.788 0l6.553-3.277a1 1 0 0 0 .553-.894V9.665c0-.1-.06-.19-.152-.23L9.5 6.715v.993l5.227 2.178a.125.125 0 0 1 .001.23l-5.94 2.546a2 2 0 0 1-1.576 0l-5.94-2.546a.125.125 0 0 1 .001-.23L6.5 7.708l-.013-.988L.152 9.435a.25.25 0 0 0-.152.23z"/>
+                                      </svg>
+                                </button>
+                            {{-- <button class="mt-5 btn btn-md btn-success px-5" >Soumettre et payer</button> --}}
+
+
+
+
+
+                            {{-- <div class="mb-5 d-flex justify-content-center justify-content-lg-start">
+                                <input type="reset" value="Annuler tout"
+                                    class="mt-5 btn btn-md bg-favorite-color text-white px-5 me-4">
+                            </div> --}}
+
+
                         </div>
                     </div>
 
                     {{-- form section 3 --}}
-                    <div class="form-section form-section3" id="form-section3">
-                        <p class="favorite-color fw-bold fs-4 pt-5">Autres informations utiles et obligatoires</p>
-                        <div class="row mt-2 mb-3">
+                    {{-- <div class="form-section form-section3" id="form-section3"> --}}
+                        {{-- <p class="favorite-color fw-bold fs-4 pt-5">Autres informations utiles et obligatoires</p>
+                        <div class="row mt-2 mb-3"> --}}
 
 
                               {{--Upload acte de naissance --}}
-                        <div class="row mb-1">
+                        {{-- <div class="row mb-1">
                             <div class="form-group col p-2">
                                 <label for="acte_naissance" class="control-label label-color">Acte de naissance (Taille maximale 10MB)&nbsp; <span
                                         class="text-danger">*</span></label>
@@ -514,10 +526,10 @@
                                     <span class="text-danger">{{ $errors->first('acte_naissance') }}</span>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
 
                         {{-- Carte nationale d'identité --}}
-                        <div class="row mb-3">
+                        {{-- <div class="row mb-3">
                             <div class="form-group col p-2">
                                 <label for="cni" class="control-label label-color"> Carte d'identité (Taille maximale 10MB)<span
                                         class="text-danger">*</span></label>
@@ -528,9 +540,9 @@
                                     <span class="text-danger">{{ $errors->first('cni') }}</span>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
                         
-                        <div class="row mb-3">
+                        {{-- <div class="row mb-3">
                             <div class="form-group col-12 col-md-6 col-lg-4 p-2">
                                 <label for="nom_pere" class="control-label label-color">Noms et prénoms exactes du
                                     père &nbsp; <span class="text-danger">*</span></label>
@@ -566,9 +578,9 @@
                                 @endif
 
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <button
+                        {{-- <button
                             class="text-white btn btn-prev fw-bold p-2 me-3 text-center col-3 mt-5 mb-5 rounded bg-danger"
                             id="prev2">
                             <i>
@@ -580,16 +592,9 @@
                             </i>
                             &nbsp; &nbsp;
                             Précédent
-                        </button>
-                        <div class="mb-5 d-flex justify-content-center justify-content-lg-start">
-                            {{-- <input type="checkbox" name="valide" id="valide" required>
-                            <label for="valide" class="text-danger ps-2"> Je certifie exactes et justes toutes les informations
-                                renseignées</label> <br> --}}
-                            <input type="reset" value="Annuler tout"
-                                class="mt-5 btn btn-md bg-favorite-color text-white px-5 me-4">
-                            <button class="mt-5 btn btn-md btn-success px-5" id="sendDemande">Soumettre la demande</button> 
-                        </div>
-                    </div>
+                        </button> --}}
+                        
+                    {{-- </div> --}}
                     {{-- end form section 3 --}}
                 </form>
             </div>
@@ -636,14 +641,14 @@
             $('#next1').click(function(e) {
                 e.preventDefault();
 
-                let photo = $("#photo").val();
-                let nbre = photo.length;
+                //let photo = $("#photo").val();
+                //let nbre = photo.length;
 
               
                
                 
-                var fileInput = document.getElementById('photo');
-                var filePath = fileInput.value;
+                //var fileInput = document.getElementById('photo');
+                //var filePath = fileInput.value;
 
                 var fileInputPdf = document.getElementById('releve');
                 var filePathPdf = fileInputPdf.value;
@@ -667,18 +672,20 @@
                     $('#contactError').text('le conatct est obligatoire');
                 } else if ($("#contact").val() < 50000000 || $("#contact").val() > 99999999) {
                     $('#contactError').text('le format du contact n\'est pas correct');
-                } else if ($("#ville_naissance").val() == '') {
-                    $('#ville_naissanceError').text('la ville de naissance est obligatoire');
-                } else if (photo == '') {
-                    $('#photoError').text('la photo est obligatoire');
                 } 
+                // else if ($("#ville_naissance").val() == '') {
+                //     $('#ville_naissanceError').text('la ville de naissance est obligatoire');
+                // } 
+                // else if (photo == '') {
+                //     $('#photoError').text('la photo est obligatoire');
+                // } 
                 // else if(sizePhoto > 15000000){
                 //     $('#photoError').text('Taille de fichier trop grande');
                 // }
                 
-                else if (!allowedExtensions.exec(filePath)) {
-                    $('#photoError').text('Extension de fichier non correcte');
-                }
+                // else if (!allowedExtensions.exec(filePath)) {
+                //     $('#photoError').text('Extension de fichier non correcte');
+                // }
                 // else if ( (photo.slice(photo.length -4, photo.length)) != ".png" || (photo.slice(photo.length -4, photo.length) != ".jpg") || (photo.slice(photo.length -5, photo.length)) != ".jpeg") {
                 //     $('#photoError').text('Extension de fichier non correcte');
                 // }
@@ -698,38 +705,37 @@
                 $('.progress').width('0%');
             });
 
-            $('#next2').click(function(e) {
+            // $('#next2').click(function(e) {
 
-                e.preventDefault();
-                var inputNumeroTableRule = /^[0-9]{3}\-[A-Za-z0-9]{3}\-[0-9]{2}$/;
+            //     e.preventDefault();
+                //var inputNumeroTableRule = /^[0-9]{3}\-[A-Za-z0-9]{3}\-[0-9]{2}$/;
 
                 // var releveFileSize = document.getElementById('releve').files[0].size;
                 // var releveFileType = document.getElementById('releve').files[0].type;
                 
-                if ($("#numero_table").val() == '') {
-                    $('#numero_tableError').text('le numero de table est obligatoire');
-                }
+                // if ($("#numero_table").val() == '') {
+                //     $('#numero_tableError').text('le numero de table est obligatoire');
+                // }
 
                 // else if(!inputNumeroTableRule.test($("#numero_table").val())) {
                 //     $('#numero_tableError').text('le numero de table est obligatoire');
                 // }
                 
-                else if ($('#serie').val() == '') {
-                    $('#serieError').text('Choisissez une série');
-                } 
-                else if($('#departement').val() == '' || $('#departement').val() == '#'){
-                    alert('Veillez sélectionner le département');
-                }
-                else if($('#etablissement').val() ==''){
-                    $('#etablissementError').text('Collège obligatoire');
-                }
-                else if ($("#annee_obtention").val() == '') {
-                    $('#annee_obtentionError').text('Année obligatoire');
-                } else if ($("#annee_obtention").val() < 2010 || $("#annee_obtention").val() > 2022) {
-                    $('#annee_obtentionError').text('Format de l\'année non correct');
-                } else if ($('#releve').val() == '') {
-                    $('#releveError').text('Le releve de note est obligatoire');
-                } 
+                // else if ($('#serie').val() == '') {
+                //     $('#serieError').text('Choisissez une série');
+                // } 
+                // else if($('#departement').val() == '' || $('#departement').val() == '#'){
+                //     alert('Veillez sélectionner le département');
+                // }
+                // else if($('#etablissement').val() ==''){
+                //     $('#etablissementError').text('Collège obligatoire');
+                // }
+                // else if ($("#annee_obtention").val() == '') {
+                //     $('#annee_obtentionError').text('Année obligatoire');
+                // } else if ($("#annee_obtention").val() < 2010 || $("#annee_obtention").val() > 2022) {
+                //     $('#annee_obtentionError').text('Format de l\'année non correct');
+                // } 
+                
                 // else if ( releveFileSize >10000000 ) {
                 //     $('#releveError').text('Taille de fichier trop grande');
                 // } 
@@ -739,40 +745,44 @@
                 // }
                
 
-                else {
-                    $('#form-section2').removeClass('form-section-active');
-                    $('#form-section3').addClass('form-section-active');
-                    $('#progresse3').addClass('progressbar-item-active');
-                    $('.progress').width('67%');
-                }
-            });
+                // else {
+                //     $('#form-section2').removeClass('form-section-active');
+                //     $('#form-section3').addClass('form-section-active');
+                //     $('#progresse3').addClass('progressbar-item-active');
+                //     $('.progress').width('67%');
+                // }
+            // });
 
-            $('#prev2').click(function(e) {
-                e.preventDefault();
-                $('#form-section3').removeClass('form-section-active');
-                $('#form-section2').addClass('form-section-active');
-                $('#progresse3').removeClass('progressbar-item-active');
-                $('.progress').width('33.34%');
-            });
+            // $('#prev2').click(function(e) {
+            //     e.preventDefault();
+            //     $('#form-section3').removeClass('form-section-active');
+            //     $('#form-section2').addClass('form-section-active');
+            //     $('#progresse3').removeClass('progressbar-item-active');
+            //     $('.progress').width('33.34%');
+            // });
 
             $('#sendDemande').click(function(e) {
                 e.preventDefault(); 
+
+                if ($('#releve').val() == '') {
+                    $('#releveError').text('Le releve de note est obligatoire');
+                } 
                 //var acteFileSize = document.getElementById('acte_naissance').files[0].size;
                 // var cniFileSize = document.getElementById('cni').files[0].size;
-                if($('#acte_naissance').val() == '') {
-                    $('#acteError').text('l\'acte de naissance est obligatoire'); 
-                }
-                else if($('#cni').val() == '') {
-                    $('#cniError').text('la carte d\identité est obligatoire');
-                } 
+                // if($('#acte_naissance').val() == '') {
+                //     $('#acteError').text('l\'acte de naissance est obligatoire'); 
+                // }
+                // else if($('#cni').val() == '') {
+                //     $('#cniError').text('la carte d\identité est obligatoire');
+                // } 
                       
-                else if ($("#nom_pere").val() == '') {
-                    $('#nom_pereError').text('le nom du père est obligatoire');
-                } else if ($("#nom_mere").val() == '') {
-                    $('#nom_mereError').text('le nom de la mère est obligatoire');
-                } else if ($("#contact_parent").val() == '') {
-                    $('#contact_parentError').text('le contact du parent est obligatoire');
-                } 
+                // else if ($("#nom_pere").val() == '') {
+                //     $('#nom_pereError').text('le nom du père est obligatoire');
+                // } else if ($("#nom_mere").val() == '') {
+                //     $('#nom_mereError').text('le nom de la mère est obligatoire');
+                // } else if ($("#contact_parent").val() == '') {
+                //     $('#contact_parentError').text('le contact du parent est obligatoire');
+                // } 
                 else{
                     $('#staticBackdrop').modal('show');
                 }

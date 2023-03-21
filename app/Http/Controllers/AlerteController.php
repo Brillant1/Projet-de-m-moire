@@ -110,7 +110,7 @@ class AlerteController extends Controller
 
         Alerte::create($alertes);
         $demande= Demande::where('id',$alertes['demande_id'])->update(['statut_demande'=> 'rejeter']);
-       
         return back()->with('addedAlerteMessage', 'L\'alerte bien envoyée au demandeur');
     }
+    
 }

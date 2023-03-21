@@ -26,21 +26,21 @@ class DemandeRequest extends FormRequest
         return [
             'nom'=>'required|string',
             'prenom'=>'required|string',
-            'reference'=>'required|string',
+            // 'reference'=>'required|string',
             'contact'=>'required|numeric|max:8|min:8',
             'sexe'=>'required|numeric',
             'serie'=>'required|integer',
             'email' => 'required|email',
             'contact' => 'required|numeric',
-            'ville_naissance' =>'required|string',
+            // 'ville_naissance' =>'required|string',
             'mention'=>'required|numeric',
             'numero_table'=>'required|string',
-            'numero_reference'=>'required|string',
+            // 'numero_reference'=>'required|string',
             'annee_obtention'=>'required|string',
             'date_naissance' =>'required|date',
-            'nom_pere'=>'required|string',
-            'nom_mere'=>'required|string',
-            'contact_parent' => 'required|numeric'
+            // 'nom_pere'=>'required|string',
+            // 'nom_mere'=>'required|string',
+            // 'contact_parent' => 'required|numeric'
         ];
     }
 

@@ -24,7 +24,10 @@ class Candidat extends Model
         'nom_pere',
         'nom_mere',
         'photo',
-        'centre_id'
+        'centre_id', 
+        'npi',
+        'note',
+        'lieu_naissance'
     ];
 
     public function centre(){

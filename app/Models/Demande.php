@@ -35,12 +35,17 @@ class Demande extends Model
         'jury',
         'etablissement',
         'user_id',
-        'kkiapayPayement_id ',
+        'kkiapayPayement_id',
         'acte_naissance',
         'cni',
         'code',
-        'attestation'
-        
+        'attestation',
+        'npi',
+        'note',
+        'validated_at',
+        'generated_at',
+        'rejected_at',
+        'updated_by_user_at'
     ];
 
     public function alertes(){

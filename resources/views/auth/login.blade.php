@@ -56,9 +56,7 @@
                     <!-- Validation Errors -->
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-                    @if (app('router')->getRoutes()->match(app('request')->create(URL::previous()))->getName() == '')
-                        <p class="pt-2 m-0 text-danger">Désolé ! Vous devez d'abord vous connecter.</p>
-                    @endif
+                   
 
 
                     <div class=" d-flex align-items-center  ">

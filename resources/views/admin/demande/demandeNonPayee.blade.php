@@ -54,11 +54,10 @@
                 <table class="table datatable table-striped border-collapse table-bordered ">
                     <thead>
                         <tr class=" ">
-                            <th class="">Photo</th>
+                            <th class="">Date</th>
                             <th class=" ">Nom et Prénoms</th>
                             <th class=" ">N° Table</th>
                             <th class=" ">Centre</th>
-                            <th>Demande faite le</th>
                             <th class=" ">Action</th>
                         </tr>
 
@@ -70,20 +69,20 @@
 
                         @foreach ($demandes as $demande)
                             <tr class="">
-                                <td class=" "><img src="{{  asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="60" height="60"
-                                style="object-fit: cover;"></td>
+                                <td>{{ $demande->created_at->format('d-m-Y H:i') }}</td>
+                                
                                 <td class="">{{ $demande->nom.' '. $demande->prenom  }}</td>
                                 <td class=" ">{{ $demande->numero_table }}</td>
 
                                 <td class=" ">
-                                    @php                
-                                        $centre= App\Models\Centre::where('id', $demande->centre)->get();    
-                                    @endphp
-                                    @foreach ($centre as $centre)
-                                        {{ $centre->nom }}
-                                    @endforeach
+                                    {{ $demande->centre }}
+                                    {{-- @php
+                                    $centre = App\Models\Centre::where('id', $demande->centre)->first();
+                                @endphp 
+                                @if(!is_null($centre))
+                                {{ $centre->nom }}
+                                @endif--}}
                                 </td>
-                                <td class="">{{ $demande->created_at->format('d-m-Y') }}</td>
                                 <td class="">
                                     <div class="d-flex justify-content-evenly w-100">
 

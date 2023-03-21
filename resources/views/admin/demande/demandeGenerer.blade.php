@@ -54,7 +54,7 @@
                 <table class="table datatable table-striped border-collapse table-bordered ">
                     <thead>
                         <tr class=" ">
-                            <th class="">Photo</th>
+                            <th class="">Date</th>
                             <th class=" ">Nom et Prénoms</th>
                             <th class=" ">N° Table</th>
                             <th class="">Centre</th>
@@ -69,19 +69,18 @@
                     <tbody>
 
                         @foreach ($demandes as $demande)
-                        @php
+                        {{-- @php
                             $centres = App\Models\Centre::where('id',$demande->centre)->get();       
-                         @endphp
+                         @endphp --}}
                             <tr class="">
-                                <td class=" "><img src="{{ asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="60" height="60"
-                                    style="object-fit: cover;"></td>
+                                {{-- <td class=" "><img src="{{ asset('storage/photo_candidat_demande/'. $demande->photo) }}" alt="" width="60" height="60"
+                                    style="object-fit: cover;"></td> --}}
+                                    <td>{{ $demande->generated_at }}</td>
                                 <td class="">{{ $demande->nom.' '. $demande->prenom  }}</td>
                                 <td class=" ">{{ $demande->numero_table }}</td>
 
                                 <td class=""> 
-                                    @foreach ($centres as $centre)
-                                        {{ $centre->nom }}
-                                    @endforeach
+                                    {{ $demande->centre }}
                                 </td>
                                 <td class="">{{ $demande->updated_at->format('d-m-Y') }}</td>
                                 <td class="">

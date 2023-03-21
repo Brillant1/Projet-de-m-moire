@@ -51,17 +51,19 @@
 
         <div class="shadow p-2 pt-4" style="border-radius: 10px;">
             <div class="table-responsive container-fluid">
-                <table class="table datatable table-striped border-collapse table-bordered  display" id="candidatTable">
+                <table class="table datatable table-striped border-collapse table-bordered  display">
                     <thead>
                         <tr class=" ">
                             {{-- <th class=" ">Photo</th> --}}
 
                             <th class=" ">Nom</th>
+                            <th>NPI</th>
                             <th class=" ">N° Table</th>
-                            <th class="">Centre</th>
+                            {{-- <th class="">Centre</th> --}}
                             <th class=" ">Commune</th>
                             <th class=" ">Année</th>
-                            <th class="">Série</th>
+                            <th>Note</th>
+                            {{-- <th class="">Série</th> --}}
                             <th class="">Action</th>
                         </tr>
 
@@ -84,11 +86,13 @@
                                 {{-- <td class=" "><img src="{{ 'storage/' . $candidat->photo }}" width="60"
                                         height="60" alt=""></td> --}}
                                 <td class="">{{ $candidat->nom . ' ' . $candidat->prenom }}</td>
+                                <td>{{ $candidat->npi }}</td>
                                 <td class=" ">{{ $candidat->numero_table }}</td>
-                                <td class=" ">{{ $candidat->centre->nom }}</td>
+                                {{-- <td class=" ">{{ $candidat->centre->nom }}</td> --}}
                                 <td class=" ">{{ $candidat->centre->commune->nom }}</td>
                                 <td class=" ">{{ $candidat->annee_obtention }}</td>
-                                <td class="">{{ $candidat->serie }}</td>
+                                <td>{{ $candidat->note }}</td>
+                                {{-- <td class="">{{ $candidat->serie }}</td> --}}
                                 <td class="">
                                     <div class="d-flex justify-content-evenly w-100">
                                         <a href="{{ route('candidats.show', ['candidat' => $candidat->id]) }}"
@@ -164,7 +168,9 @@
                                             <div class="modal-dialog" style="max-width: 60%">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title"></h5>
+                                                        <h5 class="modal-title">
+                                                            Toutes les informations du candidat
+                                                        </h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
@@ -223,24 +229,12 @@
 
                                                             </div>
                                                         </div>
-                                                        <div class="container">
+                                                        {{-- <div class="container">
                                                             <p class="section-title text-center first-color py-2 mt-5">
-                                                                Informations sur le diplôme</p>
+                                                                </p>
 
-                                                            <div
-                                                                class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
-
-                                                                <p>Année d'obtention du diplôme :</p>
-                                                                <p>{{ $candidat->annee_obtention }}</p>
-
-                                                            </div>
-                                                            <div
-                                                                class="row-info container-fluid  d-flex justify-content-between">
-
-                                                                <p>Série d'examen :</p>
-                                                                <p>{{ $candidat->serie }}</p>
-
-                                                            </div>
+                                                           
+                                                            
                                                             <div
                                                                 class="row-info container-fluid  d-flex justify-content-between">
 
@@ -249,12 +243,41 @@
 
                                                             </div>
 
-                                                        </div>
+                                                        </div> --}}
 
                                                         <div class="container">
                                                             <p class="section-title text-center first-color py-2 mt-5">
-                                                                Autres informations utiles</p>
+                                                                Informations sur le diplôme</p>
 
+
+                                                                <div
+                                                                class="row-info container-fluid  d-flex justify-content-between">
+
+                                                                <p>Série d'examen :</p>
+                                                                <p>{{ $candidat->serie }}</p>
+
+                                                            </div>
+                                                                <div
+                                                                class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
+
+                                                                <p>Année d'obtention du diplôme :</p>
+                                                                <p>{{ $candidat->annee_obtention }}</p>
+
+                                                            </div>
+                                                            <div
+                                                            class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
+
+                                                            <p>NPI :</p>
+                                                            <p>{{ $candidat->npi }}</p>
+
+                                                        </div>
+                                                        <div
+                                                        class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
+
+                                                        <p>Note en fraançais:</p>
+                                                        <p>{{ $candidat->note }}</p>
+
+                                                    </div>
                                                             <div
                                                                 class="pt-3 row-info container-fluid  d-flex justify-content-between">
 
@@ -280,15 +303,7 @@
                                                         </div>
 
                                                         <div class="modal-footer">
-                                                            {{-- <form method="POST" action="{{ route('candidats.destroy', ['candidat' => $candidat->id]) }}">
-
-                                                            <input type="hidden" name="_method" value="DELETE">
-                                                            <input type="hidden" name="_token"
-                                                                value="{{ csrf_token() }}">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Annuler</button>
-                                                            <input type="submit" class="btn btn-danger" value="Confirmer">
-                                                        </form> --}}
+                                                           
                                                         </div>
                                                     </div>
                                                 </div>

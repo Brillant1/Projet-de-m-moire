@@ -114,7 +114,7 @@
                                         <thead>
                                             <th>
                                                 <tr class="">
-                                                    <th>Emise le</th>
+                                                    <th>Faite le</th>
                                                     <th>Nom & Prénoms</th>
                                                     <th>N° de Table </th>
                                                     <th>Centre</th>
@@ -136,15 +136,21 @@
                                         
                                         <tbody>
                                             @if (!is_null($demandeNonValides))
+
+                                            
+                                          
                                                 @foreach ($demandeNonValides as $demande)
-                                                    @php
-                                                       
-                                                        $centres = App\Models\Centre::where('id',$demande->centre)->get();
-                                                      
-                                                        $communes = App\Models\Commune::where('id', $demande->commune)->get();
-                                                    @endphp
+                                          
+                                                  
                                                     <tr class="">
-                                                        <td class="py-3">{{ $demande->created_at->format('d-m-Y') }} à {{  $demande->created_at->format('H:i') }}
+                                                        <td class="py-3">
+                                                            {{-- {{ $demande->created_at->format('d-m-Y') }} à {{  $demande->created_at->format('H:i') }} --}}
+                                                            @php
+                                                                $date = $demande->created_at;
+                                                                $date = Carbon\Carbon::parse($date);
+                                                                $date = $date->addHours(1);
+                                                            @endphp
+                                                            {{ $date->format('d-m-Y H:i') }}
                                                         </td>
                                                         <td class="py-3">
                                                             {{ $demande->nom . ' ' . $demande->prenom }}
@@ -152,15 +158,17 @@
 
                                                         <td class="py-3">{{ $demande->numero_table }}</td>
                                                         <td class="py-3 label-color">
-                                                            
-                                                            @foreach ($centres as $centre)
-                                                                {{ $centre->nom }}
-                                                            @endforeach
+                                                            {{ $demande->centre }}
+                                                            {{-- @php
+                                                                $centre = App\Models\Centre::where('id', $demande->centre)->first();
+                                                            @endphp
+                                                            @if(!is_null($centre))
+                                                            {{ $centre->nom }}
+                                                            @endif --}}
+                                                           
                                                         </td>
                                                         <td class="py-3" style="color:#CA8B11">
-                                                          {{-- @foreach ($communes as $commune)
-                                                              {{ $commune->nom }}
-                                                          @endforeach --}}
+
                                                           Non validée
                                                             
                                                         </td>
@@ -323,63 +331,55 @@
                                                                         </div> --}}
                                                                         <hr>
                                                                         <div
-                                                                            class="row-info container-fluid  d-flex justify-content-between pt-3">
+                                                                            class="row-info container-fluid d-flex justify-content-between pt-3">
 
-                                                                            <p>Nom :</p>
-                                                                            <p class="">{{ $demande->nom }}</p>
+                                                                            <p class="w-75">Nom :</p>
+                                                                            <p class="w-50">{{ $demande->nom }}</p>
 
                                                                         </div>
 
                                                                         <div
                                                                             class="row-info container-fluid  d-flex justify-content-between ">
 
-                                                                            <p>Prénom :</p>
-                                                                            <p class="">{{ $demande->prenom }}
+                                                                            <p class="w-75">Prénom :</p>
+                                                                            <p class="w-50">{{ $demande->prenom }}
                                                                             </p>
 
                                                                         </div>
                                                                         <div
                                                                             class="row-info container-fluid  d-flex justify-content-between">
 
-                                                                            <p>Date de naissance :</p>
-                                                                            <p>{{ $demande->date_naissance }}</p>
+                                                                            <p class="w-75">Date de naissance :</p>
+                                                                            <p class="w-50">{{ $demande->date_naissance }}</p>
 
                                                                         </div>
                                                                         <div
                                                                         class="row-info container-fluid  d-flex justify-content-between">
 
-                                                                        <p class="">Adresse mail :</p>
-                                                                        <p>
+                                                                        <p class="w-75">Adresse mail :</p>
+                                                                        <p class="w-50">
                                                                             {{$demande->email}}</p>
 
                                                                         </div>
                                                                         <div
                                                                         class="row-info container-fluid  d-flex justify-content-between">
 
-                                                                        <p class="">Ville de naissance :</p>
-                                                                        <p>
+                                                                        {{-- <p class="w-75">Ville de naissance :</p>
+                                                                        <p class="w-50">
                                                                             {{$demande->ville_naissance}}</p>
 
-                                                                        </div>  
+                                                                        </div>   --}}
 
                                                                         <div
                                                                             class=" row-info container-fluid  d-flex justify-content-between">
 
-                                                                            <p>Contact :</p>
-                                                                            <p>{{ $demande->contact }}</p>
+                                                                            <p class="w-75">Contact :</p>
+                                                                            <p class="w-50">{{ $demande->contact }}</p>
 
                                                                         </div>
                                                                         
-                                                                        <div
-                                                                            class="row-info container-fluid  d-flex justify-content-between">
-
-                                                                            <p class="">Centre :</p>
-                                                                            <p>
-                                                                                {{$demande->centre}}</p>
-
-                                                                        </div>
-                                                                       
-                                                                        
+                                                                     
+                                                                      
                                                                         
                                                                     </div>
                                                                     <div class="container">
@@ -389,66 +389,95 @@
                                                                         <div
                                                                             class="pt-3 row-info container-fluid  d-flex justify-content-between">
 
-                                                                            <p>Numero de table :</p>
-                                                                            <p>{{ $demande->numero_table }}</p>
+                                                                            <p class="w-75">Numero de table :</p>
+                                                                            <p class="w-50">{{ $demande->numero_table }}</p>
 
                                                                         </div>
                                                                         <div class=" row-info container-fluid  d-flex justify-content-between ">                                                               
-                                                                            <p>Année d'obtention du diplôme :</p>
-                                                                            <p>{{ $demande->annee_obtention }}</p>
+                                                                            <p class="w-75">Année d'obtention du diplôme :</p>
+                                                                            <p class="w-50">{{ $demande->annee_obtention }}</p>
                                                                         </div>
                                                                         <div
                                                                             class="row-info container-fluid  d-flex justify-content-between">
-                                                                            <p>Série d'examen :</p>
-                                                                            <p>{{ $demande->serie }}</p>
+                                                                            <p class="w-75">Série d'examen :</p>
+                                                                            <p class="w-50">{{ $demande->serie }}</p>
 
                                                                         </div>
                                                                         
                                                                         <div
                                                                             class="pt-3 row-info container-fluid  d-flex justify-content-between">
-                                                                            <p>Centre de composition :</p>
-                                                                            <p>
-                                                                                <p class="text-danger">
-                                                                                    @php
-                                                                                        $centre = App\Models\Centre::where('id', $demande->centre)->get();
-                                                                                       
-                                                                                    @endphp
-                                                                                    {{ $demande->centre }}</p>
+                                                                            <p class="w-75">Centre de composition :</p>
+                                                                            
+                                                                                <p class="text-danger w-50">
+                                                                                    {{ $demande->centre }}
+                                                                                    
+                                                                                    {{-- @php
+                                                                                    $centre = App\Models\Centre::where('id', $demande->centre)->first();
+                                                                                @endphp
+                                                                                @if(!is_null($centre))
+                                                                                {{ $centre->nom }}
+                                                                                @endif --}}
+                                                                                 
+                                                                                 
+                                                                                
+                                                                              
                                                                                 
                                                                               </p>
                                                                         </div>
+                                                                        {{-- <div
+                                                                            class="pt-3 row-info container-fluid d-flex justify-content-between">
+                                                                            <p class="w-75">Etablissement fréquenté :</p>
+                                                                            <p class="w-50 text-danger">
+                                                                                    {{ $demande->etablissement?$demande->etablissement:'-' }}</p>
+                                                                        </div> --}}
                                                                         <div
                                                                             class="pt-3 row-info container-fluid  d-flex justify-content-between">
-                                                                            <p>Etablissement fréquenté :</p>
-                                                                            <p>
-                                                                                <p class="text-danger">
-                                                                                    @php
-                                                                                        $centre = App\Models\Centre::where('id', $demande->centre)->get();
-                                                                                       
-                                                                                    @endphp
-                                                                                    {{ $demande->centre }}</p>
-                                                                                
-                                                                              </p>
-                                                                        </div>
-                                                                        <div
-                                                                            class="pt-3 row-info container-fluid  d-flex justify-content-between">
-                                                                            <p>Année d'obtention du diplôme :</p>
-                                                                            <p>
-                                                                                <p class="text-danger">
+                                                                            <p class="w-75">Année d'obtention du diplôme :</p>
+                                                                            
+                                                                                <p class="text-danger w-50">
                                                                                    
                                                                                     {{ $demande->annee_obtention }}</p>
-                                                                                
-                                                                              </p>
+                                                                             
                                                                         </div>
-                                                                        <div
+                                                                        {{-- <div
                                                                             class="pt-3 row-info container-fluid  d-flex justify-content-between">
-                                                                            <p>Jury de l'examen</p>
-                                                                            <p>
-                                                                                <p class="text-danger">
-                                                                                   
+                                                                            <p class="w-75">Jury de l'examen</p>
+                                                                            <p class="w-50 text-danger">
+
+                                                                              
                                                                                     {{ $demande->jury? $demande->jury:'-' }}</p>
                                                                                 
-                                                                              </p>
+                                                                            
+                                                                        </div> --}}
+                                                                        <div
+                                                                            class=" row-info container-fluid  d-flex justify-content-between">
+
+                                                                            <p class="w-75">Commune du centre :</p>
+                                                                          
+                                                                            <p  class="text-danger w-50">
+                                                                                {{ $demande->commune
+                                                                                 }}
+                                                                                {{-- @php
+                                                                                    $commune = App\Models\Commune::where('id', $demande->commune)->first();
+                                                                                @endphp
+                                                                                @if(!is_null($commune))
+                                                                                    {{ $commune->nom }}
+                                                                                @endif --}}
+                                                                            </p>
+
+                                                                        </div>
+                                                                        <div
+                                                                            class="row-info container-fluid  d-flex justify-content-between">
+
+                                                                            <p class="w-75">Département :</p>
+                                                                            <p  class="text-danger w-50">
+                                                                                {{ $demande->departement }}
+                                                                                {{-- @php
+                                                                                $departement = App\Models\Departement::find($demande->departement);
+                                                                                @endphp
+                                                                                {{ $departement->nom }} --}}
+                                                                            </p>
+
                                                                         </div>
                                                                         
 
@@ -459,51 +488,29 @@
                                                                             class="section-title text-center first-color py-2 mt-5">
                                                                             Autres informations utiles</p>
 
-                                                                        <div
-                                                                            class=" row-info container-fluid  d-flex justify-content-between">
+                                                                        
+                                                                        {{-- <div
+                                                                            class="row-info container-fluid  d-flex justify-content-between">
 
-                                                                            <p>Commune du centre :</p>
-                                                                          
-                                                                            <p  class="text-danger">
-                                                                              {{ $demande->commune}}
-                                                                                
-                                                                            </p>
+                                                                            <p class="w-75">Nom du père :</p>
+                                                                            <p class="w-50">{{ $demande->nom_pere }}</p>
 
                                                                         </div>
                                                                         <div
                                                                             class="row-info container-fluid  d-flex justify-content-between">
 
-                                                                            <p>Département :</p>
-                                                                            <p  class="text-danger">
-                                                                                @php
-                                                                                $departement = App\Models\Departement::where('id', $demande->departement)->get();
-                                                                                @endphp
-                                                                                {{ $departement[0]->nom }}
-                                                                            </p>
+                                                                            <p class="w-75">Nom de la mère :</p>
+                                                                            <p class="w-50">{{ $demande->nom_mere }}</p>
 
-                                                                        </div>
-                                                                        <div
-                                                                            class="row-info container-fluid  d-flex justify-content-between">
-
-                                                                            <p>Nom du père :</p>
-                                                                            <p>{{ $demande->nom_pere }}</p>
-
-                                                                        </div>
-                                                                        <div
-                                                                            class="row-info container-fluid  d-flex justify-content-between">
-
-                                                                            <p>Nom de la mère :</p>
-                                                                            <p>{{ $demande->nom_mere }}</p>
-
-                                                                        </div>
-                                                                        <hr>
+                                                                        </div> --}}
+                                                                   
                                                                         <div class=" d-flex justify-content-between w-50 ">
                                                                             <div class=" text-center">
                                                                                 <span>Rélevé</span> <br>
                                                                                 <a href=" {{ asset('storage/'.$demande->releve) }}" target="_blank" class="py-3"><img src="{{ asset('admin/img/pdf-file.svg') }}" alt="" height="50" width="50" /></a> <br>
                                                                                 <a href="{{ route('download-releve', $demande->id ) }}" class="mt-5">Télécharger</a>
                                                                             </div>
-                                                                            <div  class=" text-center">
+                                                                            {{-- <div  class=" text-center">
                                                                                 <span>Acte de naissance</span> <br>
                                                                                 <a href=" {{ asset('storage/'.$demande->acte_naissance) }}" target="_blank" class="py-3"><img src="{{ asset('admin/img/pdf-file.svg') }}" alt="" height="50" width="50" /></a> <br>
                                                                                 <a href="{{ route('download-acte', $demande->id ) }}" class="mt-5">Télécharger</a>
@@ -512,15 +519,15 @@
                                                                                 <span>Carte d'identité</span> <br>
                                                                                 <a href=" {{ asset('storage/'.$demande->cni) }}" target="_blank" class="py-3"><img src="{{ asset('admin/img/pdf-file.svg') }}" alt="" height="50" width="50" /></a> <br>
                                                                                 <a href="{{ route('download-cni', $demande->id ) }}" class="mt-5">Télécharger</a>
-                                                                            </div>
+                                                                            </div> --}}
                                                                         </div>
 
                                                                     </div>
-                                                                    <a href="{{ route('demandes.pdf', $demande->id) }}"
-                                                                        class="rosette-bg-green fw-bold text-white px-4 rounded py-2 mt-5">Télécharger
-                                                                        le récapitulatif</a>
+                                                                    
                                                                     <div class="modal-footer">
-
+                                                                        <a href="{{ route('demandes.pdf', $demande->id) }}"
+                                                                            class="rosette-bg-green fw-bold text-white px-4 rounded py-2 mt-5">Télécharger
+                                                                            le récapitulatif</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -679,11 +686,11 @@
                                             
                                                 @forelse($demandeRejetes as $demandeRejete)
                                                 
-                                                    @php
+                                                    {{-- @php
                                                         $centres = App\Models\Centre::where('id',$demandeRejete->centre)->get();
                                                         $communes = App\Models\Commune::where('id',$demandeRejete->commune)->get();
                                                         
-                                                    @endphp
+                                                    @endphp --}}
                                                     
                                                     <tr class="">
                                                         <td class="py-3">
@@ -702,9 +709,10 @@
                                                         
                                                         
                                                         <td class=" py-3">
-                                                            @foreach ($centres as $centre)
+                                                            {{ $demande->centre }}
+                                                            {{-- @foreach ($centres as $centre)
                                                                 {{ $centre->nom }}
-                                                            @endforeach
+                                                            @endforeach --}}
                                                         </td>
                                                         {{-- <td class=" py-3">
                                                             @foreach ($communes as $commune)
@@ -794,16 +802,16 @@
 
 
 
-                                                        {{-- Show modal recap demande code --}}
+                                                {{-- Show modal recap demande code --}}
 
                                                 <div class="modal fade container-fluid"
                                                 id="{{ 'showModal' . $demandeRejete->id }}" tabindex="-1">
                                                 <div class="modal-dialog" style="max-width: 60%">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title">Récapitulatif de la demande du
+                                                            <h5 class="modal-title">Demandée le
                                                                 &nbsp; <strong>
-                                                                    {{ $demandeRejete->created_at->format('d-m-Y') }}
+                                                                    {{ $demandeRejete->updated_at->format('d-m-Y') }}
                                                                 </strong></h5>
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal"
@@ -885,22 +893,22 @@
                                                                     <p>{{ $demandeRejete->serie }}</p>
 
                                                                 </div>
-                                                                <div
+                                                                {{-- <div
                                                                     class="row-info container-fluid  d-flex justify-content-between">
 
                                                                     <p>Numero de référence :</p>
                                                                     <p>{{ $demandeRejete->numero_reference }}</p>
 
-                                                                </div>
+                                                                </div> --}}
                                                                 <div
                                                                     class="pt-3 row-info container-fluid  d-flex justify-content-between">
                                                                     <p>Centre de composition :</p>
                                                                     <p>
                                                                         <p class="text-danger">
-                                                                            @php
+                                                                            {{-- @php
                                                                                 $centre = App\Models\Centre::where('id', $demandeRejete->centre)->get();
                                                                                 
-                                                                            @endphp
+                                                                            @endphp --}}
                                                                             {{ $demandeRejete->centre }}</p>
                                                                         
                                                                         </p>
@@ -929,14 +937,15 @@
 
                                                                     <p>Département :</p>
                                                                     <p  class="text-danger">
-                                                                        @php
+                                                                        {{ $demandeRejete->departement }}
+                                                                        {{-- @php
                                                                         $departement = App\Models\Departement::where('id', $demandeRejete->departement)->get();
                                                                         @endphp
-                                                                        {{ $departement[0]->nom }}
+                                                                        {{ $departement[0]->nom }} --}}
                                                                     </p>
 
                                                                 </div>
-                                                                <div
+                                                                {{-- <div
                                                                     class="row-info container-fluid  d-flex justify-content-between">
 
                                                                     <p>Nom du père :</p>
@@ -949,7 +958,7 @@
                                                                     <p>Nom de la mère :</p>
                                                                     <p>{{ $demandeRejete->nom_mere }}</p>
 
-                                                                </div>
+                                                                </div> --}}
                                                                 <hr>
                                                                 <div class=" d-flex justify-content-between w-50 ">
                                                                     <div class=" text-center">
@@ -957,7 +966,7 @@
                                                                         <a href=" {{ asset('storage/'.$demandeRejete->releve) }}" target="_blank" class="py-3"><img src="{{ asset('admin/img/pdf-file.svg') }}" alt="" height="50" width="50" /></a> <br>
                                                                         <a href="{{ route('download-releve', $demandeRejete->id ) }}" class="mt-5">Télécharger</a>
                                                                     </div>
-                                                                    <div  class=" text-center">
+                                                                    {{-- <div  class=" text-center">
                                                                         <span>Acte de naissance</span> <br>
                                                                         <a href=" {{ asset('storage/'.$demandeRejete->acte_naissance) }}" target="_blank" class="py-3"><img src="{{ asset('admin/img/pdf-file.svg') }}" alt="" height="50" width="50" /></a> <br>
                                                                         <a href="{{ route('download-acte', $demandeRejete->id ) }}" class="mt-5">Télécharger</a>
@@ -966,7 +975,7 @@
                                                                         <span>Carte d'identité</span> <br>
                                                                         <a href=" {{ asset('storage/'.$demandeRejete->cni) }}" target="_blank" class="py-3"><img src="{{ asset('admin/img/pdf-file.svg') }}" alt="" height="50" width="50" /></a> <br>
                                                                         <a href="{{ route('download-cni', $demandeRejete->id ) }}" class="mt-5">Télécharger</a>
-                                                                    </div>
+                                                                    </div> --}}
                                                                 </div>
 
                                                             </div>
@@ -1032,7 +1041,7 @@
                                                     <td>Nom & Prénom(s)</td>
                                                     <td>N° Table</td>
                                                     <td>Status</td>
-                                                    <td>Action</td>
+                                                    <td class=" text-center">Action</td>
                                                 </tr>
                                             </th>
                                         </thead>
@@ -1067,13 +1076,13 @@
                                                         <td class="py-3 label-color text-danger">
                                                             Délivré
                                                         </td>
-                                                        <td>
+                                                        <td class=" text-center">
                                                             
                                                             @if(!is_null($demandeGenerer->attestation))
 
                                                                 
 
-                                                                <a href="#" title="Téléchager" class=" text-white bg-success rounded btn btn-sm d-flex justify-content-center align-items-center" data-bs-toggle="modal"
+                                                                <a href="#" title="Téléchager" class=" text-white bg-success rounded btn btn-sm " data-bs-toggle="modal"
                                                                 
                                                                     data-bs-target="{{ '#downloadModal' . $demandeGenerer->id }}">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
@@ -1215,6 +1224,7 @@
                                                     @empty
                                                         Pas de demande payée
                                                     @endforelse
+                                                  
                                               
                                             </tbody>
                                         </table>
@@ -1275,6 +1285,9 @@
                     "infoEmpty": "_END_ sur _TOTAL_ entrées",
                     "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
                 },
+                order: [
+                    [0, "desc"]
+                ],
            
             });
 
@@ -1326,6 +1339,9 @@
                     "infoEmpty": "_END_ sur _TOTAL_ entrées",
                     "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
                 },
+                order: [
+                    [0, "desc"]
+                ],
               
             });
             let j=0;
@@ -1452,5 +1468,7 @@
                 });
             })
         });
+
+
     </script>
 @endsection

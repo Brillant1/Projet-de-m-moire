@@ -14,19 +14,9 @@
                     </ol>
                 </div>
                 <div class="text-center d-flex justify-content-between mt-2">
-    
-                    {{-- <a class="btn bg-favorite-color py-2 fw-bold text-white d-flex justify-content-between align-items-center"
-                        href="#">Ajouter un
-                        nouveau</a> --}}
-    
                 </div>
             </div>
-            {{-- <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('demandes.index') }}">Demandes</a></li> &nbsp; /
-                <li class="breadcrumb-item"><a href="{{ route('listeDemande') }}">Listes des demandes</a></li> &nbsp; /
-                <li class="breadcrumb-item active">Demande payé</li>
-                </li>
-            </ol> --}}
+          
         </nav>
     </div>
 
@@ -217,12 +207,12 @@
                         <p>{{ $demande->contact }}</p>
 
                     </div>
-                    <div class=" row-info container-fluid  d-flex justify-content-between">
+                    {{-- <div class=" row-info container-fluid  d-flex justify-content-between">
 
                         <p>Ville de naissance :</p>
                         <p>{{ $demande->ville_naissance }}</p>
 
-                    </div>
+                    </div> --}}
 
                     <div class=" row-info container-fluid  d-flex justify-content-between">
 
@@ -237,20 +227,27 @@
                     {{-- <p class=" favorite-color h3 text-start ms-2  py-2 mt-5">Informations sur le diplôme</p> --}}
 
                     <div class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
-                        @php
+                        {{-- @php
                             $centres = App\Models\Centre::where('id',$demande->centre)->get();   
                             $communes = App\Models\Commune::where('id',$demande->commune)->get();    
-                        @endphp
+                        @endphp --}}
                         <p>Centre de composition :</p>
                         <p>
+                        
                             {{-- 
                             @php
                                 $centre = App\Models\Centre::where('id', $demande->centre)->get();
                             @endphp --}}
                             
-                            @foreach ($centres as $centre)
-                                {{ $centre->nom }}
-                            @endforeach</p>
+                           
+                            {{-- @php
+                            $centre = App\Models\Centre::where('id', $demande->centre)->first();
+                        @endphp
+                        @if(!is_null($centre))
+                        {{ $centre->nom }}
+                        @endif --}}
+                        {{ $demande->centre }}
+                            
 
                     </div>
 
@@ -260,20 +257,20 @@
                        
 
                         <p>
+                            {{ $demande->commune }}
                             {{-- @php
-                                $commune = App\Models\Commune::where('id', $demande->commune)->get();
-                            @endphp --}}
-                            @foreach ($communes as $commune)
-                            {{ $commune->nom }}
-                            @endforeach</p>
+                            $commune = App\Models\Commune::where('id', $demande->commune)->first();
+                        @endphp
+                        @if(!is_null($commune))
+                        {{ $commune->nom }}
+                        @endif --}}
 
                     </div>
                     
-                    <div class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
+                    {{-- <div class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
                         <p>Etablissement fréquenté :</p>
-                        <p>{{ $demande->etablissement }}</p>
-
-                    </div>
+                        <p>{{ $demande->etablissement?$demande->etablissement:'-' }}</p>
+                    </div> --}}
 
                     <div class=" pt-3 row-info container-fluid  d-flex justify-content-between ">
                         <p>Numero de table:</p>
@@ -292,17 +289,16 @@
                         <p>{{ $demande->annee_obtention }}</p>
 
                     </div>
-                    <div class="row-info container-fluid  d-flex justify-content-between">
+                    {{-- <div class="row-info container-fluid  d-flex justify-content-between">
                         <p>Jury d'examen :</p>
                         <p>{{ $demande->jury }}</p>
                         
-                    </div>
+                    </div> --}}
                   
                 </div>
 
-                <div class="container mb-3">
-                    {{-- <p class=" favorite-color h3 text-start ms-2  py-2 mt-5">Autres informations utiles</p> --}}
-                    <p class="section-title text-center first-color py-2 mt-5">Autres informations utiles</p>
+               {{-- <div class="container mb-3">
+                     <p class=" favorite-color h3 text-start ms-2  py-2 mt-5">Autres informations utiles</p> 
                     <div class="pt-3 row-info container-fluid  d-flex justify-content-between">
                         <p>Nom du père :</p>
                         <p>{{ $demande->nom_pere }}</p>
@@ -322,6 +318,8 @@
 
                     </div>
                 </div>
+                --}}
+                <p class="section-title text-center first-color py-2 mt-5">Autres informations utiles</p>
                
                 
                 <div class="container mt-4">
@@ -337,7 +335,7 @@
                             Non soumis    
                             @endif
                         </div>
-                        <div  class=" text-center">
+                        {{-- <div  class=" text-center">
                             @if (!is_null($demande->acte_naissance))
                             <span>Acte de naissance</span> <br>
                             <a href=" {{ asset('storage/'.$demande->acte_naissance) }}" target="_blank" class="py-3"><img src="{{ asset('admin/img/pdf-file.svg') }}" alt="" height="50" width="50" /></a> <br>
@@ -354,7 +352,7 @@
                             @else
                             Non soumis
                             @endif
-                        </div>
+                        </div> --}}
                     </div>
 
 
@@ -372,7 +370,8 @@
                             {{ $candidatAdmis->nom }}
                             {{ $candidatAdmis->prenom }} </strong> né le
                         <strong>{{ $candidatAdmis->date_naissance }}</strong>
-                        à <strong> {{ $demande->ville_naissance }} </strong> est supposé admis
+                        {{-- à <strong> {{ $demande->ville_naissance }} </strong>--}} 
+                        est supposé admis 
                         aux examens du {{ $candidatAdmis->examen }} série {{ $candidatAdmis->serie }}
                         {{ $candidatAdmis->annee_obtention }} et est identifié par le matricule
                         <strong>{{ $candidatAdmis->numero_table }}</strong>.

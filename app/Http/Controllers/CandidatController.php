@@ -73,9 +73,12 @@ class CandidatController extends Controller
                 'numero_reference' => $request->numero_reference,
                 'annee_obtention' => $request->annee_obtention,
                 'date_naissance' =>$request->date_naissance,
+                'npi'=> $request->npi,
+                'note' => $request->note,
                 'nom_pere'  => $request->pere,
                 'nom_mere' => $request->mere,
                 'photo' => $filename,
+                'lieu_naissance' => $request->lieu_naissance,
                 'centre_id' => $request->centre_id
 
             ];

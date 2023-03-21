@@ -25,7 +25,7 @@ class DepartementRequest extends FormRequest
     {
         return [
             'nom'=>'required|string',
-            'reference'=>'required|string',
+            'reference'=>'string',
         ];
     }
 
@@ -34,7 +34,7 @@ class DepartementRequest extends FormRequest
         return [
             'nom.required'=>"Nom du département obligatoire",
             'nom.unique' =>"Département déja ajouté",
-            'reference.required'=>'Reference du departement obligatoire',
+            // 'reference.required'=>'Reference du departement obligatoire',
         ];
     }
 }
