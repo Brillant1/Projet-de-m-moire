@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+
  
 
 
@@ -117,8 +118,6 @@ class GererDemandeController extends Controller
 
         $html .= view('front.pdf',  ['data'=>$data])->render();
         $html .= '</body></html>';
-
-        //$html = view('front.pdf', ['data'=>$data]); 
         
         $dompdf->setPaper('A4','paysage');
 

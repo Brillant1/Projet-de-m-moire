@@ -7,11 +7,13 @@
     "require": {
         "php": "^8.0.2",
         "barryvdh/laravel-dompdf": "^1.0",
+        "barryvdh/laravel-snappy": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
         "kkiapay/kkiapay-php": "dev-master",
         "laravel/framework": "^9.11",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
+        "mikehaertl/phpwkhtmltopdf": "^2.5",
         "simplesoftwareio/simple-qrcode": "~4"
     },
     "require-dev": {
