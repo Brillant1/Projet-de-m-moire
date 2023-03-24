@@ -28,6 +28,6 @@ class AdminController extends Controller
             'statut_demande'=> 'generer',
         ])->get();
 
-        return view('admin.dashboard', compact('messages', 'demandeAttente', 'demandeValide', 'nbr_attestation', 'nbr_message'));
+        return view('admin.dashboard', compact('messages', 'demandeAttente', 'demandeValide', 'nbr_attestation'));
     }
 }

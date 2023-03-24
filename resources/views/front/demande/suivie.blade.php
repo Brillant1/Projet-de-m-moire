@@ -136,21 +136,16 @@
                                         
                                         <tbody>
                                             @if (!is_null($demandeNonValides))
-
-                                            
-                                          
                                                 @foreach ($demandeNonValides as $demande)
-                                          
-                                                  
                                                     <tr class="">
                                                         <td class="py-3">
-                                                            {{-- {{ $demande->created_at->format('d-m-Y') }} à {{  $demande->created_at->format('H:i') }} --}}
                                                             @php
                                                                 $date = $demande->created_at;
                                                                 $date = Carbon\Carbon::parse($date);
                                                                 $date = $date->addHours(1);
                                                             @endphp
-                                                            {{ $date->format('d-m-Y H:i') }}
+                                                            {{ $date->format('d-m-Y') }} à
+                                                            {{ $date->format('H:i') }}  
                                                         </td>
                                                         <td class="py-3">
                                                             {{ $demande->nom . ' ' . $demande->prenom }}
@@ -1057,15 +1052,23 @@
                                         </tfoot>
                                         <tbody>
                                             
-                                                
+                                                {{-- {{ dd($demandeGenerers) }} --}}
                                                 @forelse($demandeGenerers as $demandeGenerer)
                                                   
                                                     <tr class="" demande_id="{{ $demandeGenerer->id }}">
                                                         <td class="py-3">
-                                                            {{ $demandeGenerer->updated_at->format('d-m-Y') }} à {{ $demandeGenerer->updated_at->format('H:i:s') }}
+
+                                                            @php
+                                                                $date = $demandeGenerer->generated_at;
+                                                                $date_generate = Carbon\Carbon::parse($date);
+                                                                $end_date = $date_generate->addHours(1);
+                                                            @endphp
+                                                            {{ $end_date->format('d-m-Y') }} à
+                                                            {{ $end_date->format('H:i') }} 
+                                                            
                                                         </td>
                                                         <td class="py-3">
-                                                            {{ $demandeGenerer->created_at->format('d-m-Y') }} à {{ $demandeGenerer->created_at->format('H:i:s') }}
+                                                            {{ $demandeGenerer->created_at->format('d-m-Y') }} à {{ $demandeGenerer->created_at->format('H:i') }}
                                                         </td>
                                                         <td class="py-3">
                                                             {{ $demandeGenerer->nom . ' ' . $demandeGenerer->prenom }}
@@ -1392,6 +1395,9 @@
                 "infoEmpty": "_END_ sur _TOTAL_ entrées",
                 "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
             },
+            order: [
+                [0, "desc"]
+            ],
         
             });
 

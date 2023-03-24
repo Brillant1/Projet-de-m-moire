@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Dompdf\Dompdf;
 use App\Models\Centre;
 use App\Models\Commune;
 use App\Models\Demande;
 use App\Models\Candidat;
-// use Barryvdh\DomPDF\PDF;
-use App\Models\Attestation;
+use Barryvdh\DomPDF\PDF;
 use App\Models\Departement;
 use Illuminate\Http\Request;
-// use mikehaertl\wkhtmlto\Pdf;
-use mikehaertl\wkhtmlto\Pdf;
 use App\Mail\AttestationMail;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
+use App\Models\Attestation;
+use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -107,41 +105,35 @@ class GererDemandeController extends Controller
 
     public function pdf2(Demande $demande)
     {
-        
+        $dompdf = new Dompdf();
         $data['id'] = $demande->id;
         $data['prenom'] = $demande->prenom;
         $data['email'] = $demande->email;
 
 
 
-        Session::put('data', $data);
 
-        // $hex_color = "#73c3c8";
-        // $html = '<html><head><style>html,body{}</style></head><body>';
 
-        $html = view('front.fichier')->render();
+        $hex_color = "#73c3c8";
+        $html = '<html><head><style>html,body{}</style></head><body>';
 
-        $pdf = new Pdf();
-
-        // $html .= '</body></html>';
+        $html .= view('front.pdf',  ['data'=>$data])->render();
+        $html .= '</body></html>';
         
-        // $dompdf->setPaper('A4','paysage');
+        $dompdf->setPaper('A4','paysage');
 
-        $pdf = $pdf->addPage($html);
+        $dompdf->loadHtml($html);
 
-        // $dompdf->loadHtml($html);
-
-        // $dompdf->render();
+        $dompdf->render();
         
-        $output = $pdf->toString();
-       
+        $output = $dompdf->output();
         $fileName = $demande->nom.'_'.$demande->prenom.'_'.$demande->numero_table.'.pdf';
         file_put_contents($fileName, $output);
        
         Mail::send('emails.attestation', $data, function ($message) use ($data, $output, $fileName) {
         $message->to($data['email'])
             ->subject('DEC-BENIN -'. $data['prenom'])
-            ->attachData($output, $fileName, [ 'mime' => 'application/pdf',]);
+            ->attachData($output, $fileName);
         });
 
         Storage::disk('public')->put('attestation/'.$fileName,$output);
