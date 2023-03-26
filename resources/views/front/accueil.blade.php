@@ -1,5 +1,10 @@
 @extends('front.layouts.template')
 @section('content')
+<style>
+    body{
+        box-sizing: border-box;
+    }
+</style>
     <div id="carouselExampleIndicators" class="carousel slide container-fluid p-0 m-0 position-relative"
         data-bs-ride="carousel">
         <div>

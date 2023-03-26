@@ -149,7 +149,7 @@ Route::get('emailConfirmation', function () {
 
 Route::get('securite', function(){
     return view('front.securite');
-});
+})->name('securite');
 
 
 Route::get('demande/page', function(){

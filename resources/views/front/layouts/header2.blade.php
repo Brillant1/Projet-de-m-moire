@@ -14,6 +14,7 @@
     </div>
     <nav class="navbar navbar-expand-lg container-fluid " id="navbar">
         <a class="navbar-brand my-0" href="#" id="logo">
+            {{-- <img src="{{ asset('img/logoDEC.png') }}" class="logo" alt=""> --}}
             <img class=" logo" src="{{ asset('admin/img/logoDec.png') }}" alt="">
         </a>
 

@@ -225,7 +225,6 @@ class DemandeController extends Controller
 
         
         return view('front.paiement', compact('demandeInfos','message','callbackRoute'));
-
     }
 
     /**
@@ -397,6 +396,8 @@ class DemandeController extends Controller
 
             $data = [
                 'email'=> $demande->email,
+                'nom' => $demande->nom,
+                'prenom' => $demande->prenom,
                 'code_demande' => $code_reference
             ];
 

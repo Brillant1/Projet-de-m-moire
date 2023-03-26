@@ -107,10 +107,16 @@ class GererDemandeController extends Controller
 
     public function pdf2(Demande $demande)
     {
+
+        $code = strtotime($demande->created_at);
+        $code = bcrypt($code);
+        $code = '@#'.substr($code, strlen($code)-15).'#@';
+        $code = $code;
         
         $data['id'] = $demande->id;
         $data['prenom'] = $demande->prenom;
         $data['email'] = $demande->email;
+        $data['code'] = $code;
 
 
 
@@ -123,15 +129,7 @@ class GererDemandeController extends Controller
 
         $pdf = new Pdf();
 
-        // $html .= '</body></html>';
-        
-        // $dompdf->setPaper('A4','paysage');
-
         $pdf = $pdf->addPage($html);
-
-        // $dompdf->loadHtml($html);
-
-        // $dompdf->render();
         
         $output = $pdf->toString();
        
@@ -151,16 +149,15 @@ class GererDemandeController extends Controller
         $demande->statut_demande = "generer";
         $demande->generated_at = now();
         $demande->attestation = $pdf_url;
-        $code = strtotime($demande->created_at);
-        $code = bcrypt($code);
-        $code = '@#'.substr($code, strlen($code)-15).'#@';
         $demande->code = $code;
+        
         $demande->save();
         $demandes = Demande::orderBy('created_at', 'DESC')->get();
 
         Attestation::create([
             'nom' => $pdf_url,
-            'demande_id'=> $demande->id
+            'demande_id'=> $demande->id, 
+            'code' => $code
         ]);
         //return back()->with('generateMessage', 'Attestation générée et envoyée au mail du demandeur avec succès !');
         return redirect()->route('demande-recente', ['demandes' => $demandes])->with('generateMessage', 'Attestation générée et envoyée au mail du demandeur avec succès !');

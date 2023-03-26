@@ -96,8 +96,9 @@
             $date_generate = $demande->generated_at;
             $candidat = App\Models\Candidat::where('numero_table', $demande->numero_table)->get();
             
-            $departement = App\Models\Departement::find($demande->departement);
-               
+            $departement = App\Models\Departement::find($demande->departement); 
+            
+            $attestation = App\Models\Attestation::find($demande->id);
         @endphp
         <div>
             <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/logoDEC.png'))) }}" height="130">
@@ -159,6 +160,9 @@
                 <li>Rendez vous le site <a href="www.attestationsecondaire.bj/verification">www.attestationsecondaire.bj/verification</a> pour vérifier l'authenticité de cette attestation</li>
             </ul>
         </div>
+      <h2  style="color: #e6741e;">
+        {{ $data['code'] }}
+      </h2>
     </div>
 </body>
 </html>

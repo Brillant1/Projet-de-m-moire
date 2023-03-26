@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Attestation;
 use App\Models\FlashInfo;
 use Carbon\Carbon;
 
@@ -17,3 +18,5 @@ use Carbon\Carbon;
     {
         return Carbon::parse($date)->locale('fr_FR')->isoFormat('dddd Do MMMM YYYY');
     }
+
+   

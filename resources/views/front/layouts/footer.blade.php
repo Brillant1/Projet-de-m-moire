@@ -86,13 +86,13 @@
                             Ministère de l'enseignement secondaire</a>
                     </p>
                     <p>
-                        <a href="https://enseignementsuperieur.gouv.bj" class="text-spacifique-color ">
+                        <a href="https://enseignementsuperieur.gouv.bj/" class="text-spacifique-color ">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-chevron-right" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd"
                                     d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                             </svg>
-                            Ministère de l'enseignement primaire</a>
+                            Ministère de l'enseignement supérieur</a>
                     </p>
 
                 </div>
@@ -127,7 +127,7 @@
                             </svg>
                             Email
                         </p>
-                        <p class="text-spacifique-color">decbenin@gmail.com</p>
+                        <p class="text-spacifique-color">dec.benin@gmail.com</p>
                     </div>
                     <div>
                         <p class="text-white font-bold">
@@ -154,7 +154,7 @@
         <p class="px-2 footer-pipe-web">| </p>
         <p> Tous droits réservés</p>
         <p class="px-3 footer-pipe-web"> | </p>
-        <p> MON ATTESTATION.BJ</a>
+        <p> <a href="{{ route('securite') }}" class=" text-primary">Mentions légales</a></p>
     </div>
 
 </footer>

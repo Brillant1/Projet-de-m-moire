@@ -13,6 +13,7 @@ class Attestation extends Model
     protected $fillable =[
         'nom',
         'demande_id',
+        'code'
     ];
 
     public function demande(){
